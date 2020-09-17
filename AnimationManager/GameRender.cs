@@ -36,6 +36,13 @@ namespace AnimationManager
             // content loading now possible
         }
 
+        protected override void LoadContent()
+        {
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            base.LoadContent();
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
@@ -50,6 +57,9 @@ namespace AnimationManager
 
         protected override void Draw(GameTime time)
         {
+            GraphicsDevice.Clear(Color.CornflowerBlue);
+            _spriteBatch.Begin();
+            _spriteBatch.End();
         }
     }
 }

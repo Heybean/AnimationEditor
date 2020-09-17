@@ -7,7 +7,20 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <local:GameRender x:Name="gameRender" HorizontalAlignment="Left" Height="366" VerticalAlignment="Top" Width="759" Margin="23,29,0,0"/>
+        <DockPanel>
+            <Menu DockPanel.Dock="Top">
+                <MenuItem Header="_File">
+                    <MenuItem Header="_New" />
+                    <MenuItem Header="_Open" />
+                    <MenuItem Header="_Save" />
+                    <MenuItem Header="_Save As" />
+                    <Separator />
+                    <MenuItem Header="_Exit" Click="Exit_Click" />
+                </MenuItem>
+            </Menu>
+            <local:GameRender x:Name="gameRender" HorizontalAlignment="Left" Height="363" VerticalAlignment="Top" Width="782" Margin="0,32,0,0"/>
+        </DockPanel>
+
 
     </Grid>
 </Window>
