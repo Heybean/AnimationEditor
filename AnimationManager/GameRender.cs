@@ -61,5 +61,10 @@ namespace AnimationManager
             _spriteBatch.Begin();
             _spriteBatch.End();
         }
+
+        public void ClearContent()
+        {
+            
+        }
     }
 }

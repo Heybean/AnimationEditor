@@ -34,15 +34,16 @@
                     <Label DockPanel.Dock="Top" Content="Texture Atlases" Background="SlateGray"  Foreground="White"/>
                     <ToolBarTray DockPanel.Dock="Bottom">
                         <ToolBar ToolBarTray.IsLocked="True">
-                            <Button ToolTip="Import Atlas">Import Atlas</Button>
+                            <Button ToolTip="Add Texture Atlas" Click="AddAtlas_Click">+ Texture Atlas</Button>
+                            <Button ToolTip="Remove Texture Atlas" Click="RemoveAtlas_Click">- Remove Atlas</Button>
                         </ToolBar>
                     </ToolBarTray>
                     
-                    <TreeView Name="trv_Atlas">
+                    <TreeView x:Name="trv_Atlas">
                     </TreeView>
                 </DockPanel>
                 <GridSplitter Grid.Column="1" Width ="5" HorizontalAlignment="Stretch"/>
-                <local:GameRender Grid.Column="2"/>
+                <local:GameRender x:Name="gr_GameWIndow" Grid.Column="2"/>
                 <GridSplitter Grid.Column="3" Width ="5" HorizontalAlignment="Stretch"/>
                 <DockPanel MinWidth="100" Grid.Column="4">
                     <Label Content="Properties" Background="SlateGray"  Foreground="White" DockPanel.Dock="Top"/>
