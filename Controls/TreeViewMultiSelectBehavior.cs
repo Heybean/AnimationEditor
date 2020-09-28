@@ -14,7 +14,7 @@ using System.Windows.Media;
 namespace AnimationManager.Controls
 {
     /// <summary>
-    /// Based off https://searchcode.com/codesearch/view/10571351/
+    /// Based off https://searchcode.com/codesearch/view/10571351/ and http://www.codecadwallader.com/2015/11/22/wpf-treeview-with-multi-select/
     /// </summary>
     public class TreeViewMultiSelectBehavior : Behavior<TreeView>
     {
@@ -29,18 +29,18 @@ namespace AnimationManager.Controls
             set { SetValue(SelectedItemsProperty, value); }
         }
 
-        public static readonly DependencyProperty IsSelectedProperty =
-            DependencyProperty.RegisterAttached("IsSelected", typeof(bool), typeof(TreeViewMultiSelectBehavior),
+        public static readonly DependencyProperty IsItemSelectedProperty =
+            DependencyProperty.RegisterAttached("IsItemSelected", typeof(bool), typeof(TreeViewMultiSelectBehavior),
                 new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnSelectedChanged));
 
         public static bool GetIsSelected(DependencyObject obj)
         {
-            return (bool)obj.GetValue(IsSelectedProperty);
+            return (bool)obj.GetValue(IsItemSelectedProperty);
         }
 
-        public static void SetIsSelected(DependencyObject obj, bool value)
+        public static void SetIsItemSelected(DependencyObject obj, bool value)
         {
-            obj.SetValue(IsSelectedProperty, value);
+            obj.SetValue(IsItemSelectedProperty, value);
         }
 
         protected override void OnAttached()
@@ -61,7 +61,7 @@ namespace AnimationManager.Controls
         {
             if ((Keyboard.Modifiers & (ModifierKeys.Control | ModifierKeys.Shift)) == ModifierKeys.None)
             {
-                SetIsSelected((TreeViewItem)e.OriginalSource, false);
+                SetIsItemSelected((TreeViewItem)e.OriginalSource, false);
             }
         }
 
@@ -153,7 +153,7 @@ namespace AnimationManager.Controls
                 bool isEdge = item == anchor || item == newItem;
                 if (isEdge)
                     inSelectionRange = !inSelectionRange;
-                SetIsSelected(item, (inSelectionRange || isEdge));
+                SetIsItemSelected(item, (inSelectionRange || isEdge));
             }
         }
 
@@ -161,7 +161,7 @@ namespace AnimationManager.Controls
         {
             foreach(var selectedItem in GetExpandedTreeViewItems().Where(x => x != null))
             {
-                SetIsSelected(selectedItem, selectedItem == item);
+                SetIsItemSelected(selectedItem, selectedItem == item);
             }
 
             _anchorItem = item;
@@ -169,7 +169,7 @@ namespace AnimationManager.Controls
 
         private void ToggleSelect(TreeViewItem item)
         {
-            SetIsSelected(item, !GetIsSelected(item));
+            SetIsItemSelected(item, !GetIsSelected(item));
             if (_anchorItem == null)
                 _anchorItem = item;
         }

@@ -55,10 +55,6 @@ namespace AnimationManager
 
         private void RemoveAtlas_Click(object sender, RoutedEventArgs e)
         {
-            /*if (_atlasTreeView.SelectedItem != null)
-            {
-                _atlasTreeView.Items.Remove(_atlasTreeView.SelectedItem);
-            }*/
         }
 
         private void AddTextureAtlas(string file)
