@@ -56,6 +56,16 @@ namespace AnimationManager
 
         private void RemoveAtlas_Click(object sender, RoutedEventArgs e)
         {
+            // Remove all selected texture atlases
+            foreach(var x in ViewModel.SelectedItems.ToList())
+            {
+                if (x is WpfTextureAtlas)
+                {
+                    var atlas = x as WpfTextureAtlas;
+                    ViewModel.TextureAtlases.Remove(atlas);
+                    ViewModel.RegisteredTextureAtlases.Remove(atlas.Name);
+                }
+            }
         }
 
         private void TreeView_ItemsSelected(object sender, RoutedEventArgs e)
@@ -74,6 +84,9 @@ namespace AnimationManager
             _buttonRemoveAtlas.IsEnabled = onlyTextureAtlasesSelected;
         }
 
+        /// <summary>
+        /// Adds a single texture atlas into the project
+        /// </summary>
         private void AddTextureAtlas(string file)
         {
             var atlasName = System.IO.Path.GetFileNameWithoutExtension(file);
@@ -88,6 +101,15 @@ namespace AnimationManager
             var atlas = new WpfTextureAtlas(file);
             ViewModel.RegisteredTextureAtlases.Add(atlasName);
             ViewModel.TextureAtlases.Add(atlas);
+        }
+
+        /// <summary>
+        /// Removes a single texture atlas from the project
+        /// </summary>
+        private void RemoveTextureAtlas(WpfTextureAtlas atlas)
+        {
+            ViewModel.RegisteredTextureAtlases.Remove(atlas.Name);
+            ViewModel.TextureAtlases.Remove(atlas);
         }
 
         private void StartNewFile()
