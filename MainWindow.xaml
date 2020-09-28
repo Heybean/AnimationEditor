@@ -4,7 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AnimationManager"
+        xmlns:controls="clr-namespace:AnimationManager.Controls"
         xmlns:graphics="clr-namespace:AnimationManager.Graphics"
+        xmlns:e="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         Title="Animation Manager" Height="450" Width="800">
     <Grid>
@@ -36,11 +38,14 @@
                     <ToolBarTray DockPanel.Dock="Bottom">
                         <ToolBar ToolBarTray.IsLocked="True">
                             <Button ToolTip="Add Texture Atlas" Click="AddAtlas_Click">+ Texture Atlas</Button>
-                            <Button ToolTip="Remove Texture Atlas" Click="RemoveAtlas_Click">- Remove Atlas</Button>
+                            <Button ToolTip="Remove Texture Atlas" Click="RemoveAtlas_Click" x:Name="btn_RemoveAtlas" IsEnabled="False">- Remove Atlas</Button>
                         </ToolBar>
                     </ToolBarTray>
 
-                    <TreeView x:Name="trv_Atlas">
+                    <TreeView x:Name="trv_Atlas" ItemsSource="{Binding Path=TextureAtlases}">
+                        <e:Interaction.Behaviors>
+                            <controls:TreeViewMultiSelectBehavior SelectedItems="{Binding Path=SelectedItems}"/>
+                        </e:Interaction.Behaviors>
                         <TreeView.Resources>
                             <HierarchicalDataTemplate DataType="{x:Type graphics:WpfTextureAtlas}" ItemsSource="{Binding Path=Sprites}">
                                 <TextBlock Text="{Binding Path=Name}" />
@@ -74,7 +79,7 @@
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
                                 <Label Content="FPS" Grid.Column="0"/>
-                                <local:NumericUpDown Grid.Column="1" MinValue="0"/>
+                                <controls:NumericUpDown Grid.Column="1" MinValue="0"/>
                             </Grid>
                             <Grid Margin="3">
                                 <Grid.ColumnDefinitions>
@@ -83,7 +88,7 @@
                                     <ColumnDefinition Width="70"/>
                                 </Grid.ColumnDefinitions>
                                 <Label Content="Origin X" Grid.Column="0"/>
-                                <local:NumericUpDown Grid.Column="1"/>
+                                <controls:NumericUpDown Grid.Column="1"/>
                                 <CheckBox Content="Center X" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="2"/>
                             </Grid>
                             <Grid Margin="3">
@@ -93,7 +98,7 @@
                                     <ColumnDefinition Width="70"/>
                                 </Grid.ColumnDefinitions>
                                 <Label Content="Origin Y" Grid.Column="0"/>
-                                <local:NumericUpDown Grid.Column="1"/>
+                                <controls:NumericUpDown Grid.Column="1"/>
                                 <CheckBox Content="Center Y" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="2"/>
                             </Grid>
                         </StackPanel>

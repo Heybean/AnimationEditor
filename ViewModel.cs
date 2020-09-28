@@ -12,15 +12,17 @@ namespace AnimationManager
     /// <summary>
     /// Holds information on current working data
     /// </summary>
-    public class ProjectData
+    public class ViewModel
     {
-        public string Name { get; set; }
+        public string FileName { get; set; }
         public ObservableCollection<WpfTextureAtlas> TextureAtlases { get; } = new ObservableCollection<WpfTextureAtlas>();
         public HashSet<string> RegisteredTextureAtlases { get; } = new HashSet<string>();
 
-        public ProjectData()
+        public IList<object> SelectedItems { get; set; } = new List<object>();
+
+        public ViewModel()
         {
-            Name = "Untitled";
+            FileName = "Untitled";
         }
     }
 }

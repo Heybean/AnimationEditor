@@ -21,7 +21,9 @@ namespace AnimationManager
     public partial class MainWindow : Window
     {
         private TreeView _atlasTreeView;
-        public ProjectData CurrentData { get; private set; }
+        public List<object> SelectedItems = new List<object>();
+
+        public ViewModel ViewModel { get; private set; }
 
         public MainWindow()
         {
@@ -63,7 +65,7 @@ namespace AnimationManager
         {
             var atlasName = System.IO.Path.GetFileNameWithoutExtension(file);
 
-            if (CurrentData.RegisteredTextureAtlases.Contains(atlasName))
+            if (ViewModel.RegisteredTextureAtlases.Contains(atlasName))
             {
                 MessageBox.Show("Cannot add '" + atlasName + "' because it already exists.", "Add Texture Atlas", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
@@ -71,15 +73,15 @@ namespace AnimationManager
 
             // Load the atlas
             var atlas = new WpfTextureAtlas(file);
-            CurrentData.RegisteredTextureAtlases.Add(atlasName);
-            CurrentData.TextureAtlases.Add(atlas);
+            ViewModel.RegisteredTextureAtlases.Add(atlasName);
+            ViewModel.TextureAtlases.Add(atlas);
         }
 
         private void StartNewFile()
         {
+            ViewModel = new ViewModel();
             _atlasTreeView.Items.Clear();
-            CurrentData = new ProjectData();
-            _atlasTreeView.ItemsSource = CurrentData.TextureAtlases;
+            _atlasTreeView.DataContext = ViewModel;
         }
     }
 }
