@@ -14,7 +14,7 @@
             <Style.Triggers>
                 <Trigger Property="controls:TreeViewMultiSelectBehavior.IsItemSelected" Value="True">
                     <Setter Property="Background" Value="{x:Static SystemColors.HighlightBrush}" />
-                    <Setter Property="Foreground" Value="{x:Static SystemColors.HighlightTextColorKey}" />
+                    <Setter Property="Foreground" Value="{x:Static SystemColors.HighlightTextBrush}" />
                 </Trigger>
             </Style.Triggers>
         </Style>
