@@ -45,12 +45,22 @@ namespace AnimationManager
             {
                 AddExtension = true,
                 Filter = "texture atlas files (*.atlas)|*.atlas",
-                Title = "Add Texture Atlas"
+                Title = "Add Texture Atlas",
+                Multiselect = true
             };
 
             if (openFileDialog.ShowDialog() == true)
             {
-                AddTextureAtlas(openFileDialog.FileName);
+                var invalidFiles = new List<string>();
+                foreach (var filename in openFileDialog.FileNames)
+                {
+                    AddTextureAtlas(filename, invalidFiles);
+                }
+
+                if (invalidFiles.Count > 0)
+                {
+                    MessageBox.Show("Cannot add '" + string.Join("', '", invalidFiles)  + "' because it already exists.", "Add Texture Atlas", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
             }
         }
 
@@ -62,8 +72,7 @@ namespace AnimationManager
                 if (x is WpfTextureAtlas)
                 {
                     var atlas = x as WpfTextureAtlas;
-                    ViewModel.TextureAtlases.Remove(atlas);
-                    ViewModel.RegisteredTextureAtlases.Remove(atlas.Name);
+                    RemoveTextureAtlas(atlas);
                 }
             }
         }
@@ -85,15 +94,17 @@ namespace AnimationManager
         }
 
         /// <summary>
-        /// Adds a single texture atlas into the project
+        /// Adds a single texture atlas into the project.
         /// </summary>
-        private void AddTextureAtlas(string file)
+        private void AddTextureAtlas(string file, List<string> invalidFiles = null)
         {
             var atlasName = System.IO.Path.GetFileNameWithoutExtension(file);
 
             if (ViewModel.RegisteredTextureAtlases.Contains(atlasName))
             {
-                MessageBox.Show("Cannot add '" + atlasName + "' because it already exists.", "Add Texture Atlas", MessageBoxButton.OK, MessageBoxImage.Warning);
+                //
+                if (invalidFiles != null)
+                    invalidFiles.Add(atlasName);
                 return;
             }
 
