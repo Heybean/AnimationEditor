@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -16,12 +17,12 @@ namespace AnimationManager.Controls
     /// <summary>
     /// Based off https://searchcode.com/codesearch/view/10571351/ and http://www.codecadwallader.com/2015/11/22/wpf-treeview-with-multi-select/
     /// </summary>
-    public class TreeViewMultiSelectBehavior : Behavior<TreeView>
+    public class MultiSelectTreeViewBehavior : Behavior<MultiSelectTreeView>
     {
         private TreeViewItem _anchorItem;
 
         public static readonly DependencyProperty SelectedItemsProperty =
-            DependencyProperty.Register("SelectedItems", typeof(IList), typeof(TreeViewMultiSelectBehavior));
+            DependencyProperty.Register("SelectedItems", typeof(IList), typeof(MultiSelectTreeViewBehavior));
 
         public IList SelectedItems
         {
@@ -30,7 +31,7 @@ namespace AnimationManager.Controls
         }
 
         public static readonly DependencyProperty IsItemSelectedProperty =
-            DependencyProperty.RegisterAttached("IsItemSelected", typeof(bool), typeof(TreeViewMultiSelectBehavior),
+            DependencyProperty.RegisterAttached("IsItemSelected", typeof(bool), typeof(MultiSelectTreeViewBehavior),
                 new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnSelectedChanged));
 
         public static bool GetIsSelected(DependencyObject obj)
@@ -86,26 +87,28 @@ namespace AnimationManager.Controls
                             SingleSelect(item);
                         break;
                 }
-
             }
+
+            var newEventArgs = new RoutedEventArgs(MultiSelectTreeView.ItemsSelectedEvent);
+            AssociatedObject.RaiseEvent(newEventArgs);
         }
 
-        private static TreeView GetTree(TreeViewItem item)
+        private static MultiSelectTreeView GetTree(TreeViewItem item)
         {
             FrameworkElement currentItem = item;
-            while(!(VisualTreeHelper.GetParent(currentItem) is TreeView))
+            while(!(VisualTreeHelper.GetParent(currentItem) is MultiSelectTreeView))
             {
                 currentItem = (FrameworkElement)VisualTreeHelper.GetParent(currentItem);
             }
 
-            return (TreeView)VisualTreeHelper.GetParent(currentItem);
+            return (MultiSelectTreeView)VisualTreeHelper.GetParent(currentItem);
         }
 
         private static void OnSelectedChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
             var item = sender as TreeViewItem;
             var tree = GetTree(item);
-            var msb = Interaction.GetBehaviors(tree).Single(b => b.GetType() == typeof(TreeViewMultiSelectBehavior)) as TreeViewMultiSelectBehavior;
+            var msb = Interaction.GetBehaviors(tree).Single(b => b.GetType() == typeof(MultiSelectTreeViewBehavior)) as MultiSelectTreeViewBehavior;
             var selectedItems = msb?.SelectedItems;
             if (selectedItems != null)
             {

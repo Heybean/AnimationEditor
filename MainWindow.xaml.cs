@@ -21,7 +21,6 @@ namespace AnimationManager
     public partial class MainWindow : Window
     {
         private TreeView _atlasTreeView;
-        public List<object> SelectedItems = new List<object>();
 
         public ViewModel ViewModel { get; private set; }
 
@@ -55,6 +54,11 @@ namespace AnimationManager
 
         private void RemoveAtlas_Click(object sender, RoutedEventArgs e)
         {
+        }
+
+        private void TreeView_ItemsSelected(object sender, RoutedEventArgs e)
+        {
+
         }
 
         private void AddTextureAtlas(string file)

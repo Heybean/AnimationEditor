@@ -12,7 +12,7 @@
     <Window.Resources>
         <Style x:Key="TreeViewItem_SelectStyle" TargetType="{x:Type TreeViewItem}">
             <Style.Triggers>
-                <Trigger Property="controls:TreeViewMultiSelectBehavior.IsItemSelected" Value="True">
+                <Trigger Property="controls:MultiSelectTreeViewBehavior.IsItemSelected" Value="True">
                     <Setter Property="Background" Value="{x:Static SystemColors.HighlightBrush}" />
                     <Setter Property="Foreground" Value="{x:Static SystemColors.HighlightTextBrush}" />
                 </Trigger>
@@ -53,10 +53,14 @@
                         </ToolBar>
                     </ToolBarTray>
 
-                    <TreeView x:Name="trv_Atlas" ItemsSource="{Binding Path=TextureAtlases}" ItemContainerStyle="{StaticResource TreeViewItem_SelectStyle}">
+                    <controls:MultiSelectTreeView x:Name="trv_Atlas" ItemsSource="{Binding Path=TextureAtlases}"
+                              ItemContainerStyle="{StaticResource TreeViewItem_SelectStyle}"
+                              ItemsSelected="TreeView_ItemsSelected">
+                        
                         <e:Interaction.Behaviors>
-                            <controls:TreeViewMultiSelectBehavior SelectedItems="{Binding Path=SelectedItems}"/>
+                            <controls:MultiSelectTreeViewBehavior SelectedItems="{Binding Path=SelectedItems}"/>
                         </e:Interaction.Behaviors>
+                        
                         <TreeView.Resources>
                             <HierarchicalDataTemplate DataType="{x:Type graphics:WpfTextureAtlas}" ItemsSource="{Binding Path=Sprites}">
                                 <TextBlock Text="{Binding Path=Name}" />
@@ -65,8 +69,9 @@
                                 <TextBlock Text="{Binding Path=Name}" />
                             </HierarchicalDataTemplate>
                         </TreeView.Resources>
-                    </TreeView>
+                    </controls:MultiSelectTreeView>
                 </DockPanel>
+                
                 <GridSplitter Grid.Column="1" Width ="5" HorizontalAlignment="Stretch"/>
                 <GridSplitter Grid.Column="3" Width ="5" HorizontalAlignment="Stretch"/>
                 <DockPanel MinWidth="100" Grid.Column="4">
