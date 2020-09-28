@@ -21,6 +21,7 @@ namespace AnimationManager
     public partial class MainWindow : Window
     {
         private TreeView _atlasTreeView;
+        private Button _buttonRemoveAtlas;
 
         public ViewModel ViewModel { get; private set; }
 
@@ -29,6 +30,7 @@ namespace AnimationManager
             InitializeComponent();
 
             _atlasTreeView = (TreeView)FindName("trv_Atlas");
+            _buttonRemoveAtlas = (Button)FindName("btn_RemoveAtlas");
             StartNewFile();
         }
 
@@ -58,7 +60,18 @@ namespace AnimationManager
 
         private void TreeView_ItemsSelected(object sender, RoutedEventArgs e)
         {
+            // Toggle Remove Atlas button based on which items are selected
+            bool onlyTextureAtlasesSelected = true;
+            foreach(var item in ViewModel.SelectedItems)
+            {
+                if (!(item is WpfTextureAtlas))
+                {
+                    onlyTextureAtlasesSelected = false;
+                    break;
+                }
+            }
 
+            _buttonRemoveAtlas.IsEnabled = onlyTextureAtlasesSelected;
         }
 
         private void AddTextureAtlas(string file)
