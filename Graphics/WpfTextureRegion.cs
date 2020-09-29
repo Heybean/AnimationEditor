@@ -18,7 +18,7 @@ namespace AnimationManager.Graphics
         /// <summary>
         /// The cropped sprite from the texture atlas
         /// </summary>
-        public ImageBrush Sprite { get; private set; }
+        public ImageBrush ImageBrush { get; private set; }
 
         public WpfTextureRegion(BitmapImage atlas, TextureAtlasData.Region region)
         {
@@ -38,11 +38,9 @@ namespace AnimationManager.Graphics
             pads = region.pads;
 
             TextureAtlas = atlas;
-            Sprite = new ImageBrush(TextureAtlas);
-            Sprite.Viewport = new Rect(0, 0, 1, 1);
-            //RenderOptions.SetBitmapScalingMode(Sprite, BitmapScalingMode.NearestNeighbor);
-            //Sprite.ViewportUnits = BrushMappingMode.Absolute;
-            //Sprite.Viewport = new Rect(left, top, width, height);
+            ImageBrush = new ImageBrush(TextureAtlas);
+            ImageBrush.ViewboxUnits = BrushMappingMode.Absolute;
+            ImageBrush.Viewbox = new Rect(left, top, width, height);
         }
     }
 }

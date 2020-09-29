@@ -108,10 +108,10 @@ namespace AnimationManager
                     var sprite = ViewModel.SelectedItems[0] as WpfSprite;
                     _mainRender.Children.Clear();
                     var rect = new Rectangle();
-                    rect.Width = 200;
-                    rect.Height = 200;
-                    rect.Fill = sprite.Regions[0].Sprite;
-                    rect.RenderTransform = new ScaleTransform(2, 2, 2, 2);
+                    rect.Width = sprite.Regions[0].width;
+                    rect.Height = sprite.Regions[0].height;
+                    rect.Fill = sprite.Regions[0].ImageBrush;
+                    rect.RenderTransform = new ScaleTransform(20, 20, 1, 1);
                     RenderOptions.SetBitmapScalingMode(rect, BitmapScalingMode.NearestNeighbor);
                     _mainRender.Children.Add(rect);
                 }
