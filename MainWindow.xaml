@@ -8,7 +8,7 @@
         xmlns:graphics="clr-namespace:AnimationManager.Graphics"
         xmlns:e="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
-        Title="Animation Manager" Height="450" Width="800">
+        Title="Animation Manager" Height="450" Width="800" ContentRendered="Window_ContentRendered">
     <Window.Resources>
         <Style x:Key="TreeViewItem_SelectStyle" TargetType="{x:Type TreeViewItem}">
             <Style.Triggers>
@@ -73,6 +73,9 @@
                 </DockPanel>
                 
                 <GridSplitter Grid.Column="1" Width ="5" HorizontalAlignment="Stretch"/>
+
+                <Canvas x:Name="cv_MainRender" Grid.Column="2" Background="Gray"/>
+
                 <GridSplitter Grid.Column="3" Width ="5" HorizontalAlignment="Stretch"/>
                 <DockPanel MinWidth="100" Grid.Column="4">
                     <Label Content="Properties" Background="SlateGray"  Foreground="White" DockPanel.Dock="Top"/>

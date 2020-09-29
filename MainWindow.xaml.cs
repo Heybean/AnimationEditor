@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace AnimationManager
 {
@@ -22,6 +23,8 @@ namespace AnimationManager
     {
         private TreeView _atlasTreeView;
         private Button _buttonRemoveAtlas;
+        private Canvas _mainRender;
+        private DispatcherTimer _gameTickTimer;
 
         public ViewModel ViewModel { get; private set; }
 
@@ -29,8 +32,14 @@ namespace AnimationManager
         {
             InitializeComponent();
 
+            _gameTickTimer = new DispatcherTimer();
+            _gameTickTimer.Tick += GameTickTimer_Tick;
+            _gameTickTimer.Interval = TimeSpan.FromSeconds(1 / 60.0);
+            _gameTickTimer.IsEnabled = true;
+
             _atlasTreeView = (TreeView)FindName("trv_Atlas");
             _buttonRemoveAtlas = (Button)FindName("btn_RemoveAtlas");
+            _mainRender = (Canvas)FindName("cv_MainRender");
             StartNewFile();
         }
 
@@ -91,6 +100,22 @@ namespace AnimationManager
             }
 
             _buttonRemoveAtlas.IsEnabled = onlyTextureAtlasesSelected;
+
+            if (ViewModel.SelectedItems.Count == 1)
+            {
+                if (ViewModel.SelectedItems[0] is WpfSprite)
+                {
+                    var sprite = ViewModel.SelectedItems[0] as WpfSprite;
+                    _mainRender.Children.Clear();
+                    var rect = new Rectangle();
+                    rect.Width = 200;
+                    rect.Height = 200;
+                    rect.Fill = sprite.Regions[0].Sprite;
+                    rect.RenderTransform = new ScaleTransform(2, 2, 2, 2);
+                    RenderOptions.SetBitmapScalingMode(rect, BitmapScalingMode.NearestNeighbor);
+                    _mainRender.Children.Add(rect);
+                }
+            }
         }
 
         /// <summary>
@@ -128,6 +153,36 @@ namespace AnimationManager
             ViewModel = new ViewModel();
             _atlasTreeView.Items.Clear();
             _atlasTreeView.DataContext = ViewModel;
+        }
+
+        private void Window_ContentRendered(object sender, EventArgs e)
+        {
+            DrawMainRender();
+        }
+
+        private void GameTickTimer_Tick(object sender, EventArgs e)
+        {
+
+        }
+
+        private void DrawMainRender()
+        {
+            /*bool drawFinished = false;
+
+            while (!drawFinished)
+            {
+                // Draw currently selected sprite if only one is selected
+                if (ViewModel.SelectedItems.Count == 1)
+                {
+                    if (ViewModel.SelectedItems[0] is WpfSprite)
+                    {
+                        var sprite = ViewModel.SelectedItems[0] as WpfSprite;
+                        _mainRender.Children.Clear();
+                    }
+                }
+                drawFinished = true;
+            }*/
+
         }
     }
 }

@@ -30,12 +30,14 @@ namespace AnimationManager.Graphics
             }
 
             // Create the sprite animations for each set of animations
-            var regionMaps = new Dictionary<string, List<TextureAtlasData.Region>>();
+            var regionMaps = new Dictionary<string, List<WpfTextureRegion>>();
             foreach (var region in atlasData.Regions)
             {
                 if (!regionMaps.ContainsKey(region.name))
-                    regionMaps.Add(region.name, new List<TextureAtlasData.Region>());
-                regionMaps[region.name].Add(region);
+                    regionMaps.Add(region.name, new List<WpfTextureRegion>());
+
+                var wpfTextureRegion = new WpfTextureRegion(Textures[region.pageIndex], region);
+                regionMaps[region.name].Add(wpfTextureRegion);
             }
 
             // Sort the indexes for proper animation order then create the sprite for it
