@@ -24,7 +24,10 @@ namespace AnimationManager
         private TreeView _atlasTreeView;
         private Button _buttonRemoveAtlas;
         private Canvas _mainRender;
+        private ScaleTransform _mainRenderScale;
         private DispatcherTimer _gameTickTimer;
+        private Rectangle _spriteOutline;
+        private Rectangle _spriteDisplay;
 
         public ViewModel ViewModel { get; private set; }
 
@@ -40,6 +43,14 @@ namespace AnimationManager
             _atlasTreeView = (TreeView)FindName("trv_Atlas");
             _buttonRemoveAtlas = (Button)FindName("btn_RemoveAtlas");
             _mainRender = (Canvas)FindName("cv_MainRender");
+            _spriteOutline = (Rectangle)FindName("rect_SpriteOutline");
+            _spriteDisplay = (Rectangle)FindName("rect_SpriteDisplay");
+
+            RenderOptions.SetBitmapScalingMode(_spriteOutline, BitmapScalingMode.NearestNeighbor);
+            RenderOptions.SetBitmapScalingMode(_spriteDisplay, BitmapScalingMode.NearestNeighbor);
+
+            _mainRenderScale = new ScaleTransform(3, 3);
+
             StartNewFile();
         }
 
@@ -106,15 +117,20 @@ namespace AnimationManager
                 if (ViewModel.SelectedItems[0] is WpfSprite)
                 {
                     var sprite = ViewModel.SelectedItems[0] as WpfSprite;
-                    _mainRender.Children.Clear();
-                    var rect = new Rectangle();
-                    rect.Width = sprite.Regions[0].width;
-                    rect.Height = sprite.Regions[0].height;
-                    rect.Fill = sprite.Regions[0].ImageBrush;
-                    rect.RenderTransform = new ScaleTransform(20, 20, 1, 1);
-                    RenderOptions.SetBitmapScalingMode(rect, BitmapScalingMode.NearestNeighbor);
-                    _mainRender.Children.Add(rect);
+
+                    _spriteOutline.StrokeThickness = 1;
+
+                    _spriteDisplay.Width = sprite.Regions[0].width;
+                    _spriteDisplay.Height = sprite.Regions[0].height;
+                    _spriteDisplay.Fill = sprite.Regions[0].ImageBrush;
+
+                    UpdateMainRenderChildren();
                 }
+            }
+            else
+            {
+                _spriteDisplay.Fill = null;
+                _spriteOutline.StrokeThickness = 0;
             }
         }
 
@@ -183,6 +199,34 @@ namespace AnimationManager
                 drawFinished = true;
             }*/
 
+        }
+
+        private void MainRender_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            UpdateMainRenderChildren();
+        }
+
+        private void UpdateMainRenderChildren()
+        {
+            int x = (int)(_mainRender.ActualWidth - _spriteDisplay.Width) / 2;
+            int y = (int)(_mainRender.ActualHeight - _spriteDisplay.Height) / 2;
+
+            _mainRenderScale.CenterX = _spriteDisplay.Width / 2;
+            _mainRenderScale.CenterY = _spriteDisplay.Height / 2;
+
+            _spriteDisplay.RenderTransform = _mainRenderScale;
+
+            Canvas.SetLeft(_spriteDisplay, x);
+            Canvas.SetTop(_spriteDisplay, y);
+
+            _spriteOutline.Width = _spriteDisplay.Width * _mainRenderScale.ScaleX + 2;
+            _spriteOutline.Height = _spriteDisplay.Height * _mainRenderScale.ScaleY + 2;
+
+            x = (int)(_mainRender.ActualWidth - _spriteDisplay.Width * _mainRenderScale.ScaleX) / 2;
+            y = (int)(_mainRender.ActualHeight - _spriteDisplay.Height * _mainRenderScale.ScaleY) / 2;
+
+            Canvas.SetLeft(_spriteOutline, x - 1);
+            Canvas.SetTop(_spriteOutline, y - 1);
         }
     }
 }
