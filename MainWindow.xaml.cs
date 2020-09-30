@@ -28,6 +28,7 @@ namespace AnimationManager
         private DispatcherTimer _gameTickTimer;
         private Rectangle _spriteOutline;
         private Rectangle _spriteDisplay;
+        private DockPanel _propertiesPanel;
 
         public ViewModel ViewModel { get; private set; }
 
@@ -45,6 +46,7 @@ namespace AnimationManager
             _mainRender = (Canvas)FindName("cv_MainRender");
             _spriteOutline = (Rectangle)FindName("rect_SpriteOutline");
             _spriteDisplay = (Rectangle)FindName("rect_SpriteDisplay");
+            _propertiesPanel = (DockPanel)FindName("dock_Properties");
 
             RenderOptions.SetBitmapScalingMode(_spriteOutline, BitmapScalingMode.NearestNeighbor);
             RenderOptions.SetBitmapScalingMode(_spriteDisplay, BitmapScalingMode.NearestNeighbor);
@@ -112,7 +114,7 @@ namespace AnimationManager
 
             _buttonRemoveAtlas.IsEnabled = onlyTextureAtlasesSelected;
 
-            if (ViewModel.SelectedItems.Count == 1)
+            if (ViewModel.SelectedItems.Count == 1) // Single Item Selected
             {
                 if (ViewModel.SelectedItems[0] is WpfSprite)
                 {
@@ -125,6 +127,8 @@ namespace AnimationManager
                     _spriteDisplay.Fill = sprite.Regions[0].ImageBrush;
 
                     UpdateMainRenderChildren();
+
+                    _propertiesPanel.DataContext = sprite;
                 }
             }
             else

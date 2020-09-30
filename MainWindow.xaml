@@ -19,7 +19,7 @@
             </Style.Triggers>
         </Style>
     </Window.Resources>
-    
+
     <Grid>
         <DockPanel>
             <Menu DockPanel.Dock="Top">
@@ -56,11 +56,11 @@
                     <controls:MultiSelectTreeView x:Name="trv_Atlas" ItemsSource="{Binding Path=TextureAtlases}"
                               ItemContainerStyle="{StaticResource TreeViewItem_SelectStyle}"
                               ItemsSelected="TreeView_ItemsSelected">
-                        
+
                         <e:Interaction.Behaviors>
                             <controls:MultiSelectTreeViewBehavior SelectedItems="{Binding Path=SelectedItems}"/>
                         </e:Interaction.Behaviors>
-                        
+
                         <TreeView.Resources>
                             <HierarchicalDataTemplate DataType="{x:Type graphics:WpfTextureAtlas}" ItemsSource="{Binding Path=Sprites}">
                                 <TextBlock Text="{Binding Path=Name}" />
@@ -71,7 +71,7 @@
                         </TreeView.Resources>
                     </controls:MultiSelectTreeView>
                 </DockPanel>
-                
+
                 <GridSplitter Grid.Column="1" Width ="5" HorizontalAlignment="Stretch"/>
 
                 <Canvas x:Name="cv_MainRender" Grid.Column="2" Background="Gray" ClipToBounds="True" SizeChanged="MainRender_SizeChanged">
@@ -80,7 +80,7 @@
                 </Canvas>
 
                 <GridSplitter Grid.Column="3" Width ="5" HorizontalAlignment="Stretch"/>
-                <DockPanel MinWidth="100" Grid.Column="4">
+                <DockPanel MinWidth="100" Grid.Column="4" x:Name="dock_Properties">
                     <Label Content="Properties" Background="SlateGray"  Foreground="White" DockPanel.Dock="Top"/>
                     <Grid Margin="0 0 8 0">
                         <Grid.RowDefinitions>
@@ -93,7 +93,7 @@
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
                                 <Label Content="Name" Grid.Column="0"/>
-                                <TextBox IsReadOnly="True" Grid.Column="1"/>
+                                <Label Grid.Column="1" Background="AliceBlue" Content="{Binding Path=Name}"/>
                             </Grid>
                             <Grid Margin="3">
                                 <Grid.ColumnDefinitions>
@@ -101,27 +101,37 @@
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
                                 <Label Content="FPS" Grid.Column="0"/>
-                                <controls:NumericUpDown Grid.Column="1" MinValue="0"/>
+                                <controls:NumericUpDown Grid.Column="1" MinValue="0" Value="{Binding Path=FPS, Mode=TwoWay}"/>
                             </Grid>
                             <Grid Margin="3">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="60"/>
                                     <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="70"/>
+                                    <ColumnDefinition Width="80"/>
                                 </Grid.ColumnDefinitions>
                                 <Label Content="Origin X" Grid.Column="0"/>
-                                <controls:NumericUpDown Grid.Column="1"/>
-                                <CheckBox Content="Center X" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="2"/>
+                                <controls:NumericUpDown Grid.Column="1" Value="{Binding Path=OriginX, Mode=TwoWay}"/>
+                                <ComboBox Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10, 0, 0, 0">
+                                    <ComboBoxItem>Custom</ComboBoxItem>
+                                    <ComboBoxItem>Left</ComboBoxItem>
+                                    <ComboBoxItem>Center</ComboBoxItem>
+                                    <ComboBoxItem>Right</ComboBoxItem>
+                                </ComboBox>
                             </Grid>
                             <Grid Margin="3">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="60"/>
                                     <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="70"/>
+                                    <ColumnDefinition Width="80"/>
                                 </Grid.ColumnDefinitions>
                                 <Label Content="Origin Y" Grid.Column="0"/>
-                                <controls:NumericUpDown Grid.Column="1"/>
-                                <CheckBox Content="Center Y" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="2"/>
+                                <controls:NumericUpDown Grid.Column="1" Value="{Binding Path=OriginY, Mode=TwoWay}"/>
+                                <ComboBox Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center"  Margin="10, 0, 0, 0">
+                                    <ComboBoxItem>Custom</ComboBoxItem>
+                                    <ComboBoxItem>Top</ComboBoxItem>
+                                    <ComboBoxItem>Center</ComboBoxItem>
+                                    <ComboBoxItem>Bottom</ComboBoxItem>
+                                </ComboBox>
                             </Grid>
                         </StackPanel>
                     </Grid>

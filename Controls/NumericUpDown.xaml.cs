@@ -117,6 +117,9 @@ namespace AnimationManager.Controls
             var control = (NumericUpDown)obj;
             var newValue = Math.Max(control.MinValue, Math.Min(control.MaxValue, (int)baseValue));
 
+            if (control.TextBox == null)
+                return 0;
+
             // Update Text Box as value is changed
             control.TextBox.Text = newValue.ToString(CultureInfo.CurrentCulture);
 
