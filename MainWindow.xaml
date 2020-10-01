@@ -101,7 +101,7 @@
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
                                 <Label Content="FPS" Grid.Column="0"/>
-                                <controls:NumericUpDown Grid.Column="1" MinValue="0" Value="{Binding Path=FPS, Mode=TwoWay}"/>
+                                <controls:NumericUpDown Grid.Column="1" MinValue="0" Value="{Binding Path=FPS, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                             </Grid>
                             <Grid Margin="3">
                                 <Grid.ColumnDefinitions>
@@ -110,12 +110,10 @@
                                     <ColumnDefinition Width="80"/>
                                 </Grid.ColumnDefinitions>
                                 <Label Content="Origin X" Grid.Column="0"/>
-                                <controls:NumericUpDown Grid.Column="1" Value="{Binding Path=OriginX, Mode=TwoWay}"/>
-                                <ComboBox Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10, 0, 0, 0">
-                                    <ComboBoxItem>Custom</ComboBoxItem>
-                                    <ComboBoxItem>Left</ComboBoxItem>
-                                    <ComboBoxItem>Center</ComboBoxItem>
-                                    <ComboBoxItem>Right</ComboBoxItem>
+                                <controls:NumericUpDown Grid.Column="1" Value="{Binding Path=OriginX, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ComboBox Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10, 0, 0, 0"
+                                          ItemsSource="{Binding Source={local:EnumBindingSource {x:Type graphics:SpriteHorizontalAlignment}}}"
+                                          SelectedValue="{Binding Path=HorizontalAlignment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 </ComboBox>
                             </Grid>
                             <Grid Margin="3">
@@ -125,12 +123,10 @@
                                     <ColumnDefinition Width="80"/>
                                 </Grid.ColumnDefinitions>
                                 <Label Content="Origin Y" Grid.Column="0"/>
-                                <controls:NumericUpDown Grid.Column="1" Value="{Binding Path=OriginY, Mode=TwoWay}"/>
-                                <ComboBox Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center"  Margin="10, 0, 0, 0">
-                                    <ComboBoxItem>Custom</ComboBoxItem>
-                                    <ComboBoxItem>Top</ComboBoxItem>
-                                    <ComboBoxItem>Center</ComboBoxItem>
-                                    <ComboBoxItem>Bottom</ComboBoxItem>
+                                <controls:NumericUpDown Grid.Column="1" Value="{Binding Path=OriginY, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ComboBox Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center"  Margin="10, 0, 0, 0"
+                                          ItemsSource="{Binding Source={local:EnumBindingSource {x:Type graphics:SpriteVerticalAlignment}}}"
+                                          SelectedValue="{Binding Path=VerticalAlignment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 </ComboBox>
                             </Grid>
                         </StackPanel>

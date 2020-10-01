@@ -1,6 +1,8 @@
 ﻿using DungeonSphere.Graphics;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows;
 using System.Windows.Media;
@@ -10,7 +12,7 @@ namespace AnimationManager.Graphics
 {
     public enum SpriteHorizontalAlignment
     {
-        None,
+        Custom,
         Left,
         Center,
         Right
@@ -18,13 +20,13 @@ namespace AnimationManager.Graphics
 
     public enum SpriteVerticalAlignment
     {
-        None,
+        Custom,
         Top,
         Center,
         Bottom
     }
 
-    public class WpfSprite
+    public class WpfSprite : INotifyPropertyChanged
     {
         public string Name { get; private set; }
         public int FPS { get; set; }
@@ -37,7 +39,8 @@ namespace AnimationManager.Graphics
             set
             {
                 _originX = value;
-                _hAlign = SpriteHorizontalAlignment.None;
+                _hAlign = SpriteHorizontalAlignment.Custom;
+                NotifyPropertyChanged();
             }
         }
 
@@ -50,7 +53,8 @@ namespace AnimationManager.Graphics
             set
             {
                 _originY = value;
-                _vAlign = SpriteVerticalAlignment.None;
+                _vAlign = SpriteVerticalAlignment.Custom;
+                NotifyPropertyChanged();
             }
         }
 
@@ -64,10 +68,11 @@ namespace AnimationManager.Graphics
             {
                 _hAlign = value;
                 SetAlignmentOrigin();
+                NotifyPropertyChanged();
             }
         }
 
-        public SpriteVerticalAlignment VerticalAligment
+        public SpriteVerticalAlignment VerticalAlignment
         {
             get
             {
@@ -78,6 +83,7 @@ namespace AnimationManager.Graphics
             {
                 _vAlign = value;
                 SetAlignmentOrigin();
+                NotifyPropertyChanged();
             }
         }
 
@@ -89,13 +95,15 @@ namespace AnimationManager.Graphics
         private int _originX;
         private int _originY;
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public WpfSprite(string name, List<WpfTextureRegion> regions)
         {
             Name = name;
             Regions = regions;
             FPS = 60;
             HorizontalAlignment = SpriteHorizontalAlignment.Center;
-            VerticalAligment = SpriteVerticalAlignment.Center;
+            VerticalAlignment = SpriteVerticalAlignment.Center;
             SetAlignmentOrigin();
         }
 
@@ -107,31 +115,42 @@ namespace AnimationManager.Graphics
         private void SetAlignmentOrigin()
         {
             var region = Regions[0];
+            var holdHalign = _hAlign;
+            var holdValign = _vAlign;
+
             switch (HorizontalAlignment)
             {
                 case SpriteHorizontalAlignment.Left:
-                    _originX = 0;
+                    OriginX = 0;
                     break;
                 case SpriteHorizontalAlignment.Center:
-                    _originX = region.width / 2;
+                    OriginX = region.width / 2;
                     break;
                 case SpriteHorizontalAlignment.Right:
-                    _originX = region.width;
+                    OriginX = region.width;
                     break;
             }
 
-            switch (VerticalAligment)
+            switch (VerticalAlignment)
             {
                 case SpriteVerticalAlignment.Top:
-                    _originY = 0;
+                    OriginY = 0;
                     break;
                 case SpriteVerticalAlignment.Center:
-                    _originY = region.height / 2;
+                    OriginY = region.height / 2;
                     break;
                 case SpriteVerticalAlignment.Bottom:
-                    _originY = region.height;
+                    OriginY = region.height;
                     break;
             }
+
+            _hAlign = holdHalign;
+            _vAlign = holdValign;
+        }
+
+        private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

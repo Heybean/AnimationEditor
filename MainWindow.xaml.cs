@@ -91,9 +91,8 @@ namespace AnimationManager
             // Remove all selected texture atlases
             foreach(var x in ViewModel.SelectedItems.ToList())
             {
-                if (x is WpfTextureAtlas)
+                if (x is WpfTextureAtlas atlas)
                 {
-                    var atlas = x as WpfTextureAtlas;
                     RemoveTextureAtlas(atlas);
                 }
             }
@@ -116,10 +115,8 @@ namespace AnimationManager
 
             if (ViewModel.SelectedItems.Count == 1) // Single Item Selected
             {
-                if (ViewModel.SelectedItems[0] is WpfSprite)
+                if (ViewModel.SelectedItems[0] is WpfSprite sprite)
                 {
-                    var sprite = ViewModel.SelectedItems[0] as WpfSprite;
-
                     _spriteOutline.StrokeThickness = 1;
 
                     _spriteDisplay.Width = sprite.Regions[0].width;
@@ -147,7 +144,6 @@ namespace AnimationManager
 
             if (ViewModel.RegisteredTextureAtlases.Contains(atlasName))
             {
-                //
                 if (invalidFiles != null)
                     invalidFiles.Add(atlasName);
                 return;
