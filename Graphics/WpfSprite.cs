@@ -40,6 +40,8 @@ namespace AnimationManager.Graphics
             {
                 _originX = value;
                 _hAlign = SpriteHorizontalAlignment.Custom;
+                if (!_doNotInvoke)
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("HorizontalAlignment"));
                 NotifyPropertyChanged();
             }
         }
@@ -54,6 +56,8 @@ namespace AnimationManager.Graphics
             {
                 _originY = value;
                 _vAlign = SpriteVerticalAlignment.Custom;
+                if (!_doNotInvoke)
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("VerticalAlignment"));
                 NotifyPropertyChanged();
             }
         }
@@ -67,7 +71,9 @@ namespace AnimationManager.Graphics
             set
             {
                 _hAlign = value;
-                SetAlignmentOrigin();
+                _doNotInvoke = true;
+                UpdateAlignmentOriginX();
+                _doNotInvoke = false;
                 NotifyPropertyChanged();
             }
         }
@@ -82,7 +88,9 @@ namespace AnimationManager.Graphics
             set
             {
                 _vAlign = value;
-                SetAlignmentOrigin();
+                _doNotInvoke = true;
+                UpdateAlignmentOriginY();
+                _doNotInvoke = false;
                 NotifyPropertyChanged();
             }
         }
@@ -94,6 +102,7 @@ namespace AnimationManager.Graphics
         private SpriteVerticalAlignment _vAlign;
         private int _originX;
         private int _originY;
+        private bool _doNotInvoke;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -104,7 +113,8 @@ namespace AnimationManager.Graphics
             FPS = 60;
             HorizontalAlignment = SpriteHorizontalAlignment.Center;
             VerticalAlignment = SpriteVerticalAlignment.Center;
-            SetAlignmentOrigin();
+            UpdateAlignmentOriginX();
+            UpdateAlignmentOriginY();
         }
 
         public void Update()
@@ -112,11 +122,10 @@ namespace AnimationManager.Graphics
 
         }
 
-        private void SetAlignmentOrigin()
+        private void UpdateAlignmentOriginX()
         {
             var region = Regions[0];
             var holdHalign = _hAlign;
-            var holdValign = _vAlign;
 
             switch (HorizontalAlignment)
             {
@@ -131,6 +140,14 @@ namespace AnimationManager.Graphics
                     break;
             }
 
+            _hAlign = holdHalign;
+        }
+
+        private void UpdateAlignmentOriginY()
+        {
+            var region = Regions[0];
+            var holdValign = _vAlign;
+
             switch (VerticalAlignment)
             {
                 case SpriteVerticalAlignment.Top:
@@ -144,7 +161,6 @@ namespace AnimationManager.Graphics
                     break;
             }
 
-            _hAlign = holdHalign;
             _vAlign = holdValign;
         }
 

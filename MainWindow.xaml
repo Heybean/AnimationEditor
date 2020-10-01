@@ -77,6 +77,7 @@
                 <Canvas x:Name="cv_MainRender" Grid.Column="2" Background="Gray" ClipToBounds="True" SizeChanged="MainRender_SizeChanged">
                     <Rectangle x:Name="rect_SpriteDisplay" Panel.ZIndex="1"/>
                     <Rectangle x:Name="rect_SpriteOutline" StrokeThickness="0" Stroke="Lime" Panel.ZIndex="2"/>
+                    <Image x:Name="img_Origin" Source="origin_point.png" Panel.ZIndex="3" />
                 </Canvas>
 
                 <GridSplitter Grid.Column="3" Width ="5" HorizontalAlignment="Stretch"/>
@@ -110,7 +111,8 @@
                                     <ColumnDefinition Width="80"/>
                                 </Grid.ColumnDefinitions>
                                 <Label Content="Origin X" Grid.Column="0"/>
-                                <controls:NumericUpDown Grid.Column="1" Value="{Binding Path=OriginX, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <controls:NumericUpDown x:Name="num_OriginX" Grid.Column="1" ValueChanged="OriginX_ValueChanged"
+                                                        Value="{Binding Path=OriginX, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                                 <ComboBox Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10, 0, 0, 0"
                                           ItemsSource="{Binding Source={local:EnumBindingSource {x:Type graphics:SpriteHorizontalAlignment}}}"
                                           SelectedValue="{Binding Path=HorizontalAlignment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
@@ -123,7 +125,8 @@
                                     <ColumnDefinition Width="80"/>
                                 </Grid.ColumnDefinitions>
                                 <Label Content="Origin Y" Grid.Column="0"/>
-                                <controls:NumericUpDown Grid.Column="1" Value="{Binding Path=OriginY, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <controls:NumericUpDown x:Name="num_OriginY" Grid.Column="1" ValueChanged="OriginY_ValueChanged"
+                                                        Value="{Binding Path=OriginY, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                                 <ComboBox Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center"  Margin="10, 0, 0, 0"
                                           ItemsSource="{Binding Source={local:EnumBindingSource {x:Type graphics:SpriteVerticalAlignment}}}"
                                           SelectedValue="{Binding Path=VerticalAlignment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">

@@ -1,4 +1,5 @@
-﻿using AnimationManager.Graphics;
+﻿using AnimationManager.Controls;
+using AnimationManager.Graphics;
 using DungeonSphere.Graphics;
 using Microsoft.Win32;
 using System;
@@ -29,6 +30,9 @@ namespace AnimationManager
         private Rectangle _spriteOutline;
         private Rectangle _spriteDisplay;
         private DockPanel _propertiesPanel;
+        private NumericUpDown _originX;
+        private NumericUpDown _originY;
+        private Image _originMarker;
 
         public ViewModel ViewModel { get; private set; }
 
@@ -47,9 +51,13 @@ namespace AnimationManager
             _spriteOutline = (Rectangle)FindName("rect_SpriteOutline");
             _spriteDisplay = (Rectangle)FindName("rect_SpriteDisplay");
             _propertiesPanel = (DockPanel)FindName("dock_Properties");
+            _originMarker = (Image)FindName("img_Origin");
+            _originX = (NumericUpDown)FindName("num_OriginX");
+            _originY = (NumericUpDown)FindName("num_OriginY");
 
             RenderOptions.SetBitmapScalingMode(_spriteOutline, BitmapScalingMode.NearestNeighbor);
             RenderOptions.SetBitmapScalingMode(_spriteDisplay, BitmapScalingMode.NearestNeighbor);
+            RenderOptions.SetBitmapScalingMode(_originMarker, BitmapScalingMode.NearestNeighbor);
 
             _mainRenderScale = new ScaleTransform(3, 3);
 
@@ -176,6 +184,16 @@ namespace AnimationManager
             DrawMainRender();
         }
 
+        private void OriginX_ValueChanged(object sender, RoutedPropertyChangedEventArgs<int> e)
+        {
+            UpdateOriginMarker();
+        }
+
+        private void OriginY_ValueChanged(object sender, RoutedPropertyChangedEventArgs<int> e)
+        {
+            UpdateOriginMarker();
+        }
+
         private void GameTickTimer_Tick(object sender, EventArgs e)
         {
 
@@ -219,6 +237,7 @@ namespace AnimationManager
             Canvas.SetLeft(_spriteDisplay, x);
             Canvas.SetTop(_spriteDisplay, y);
 
+            // Render the outline
             _spriteOutline.Width = _spriteDisplay.Width * _mainRenderScale.ScaleX + 2;
             _spriteOutline.Height = _spriteDisplay.Height * _mainRenderScale.ScaleY + 2;
 
@@ -227,6 +246,25 @@ namespace AnimationManager
 
             Canvas.SetLeft(_spriteOutline, x - 1);
             Canvas.SetTop(_spriteOutline, y - 1);
+        }
+
+        private void UpdateOriginMarker()
+        {
+            // Update the origin marker position
+            int originx = _originX.Value;
+            int originy = _originY.Value;
+
+            int x = (int)(_mainRender.ActualWidth - _spriteDisplay.Width * _mainRenderScale.ScaleX) / 2;
+            int y = (int)(_mainRender.ActualHeight - _spriteDisplay.Height * _mainRenderScale.ScaleY) / 2;
+
+            x -= (int)_originMarker.Source.Width / 2;
+            y -= (int)_originMarker.Source.Height / 2;
+
+            x += (int)(originx * _mainRenderScale.ScaleX);
+            y += (int)(originy * _mainRenderScale.ScaleY);
+
+            Canvas.SetLeft(_originMarker, x);
+            Canvas.SetTop(_originMarker, y);
         }
     }
 }
