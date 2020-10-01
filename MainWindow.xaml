@@ -8,7 +8,7 @@
         xmlns:graphics="clr-namespace:AnimationManager.Graphics"
         xmlns:e="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
-        Title="Animation Manager" Height="450" Width="800" ContentRendered="Window_ContentRendered">
+        Title="Animation Manager" Height="450" Width="800" ContentRendered="Window_ContentRendered" Closing="Window_Closing">
     <Window.Resources>
         <Style x:Key="TreeViewItem_SelectStyle" TargetType="{x:Type TreeViewItem}">
             <Style.Triggers>
@@ -34,6 +34,9 @@
                 <MenuItem Header="_Edit">
                     <MenuItem Header="_Undo" />
                     <MenuItem Header="_Redo" />
+                </MenuItem>
+                <MenuItem Header="_Window">
+                    <MenuItem Header="_Sprite Preview"/>
                 </MenuItem>
             </Menu>
             <Grid>

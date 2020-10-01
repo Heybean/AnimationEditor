@@ -4,6 +4,7 @@ using DungeonSphere.Graphics;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,6 +35,8 @@ namespace AnimationManager
         private NumericUpDown _originY;
         private Image _originMarker;
 
+        private SpritePreviewWindow _spritePreviewWindow;
+
         public ViewModel ViewModel { get; private set; }
 
         public MainWindow()
@@ -61,12 +64,21 @@ namespace AnimationManager
 
             _mainRenderScale = new ScaleTransform(3, 3);
 
+            _spritePreviewWindow = new SpritePreviewWindow();
+            _spritePreviewWindow.Show();
+            _spritePreviewWindow.Topmost = true;
+
             StartNewFile();
         }
 
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void Window_Closing(object sender, CancelEventArgs e)
+        {
+            _spritePreviewWindow.Close();
         }
 
         private void AddAtlas_Click(object sender, RoutedEventArgs e)
@@ -79,6 +91,7 @@ namespace AnimationManager
                 Multiselect = true
             };
 
+            _spritePreviewWindow.Topmost = false;
             if (openFileDialog.ShowDialog() == true)
             {
                 var invalidFiles = new List<string>();
@@ -92,6 +105,7 @@ namespace AnimationManager
                     MessageBox.Show("Cannot add '" + string.Join("', '", invalidFiles)  + "' because it already exists.", "Add Texture Atlas", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
+            _spritePreviewWindow.Topmost = true;
         }
 
         private void RemoveAtlas_Click(object sender, RoutedEventArgs e)
@@ -134,6 +148,8 @@ namespace AnimationManager
                     UpdateMainRenderChildren();
 
                     _propertiesPanel.DataContext = sprite;
+
+                    _spritePreviewWindow.SetSprite(sprite);
                 }
             }
             else
