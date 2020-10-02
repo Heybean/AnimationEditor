@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace AnimationManager
 {
@@ -54,8 +55,14 @@ namespace AnimationManager
 
         public void UpdatePreviewRender()
         {
-            int x = (int)(_previewRender.ActualWidth - _spriteDisplay.Width) / 2;
-            int y = (int)(_previewRender.ActualHeight - _spriteDisplay.Height) / 2;
+            int x = (int)(_previewRender.ActualWidth) / 2;
+            int y = (int)(_previewRender.ActualHeight) / 2;
+
+            if (_sprite != null)
+            {
+                x -= (int)(_sprite.OriginX);
+                y -= (int)(_sprite.OriginY);
+            }
 
             _previewRenderScale.CenterX = _spriteDisplay.Width / 2;
             _previewRenderScale.CenterY = _spriteDisplay.Height / 2;

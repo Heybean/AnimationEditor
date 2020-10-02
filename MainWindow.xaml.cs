@@ -288,6 +288,8 @@ namespace AnimationManager
 
             Canvas.SetLeft(_originMarker, x);
             Canvas.SetTop(_originMarker, y);
+
+            _spritePreviewWindow.UpdatePreviewRender();
         }
     }
 }
