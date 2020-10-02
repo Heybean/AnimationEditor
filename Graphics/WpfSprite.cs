@@ -30,12 +30,12 @@ namespace AnimationManager.Graphics
     {
         public string Name { get; private set; }
         public int FPS { get; set; }
+
+        public int RegionIndex { get; set; }
+
         public int OriginX
         {
-            get
-            {
-                return _originX;
-            }
+            get => _originX;
             set
             {
                 _originX = value;
@@ -48,10 +48,7 @@ namespace AnimationManager.Graphics
 
         public int OriginY
         {
-            get
-            {
-                return _originY;
-            }
+            get =>  _originY;
             set
             {
                 _originY = value;
@@ -64,10 +61,7 @@ namespace AnimationManager.Graphics
 
         public SpriteHorizontalAlignment HorizontalAlignment
         {
-            get
-            {
-                return _hAlign;
-            }
+            get => _hAlign;
             set
             {
                 _hAlign = value;
@@ -80,11 +74,7 @@ namespace AnimationManager.Graphics
 
         public SpriteVerticalAlignment VerticalAlignment
         {
-            get
-            {
-                return _vAlign;
-            }
-
+            get => _vAlign;
             set
             {
                 _vAlign = value;
@@ -97,11 +87,23 @@ namespace AnimationManager.Graphics
 
         public List<WpfTextureRegion> Regions { get; private set; }
 
-        private int _regionIndex;
+        public ImageBrush CurrentFrame
+        {
+            get => _currentFrame;
+            set
+            {
+                _currentFrame = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+
         private SpriteHorizontalAlignment _hAlign;
         private SpriteVerticalAlignment _vAlign;
+        private ImageBrush _currentFrame;
         private int _originX;
         private int _originY;
+        private double _timeElapsed;
         private bool _doNotInvoke;
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -115,10 +117,30 @@ namespace AnimationManager.Graphics
             VerticalAlignment = SpriteVerticalAlignment.Center;
             UpdateAlignmentOriginX();
             UpdateAlignmentOriginY();
+            CurrentFrame = Regions[0].ImageBrush;
         }
 
-        public void Update()
+        public void Update(double time)
         {
+            //if (_paused || FPS <= 0)
+            //    return;
+            if (FPS <= 0)
+                return;
+
+            // increment time elapsed
+            _timeElapsed += time;
+
+            float timePerFrame = 1000f / FPS;
+
+            // Update sprite to go to the next frame if enough time has passed
+            while (_timeElapsed >= timePerFrame)
+            {
+                RegionIndex = (RegionIndex + 1) % Regions.Count;
+
+                CurrentFrame = Regions[RegionIndex].ImageBrush;
+
+                _timeElapsed -= timePerFrame;
+            }
 
         }
 

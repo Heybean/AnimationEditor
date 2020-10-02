@@ -40,9 +40,9 @@ namespace AnimationManager
             _sprite = sprite;
             _spriteDisplay.Width = sprite.Regions[0].width;
             _spriteDisplay.Height = sprite.Regions[0].height;
-            _spriteDisplay.Fill = sprite.Regions[0].ImageBrush;
 
-            _spriteDisplay.DataContext = _sprite;
+            //_spriteDisplay.DataContext = _sprite;
+            _previewRender.DataContext = _sprite;
 
             UpdatePreviewRender();
         }
@@ -52,7 +52,7 @@ namespace AnimationManager
             UpdatePreviewRender();
         }
 
-        private void UpdatePreviewRender()
+        public void UpdatePreviewRender()
         {
             int x = (int)(_previewRender.ActualWidth - _spriteDisplay.Width) / 2;
             int y = (int)(_previewRender.ActualHeight - _spriteDisplay.Height) / 2;

@@ -8,7 +8,7 @@
         Title="Sprite Preview" Height="150" Width="150" ResizeMode="CanResize"  WindowStyle="ToolWindow">
     <Grid>
         <Canvas x:Name="cv_PreviewRender" Background="Gray" Margin="5" SizeChanged="PreviewRender_SizeChanged">
-            <Rectangle x:Name="rect_Sprite" />
+            <Rectangle x:Name="rect_Sprite"  Fill="{Binding Path=CurrentFrame, UpdateSourceTrigger=PropertyChanged}" />
         </Canvas>
     </Grid>
 </Window>

@@ -145,7 +145,7 @@ namespace AnimationManager
                     _spriteDisplay.Height = sprite.Regions[0].height;
                     _spriteDisplay.Fill = sprite.Regions[0].ImageBrush;
 
-                    UpdateMainRenderChildren();
+                    UpdateMainRender();
 
                     _propertiesPanel.DataContext = sprite;
 
@@ -212,7 +212,13 @@ namespace AnimationManager
 
         private void GameTickTimer_Tick(object sender, EventArgs e)
         {
-
+            if (ViewModel.SelectedItems.Count == 1)
+            {
+                if (ViewModel.SelectedItems[0] is WpfSprite sprite)
+                {
+                    sprite.Update(_gameTickTimer.Interval.TotalMilliseconds);
+                }
+            }
         }
 
         private void DrawMainRender()
@@ -237,10 +243,11 @@ namespace AnimationManager
 
         private void MainRender_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            UpdateMainRenderChildren();
+            UpdateMainRender();
+            UpdateOriginMarker();
         }
 
-        private void UpdateMainRenderChildren()
+        private void UpdateMainRender()
         {
             int x = (int)(_mainRender.ActualWidth - _spriteDisplay.Width) / 2;
             int y = (int)(_mainRender.ActualHeight - _spriteDisplay.Height) / 2;
