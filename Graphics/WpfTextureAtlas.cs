@@ -9,15 +9,15 @@ using System.Text;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Xml.Serialization;
 
 namespace AnimationManager.Graphics
 {
-    public class WpfTextureAtlas : TextureAtlas, INotifyPropertyChanged
+    [XmlRoot("TextureAtlas")]
+    [XmlInclude(typeof(WpfTextureAtlas))]
+    public class WpfTextureAtlas : TextureAtlasItem, INotifyPropertyChanged
     {
-        public List<BitmapImage> Textures { get; } = new List<BitmapImage>();
-        public ObservableCollection<WpfSprite> Sprites { get; } = new ObservableCollection<WpfSprite>();
-
-        public event PropertyChangedEventHandler PropertyChanged;
+        private List<BitmapImage> Textures { get; } = new List<BitmapImage>();
 
         public WpfTextureAtlas(string packFile)
         {
@@ -47,7 +47,7 @@ namespace AnimationManager.Graphics
             foreach(var entry in regionMaps)
             {
                 entry.Value.Sort((x, y) => x.index.CompareTo(y.index));
-                Sprites.Add(new WpfSprite(entry.Key, entry.Value));
+                Children.Add(new WpfSprite(entry.Key, entry.Value));
             }
         }
     }

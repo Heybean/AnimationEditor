@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Xml.Serialization;
 
 namespace AnimationManager.Graphics
 {
@@ -26,6 +27,9 @@ namespace AnimationManager.Graphics
         Bottom
     }
 
+    [Serializable]
+    [XmlRoot("Sprite")]
+    [XmlInclude(typeof(WpfSprite))]
     public class WpfSprite : INotifyPropertyChanged
     {
         public string Name { get; private set; }

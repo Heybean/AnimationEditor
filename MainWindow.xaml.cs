@@ -66,7 +66,6 @@ namespace AnimationManager
 
             _spritePreviewWindow = new SpritePreviewWindow();
             _spritePreviewWindow.Show();
-            _spritePreviewWindow.Topmost = true;
 
             StartNewFile();
         }

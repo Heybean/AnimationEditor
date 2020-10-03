@@ -65,11 +65,14 @@
                         </e:Interaction.Behaviors>
 
                         <TreeView.Resources>
-                            <HierarchicalDataTemplate DataType="{x:Type graphics:WpfTextureAtlas}" ItemsSource="{Binding Path=Sprites}">
-                                <TextBlock Text="{Binding Path=Name}" />
+                            <HierarchicalDataTemplate DataType="{x:Type graphics:WpfTextureAtlas}" ItemsSource="{Binding Children}">
+                                <TextBlock Text="{Binding Name}" />
                             </HierarchicalDataTemplate>
-                            <HierarchicalDataTemplate DataType="{x:Type graphics:WpfSprite}">
-                                <TextBlock Text="{Binding Path=Name}" />
+                            <HierarchicalDataTemplate DataType="{x:Type graphics:Folder}" ItemsSource="{Binding Children}">
+                                <TextBlock Text="{Binding Name}" />
+                            </HierarchicalDataTemplate>
+                            <HierarchicalDataTemplate DataType="{x:Type graphics:WpfSprite}" ItemsSource="{Binding Children}">
+                                <TextBlock Text="{Binding Name}" />
                             </HierarchicalDataTemplate>
                         </TreeView.Resources>
                     </controls:MultiSelectTreeView>
