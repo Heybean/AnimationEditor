@@ -15,6 +15,7 @@ namespace AnimationManager
     public class ViewModel
     {
         public string FileName { get; set; }
+        public string SavePath { get; set; }
         public ObservableCollection<WpfTextureAtlas> TextureAtlases { get; } = new ObservableCollection<WpfTextureAtlas>();
         public HashSet<string> RegisteredTextureAtlases { get; } = new HashSet<string>();
 
@@ -23,6 +24,7 @@ namespace AnimationManager
         public ViewModel()
         {
             FileName = "Untitled";
+            SavePath = "";
         }
     }
 }

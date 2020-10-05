@@ -8,7 +8,7 @@
         xmlns:graphics="clr-namespace:AnimationManager.Graphics"
         xmlns:e="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
-        Title="Animation Manager" Height="450" Width="800" ContentRendered="Window_ContentRendered" Closing="Window_Closing">
+        Title="Animation Manager" Height="450" Width="800" Loaded="Window_Loaded" Closing="Window_Closing" WindowState="Maximized">
     <Window.Resources>
         <Style x:Key="TreeViewItem_SelectStyle" TargetType="{x:Type TreeViewItem}">
             <Style.Triggers>
@@ -68,7 +68,7 @@
                             <HierarchicalDataTemplate DataType="{x:Type graphics:WpfTextureAtlas}" ItemsSource="{Binding Children}">
                                 <TextBlock Text="{Binding Name}" />
                             </HierarchicalDataTemplate>
-                            <HierarchicalDataTemplate DataType="{x:Type graphics:Folder}" ItemsSource="{Binding Children}">
+                            <HierarchicalDataTemplate DataType="{x:Type graphics:TextureAtlasItem}" ItemsSource="{Binding Children}">
                                 <TextBlock Text="{Binding Name}" />
                             </HierarchicalDataTemplate>
                             <HierarchicalDataTemplate DataType="{x:Type graphics:WpfSprite}" ItemsSource="{Binding Children}">

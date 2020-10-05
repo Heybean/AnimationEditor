@@ -60,8 +60,8 @@ namespace AnimationManager
 
             if (_sprite != null)
             {
-                x -= (int)(_sprite.OriginX);
-                y -= (int)(_sprite.OriginY);
+                x -= _sprite.OriginX;
+                y -= _sprite.OriginY;
             }
 
             _previewRenderScale.CenterX = _spriteDisplay.Width / 2;

@@ -5,6 +5,7 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +24,8 @@ namespace AnimationManager
 {
     public partial class MainWindow : Window
     {
+        private const string PropertiesFile = "app_prop.xml";
+
         private TreeView _atlasTreeView;
         private Button _buttonRemoveAtlas;
         private Canvas _mainRender;
@@ -65,7 +68,6 @@ namespace AnimationManager
             _mainRenderScale = new ScaleTransform(3, 3);
 
             _spritePreviewWindow = new SpritePreviewWindow();
-            _spritePreviewWindow.Show();
 
             StartNewFile();
         }
@@ -75,9 +77,66 @@ namespace AnimationManager
             Close();
         }
 
+        private void Window_Loaded(object sender, EventArgs e)
+        {
+            _spritePreviewWindow.Owner = this;
+
+            if (File.Exists(PropertiesFile))
+            {
+                var properties = AppPropertiesReaderWriter.Read(PropertiesFile);
+                ApplyProperties(properties);
+            }
+            else
+            {
+                WindowState = WindowState.Maximized;
+                _spritePreviewWindow.Show();
+                var position = _mainRender.TransformToAncestor(this).Transform(new Point(0, 0));
+                _spritePreviewWindow.Left = position.X + _mainRender.ActualWidth - _spritePreviewWindow.Width;
+                _spritePreviewWindow.Top = position.Y + 50;
+            }
+        }
+
         private void Window_Closing(object sender, CancelEventArgs e)
         {
+            // Save settings
+            var properties = GetProperties();
+            AppPropertiesReaderWriter.Write(PropertiesFile, properties);
+
             _spritePreviewWindow.Close();
+        }
+
+        private void ApplyProperties(AppProperties properties)
+        {
+            Top = properties.MainTop;
+            Left = properties.MainLeft;
+            Width = properties.MainWidth;
+            Height = properties.MainHeight;
+            if (properties.Maximized)
+                WindowState = WindowState.Maximized;
+            else
+                WindowState = WindowState.Normal;
+            _spritePreviewWindow.Top = properties.PreviewTop;
+            _spritePreviewWindow.Left = properties.PreviewLeft;
+            _spritePreviewWindow.Width = properties.PreviewWidth;
+            _spritePreviewWindow.Height = properties.PreviewHeight;
+            if (properties.PreviewVisible)
+                _spritePreviewWindow.Show();
+        }
+
+        public AppProperties GetProperties()
+        {
+            var properties = new AppProperties();
+            properties.MainTop = Top;
+            properties.MainLeft = Left;
+            properties.MainWidth = Width;
+            properties.MainHeight = Height;
+            properties.Maximized = WindowState == WindowState.Maximized;
+            properties.PreviewTop = _spritePreviewWindow.Top;
+            properties.PreviewLeft = _spritePreviewWindow.Left;
+            properties.PreviewWidth = _spritePreviewWindow.Width;
+            properties.PreviewHeight = _spritePreviewWindow.Height;
+            properties.PreviewVisible = _spritePreviewWindow.IsOpen();
+            return properties;
         }
 
         private void AddAtlas_Click(object sender, RoutedEventArgs e)
@@ -194,11 +253,6 @@ namespace AnimationManager
             _atlasTreeView.DataContext = ViewModel;
         }
 
-        private void Window_ContentRendered(object sender, EventArgs e)
-        {
-            DrawMainRender();
-        }
-
         private void OriginX_ValueChanged(object sender, RoutedPropertyChangedEventArgs<int> e)
         {
             UpdateOriginMarker();
@@ -218,26 +272,6 @@ namespace AnimationManager
                     sprite.Update(_gameTickTimer.Interval.TotalMilliseconds);
                 }
             }
-        }
-
-        private void DrawMainRender()
-        {
-            /*bool drawFinished = false;
-
-            while (!drawFinished)
-            {
-                // Draw currently selected sprite if only one is selected
-                if (ViewModel.SelectedItems.Count == 1)
-                {
-                    if (ViewModel.SelectedItems[0] is WpfSprite)
-                    {
-                        var sprite = ViewModel.SelectedItems[0] as WpfSprite;
-                        _mainRender.Children.Clear();
-                    }
-                }
-                drawFinished = true;
-            }*/
-
         }
 
         private void MainRender_SizeChanged(object sender, SizeChangedEventArgs e)
