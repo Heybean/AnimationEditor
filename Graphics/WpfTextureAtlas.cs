@@ -13,14 +13,27 @@ using System.Xml.Serialization;
 
 namespace AnimationManager.Graphics
 {
-    [XmlRoot("TextureAtlas")]
-    [XmlInclude(typeof(WpfTextureAtlas))]
+    [XmlRoot("Atlas")]
     public class WpfTextureAtlas : TextureAtlasItem, INotifyPropertyChanged
     {
+        [XmlIgnore]
+        public string Filename { get; }
+
+        /// <summary>
+        /// Used by the FileReadWrite for relative path to the animation file
+        /// </summary>
+        [XmlAttribute("file")]
+        public string RelativePath { get; set; }
+
+        [XmlIgnore]
         private List<BitmapImage> Textures { get; } = new List<BitmapImage>();
+
+        public WpfTextureAtlas() { }
 
         public WpfTextureAtlas(string packFile)
         {
+            Filename = packFile;
+
             var atlasData = new TextureAtlasData(packFile, false);
 
             Name = Path.GetFileNameWithoutExtension(packFile);

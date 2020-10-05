@@ -8,7 +8,8 @@
         xmlns:graphics="clr-namespace:AnimationManager.Graphics"
         xmlns:e="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
-        Title="Animation Manager" Height="450" Width="800" Loaded="Window_Loaded" Closing="Window_Closing" WindowState="Maximized">
+        Title="Animation Manager" Height="450" Width="800"
+        Loaded="Window_Loaded" Closing="Window_Closing" WindowState="Maximized">
     <Window.Resources>
         <Style x:Key="TreeViewItem_SelectStyle" TargetType="{x:Type TreeViewItem}">
             <Style.Triggers>
@@ -26,8 +27,8 @@
                 <MenuItem Header="_File">
                     <MenuItem Header="_New" />
                     <MenuItem Header="_Open" />
-                    <MenuItem Header="_Save" />
-                    <MenuItem Header="_Save As" />
+                    <MenuItem Header="_Save" Click="Save_Click"/>
+                    <MenuItem Header="_Save As" Click="SaveAs_Click"/>
                     <Separator />
                     <MenuItem Header="_Exit" Click="Exit_Click" />
                 </MenuItem>
@@ -36,7 +37,8 @@
                     <MenuItem Header="_Redo" />
                 </MenuItem>
                 <MenuItem Header="_Window">
-                    <MenuItem Header="_Sprite Preview"/>
+                    <MenuItem Header="_Sprite Preview" IsCheckable="True" Click="SpritePreviewWindow_Click"
+                              DataContext="{Binding }"/>
                 </MenuItem>
             </Menu>
             <Grid>

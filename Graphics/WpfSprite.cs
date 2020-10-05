@@ -27,16 +27,20 @@ namespace AnimationManager.Graphics
         Bottom
     }
 
-    [Serializable]
     [XmlRoot("Sprite")]
     [XmlInclude(typeof(WpfSprite))]
     public class WpfSprite : INotifyPropertyChanged
     {
-        public string Name { get; private set; }
+        [XmlAttribute("name")]
+        public string Name { get; set; }
+
+        [XmlAttribute("fps")]
         public int FPS { get; set; }
 
+        [XmlIgnore]
         public int RegionIndex { get; set; }
 
+        [XmlIgnore]
         public int OriginX
         {
             get => _originX;
@@ -50,6 +54,7 @@ namespace AnimationManager.Graphics
             }
         }
 
+        [XmlIgnore]
         public int OriginY
         {
             get =>  _originY;
@@ -63,6 +68,7 @@ namespace AnimationManager.Graphics
             }
         }
 
+        [XmlIgnore]
         public SpriteHorizontalAlignment HorizontalAlignment
         {
             get => _hAlign;
@@ -76,6 +82,7 @@ namespace AnimationManager.Graphics
             }
         }
 
+        [XmlIgnore]
         public SpriteVerticalAlignment VerticalAlignment
         {
             get => _vAlign;
@@ -89,8 +96,10 @@ namespace AnimationManager.Graphics
             }
         }
 
+        [XmlIgnore]
         public List<WpfTextureRegion> Regions { get; private set; }
 
+        [XmlIgnore]
         public ImageBrush CurrentFrame
         {
             get => _currentFrame;
@@ -111,6 +120,8 @@ namespace AnimationManager.Graphics
         private bool _doNotInvoke;
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public WpfSprite() { }
 
         public WpfSprite(string name, List<WpfTextureRegion> regions)
         {

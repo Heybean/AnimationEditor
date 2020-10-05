@@ -6,14 +6,19 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows.Data;
+using System.Xml.Serialization;
 
 namespace AnimationManager.Graphics
 {
     [Serializable]
+    [XmlRoot("Item")]
+    [XmlInclude(typeof(TextureAtlasItem))]
+    [XmlInclude(typeof(WpfSprite))]
     public class TextureAtlasItem : INotifyPropertyChanged
     {
         public virtual ObservableCollection<object> Children { get; private set; } = new ObservableCollection<object>();
 
+        [XmlAttribute("name")]
         public virtual string Name
         {
             get => _name;

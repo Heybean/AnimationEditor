@@ -1,5 +1,6 @@
 ﻿using AnimationManager.Controls;
 using AnimationManager.Graphics;
+using AnimationManager.IO;
 using DungeonSphere.Graphics;
 using Microsoft.Win32;
 using System;
@@ -37,14 +38,17 @@ namespace AnimationManager
         private NumericUpDown _originX;
         private NumericUpDown _originY;
         private Image _originMarker;
-
         private SpritePreviewWindow _spritePreviewWindow;
 
-        public ViewModel ViewModel { get; private set; }
+        private MainWindowViewModel MainWindowViewModel { get; } = new MainWindowViewModel();
+
+        public TextureAtlasViewModel TextureAtlasViewModel { get; private set; }
 
         public MainWindow()
         {
             InitializeComponent();
+
+            DataContext = MainWindowViewModel;
 
             _gameTickTimer = new DispatcherTimer();
             _gameTickTimer.Tick += GameTickTimer_Tick;
@@ -67,9 +71,41 @@ namespace AnimationManager
 
             _mainRenderScale = new ScaleTransform(3, 3);
 
-            _spritePreviewWindow = new SpritePreviewWindow();
+            _spritePreviewWindow = MainWindowViewModel.SpritePreviewWindow;
 
             StartNewFile();
+        }
+
+        private void Save_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void SaveAs_Click(object sender, RoutedEventArgs e)
+        {
+            PerformSaveFile("Save File As");
+        }
+
+        private bool PerformSaveFile(string title)
+        {
+            var saveFileDialog = new SaveFileDialog()
+            {
+                Title = title,
+                Filter = "animation files (*.anim)|*.anim",
+                AddExtension = true
+            };
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                MainWindowViewModel.SavePath = saveFileDialog.FileName;
+                MainWindowViewModel.FileName = System.IO.Path.GetFileNameWithoutExtension(saveFileDialog.FileName);
+
+                FileReadWrite.Write(saveFileDialog.FileName, TextureAtlasViewModel);
+
+                return true;
+            }
+
+            return false;
         }
 
         private void Exit_Click(object sender, RoutedEventArgs e)
@@ -135,7 +171,7 @@ namespace AnimationManager
             properties.PreviewLeft = _spritePreviewWindow.Left;
             properties.PreviewWidth = _spritePreviewWindow.Width;
             properties.PreviewHeight = _spritePreviewWindow.Height;
-            properties.PreviewVisible = _spritePreviewWindow.IsOpen();
+            properties.PreviewVisible = _spritePreviewWindow.IsVisible;
             return properties;
         }
 
@@ -149,7 +185,6 @@ namespace AnimationManager
                 Multiselect = true
             };
 
-            _spritePreviewWindow.Topmost = false;
             if (openFileDialog.ShowDialog() == true)
             {
                 var invalidFiles = new List<string>();
@@ -163,13 +198,12 @@ namespace AnimationManager
                     MessageBox.Show("Cannot add '" + string.Join("', '", invalidFiles)  + "' because it already exists.", "Add Texture Atlas", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
-            _spritePreviewWindow.Topmost = true;
         }
 
         private void RemoveAtlas_Click(object sender, RoutedEventArgs e)
         {
             // Remove all selected texture atlases
-            foreach(var x in ViewModel.SelectedItems.ToList())
+            foreach(var x in TextureAtlasViewModel.SelectedItems.ToList())
             {
                 if (x is WpfTextureAtlas atlas)
                 {
@@ -182,7 +216,7 @@ namespace AnimationManager
         {
             // Toggle Remove Atlas button based on which items are selected
             bool onlyTextureAtlasesSelected = true;
-            foreach(var item in ViewModel.SelectedItems)
+            foreach(var item in TextureAtlasViewModel.SelectedItems)
             {
                 if (!(item is WpfTextureAtlas))
                 {
@@ -193,9 +227,9 @@ namespace AnimationManager
 
             _buttonRemoveAtlas.IsEnabled = onlyTextureAtlasesSelected;
 
-            if (ViewModel.SelectedItems.Count == 1) // Single Item Selected
+            if (TextureAtlasViewModel.SelectedItems.Count == 1) // Single Item Selected
             {
-                if (ViewModel.SelectedItems[0] is WpfSprite sprite)
+                if (TextureAtlasViewModel.SelectedItems[0] is WpfSprite sprite)
                 {
                     _spriteOutline.StrokeThickness = 1;
 
@@ -224,7 +258,7 @@ namespace AnimationManager
         {
             var atlasName = System.IO.Path.GetFileNameWithoutExtension(file);
 
-            if (ViewModel.RegisteredTextureAtlases.Contains(atlasName))
+            if (TextureAtlasViewModel.RegisteredTextureAtlases.Contains(atlasName))
             {
                 if (invalidFiles != null)
                     invalidFiles.Add(atlasName);
@@ -233,8 +267,8 @@ namespace AnimationManager
 
             // Load the atlas
             var atlas = new WpfTextureAtlas(file);
-            ViewModel.RegisteredTextureAtlases.Add(atlasName);
-            ViewModel.TextureAtlases.Add(atlas);
+            TextureAtlasViewModel.RegisteredTextureAtlases.Add(atlasName);
+            TextureAtlasViewModel.TextureAtlases.Add(atlas);
         }
 
         /// <summary>
@@ -242,15 +276,15 @@ namespace AnimationManager
         /// </summary>
         private void RemoveTextureAtlas(WpfTextureAtlas atlas)
         {
-            ViewModel.RegisteredTextureAtlases.Remove(atlas.Name);
-            ViewModel.TextureAtlases.Remove(atlas);
+            TextureAtlasViewModel.RegisteredTextureAtlases.Remove(atlas.Name);
+            TextureAtlasViewModel.TextureAtlases.Remove(atlas);
         }
 
         private void StartNewFile()
         {
-            ViewModel = new ViewModel();
+            TextureAtlasViewModel = new TextureAtlasViewModel();
             _atlasTreeView.Items.Clear();
-            _atlasTreeView.DataContext = ViewModel;
+            _atlasTreeView.DataContext = TextureAtlasViewModel;
         }
 
         private void OriginX_ValueChanged(object sender, RoutedPropertyChangedEventArgs<int> e)
@@ -265,9 +299,9 @@ namespace AnimationManager
 
         private void GameTickTimer_Tick(object sender, EventArgs e)
         {
-            if (ViewModel.SelectedItems.Count == 1)
+            if (TextureAtlasViewModel.SelectedItems.Count == 1)
             {
-                if (ViewModel.SelectedItems[0] is WpfSprite sprite)
+                if (TextureAtlasViewModel.SelectedItems[0] is WpfSprite sprite)
                 {
                     sprite.Update(_gameTickTimer.Interval.TotalMilliseconds);
                 }
@@ -324,5 +358,16 @@ namespace AnimationManager
 
             _spritePreviewWindow.UpdatePreviewRender();
         }
+        
+        private void SpritePreviewWindow_Click(object sender, RoutedEventArgs e)
+        {
+            if (_spritePreviewWindow.IsVisible)
+            {
+                _spritePreviewWindow.Visibility = Visibility.Hidden;
+            }
+            else
+                _spritePreviewWindow.Visibility = Visibility.Visible;
+        }
+
     }
 }

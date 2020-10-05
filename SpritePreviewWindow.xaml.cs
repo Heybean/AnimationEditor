@@ -1,6 +1,7 @@
 ﻿using AnimationManager.Graphics;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -51,6 +52,12 @@ namespace AnimationManager
         private void PreviewRender_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             UpdatePreviewRender();
+        }
+
+        private void PreviewRender_Closing(object sender, CancelEventArgs e)
+        {
+            Visibility = Visibility.Hidden;
+            e.Cancel = true;
         }
 
         public void UpdatePreviewRender()

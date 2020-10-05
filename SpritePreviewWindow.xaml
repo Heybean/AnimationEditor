@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AnimationManager"
         mc:Ignorable="d"
-        Title="Sprite Preview" Height="150" Width="150" ResizeMode="CanResize"  WindowStyle="ToolWindow">
+        Title="Sprite Preview" Height="150" Width="150" ResizeMode="CanResize"  WindowStyle="ToolWindow" Closing="PreviewRender_Closing">
     <Grid>
         <Canvas x:Name="cv_PreviewRender" Background="Gray" Margin="5" SizeChanged="PreviewRender_SizeChanged"  ClipToBounds="True" >
             <Rectangle x:Name="rect_Sprite"  Fill="{Binding Path=CurrentFrame, UpdateSourceTrigger=PropertyChanged}" />

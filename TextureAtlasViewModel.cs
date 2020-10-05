@@ -6,25 +6,26 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace AnimationManager
 {
     /// <summary>
     /// Holds information on current working data
     /// </summary>
-    public class ViewModel
+    [XmlRoot("Animations")]
+    [XmlInclude(typeof(WpfTextureAtlas))]
+    public class TextureAtlasViewModel
     {
-        public string FileName { get; set; }
-        public string SavePath { get; set; }
-        public ObservableCollection<WpfTextureAtlas> TextureAtlases { get; } = new ObservableCollection<WpfTextureAtlas>();
+        [XmlElement("Atlases")]
+        public ObservableCollection<WpfTextureAtlas> TextureAtlases { get; set; } = new ObservableCollection<WpfTextureAtlas>();
+        [XmlIgnore]
         public HashSet<string> RegisteredTextureAtlases { get; } = new HashSet<string>();
-
+        [XmlIgnore]
         public IList<object> SelectedItems { get; set; } = new List<object>();
 
-        public ViewModel()
+        public TextureAtlasViewModel()
         {
-            FileName = "Untitled";
-            SavePath = "";
         }
     }
 }
