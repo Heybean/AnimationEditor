@@ -40,7 +40,7 @@ namespace AnimationManager
         private Image _originMarker;
         private SpritePreviewWindow _spritePreviewWindow;
 
-        private MainWindowViewModel MainWindowViewModel { get; } = new MainWindowViewModel();
+        private MainWindowViewModel MainWindowViewModel { get; set; } = new MainWindowViewModel();
 
         public TextureAtlasViewModel TextureAtlasViewModel { get; private set; }
 
@@ -76,6 +76,26 @@ namespace AnimationManager
             StartNewFile();
         }
 
+        private void Open_Click(object sender, RoutedEventArgs e)
+        {
+            var openFileDialog = new OpenFileDialog()
+            {
+                Title = "Open File",
+                Filter = "animation files (*.anim)|*.anim"
+            };
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                MainWindowViewModel = new MainWindowViewModel();
+                TextureAtlasViewModel = new TextureAtlasViewModel();
+
+                MainWindowViewModel.SavePath = openFileDialog.FileName;
+                MainWindowViewModel.FileName = System.IO.Path.GetFileNameWithoutExtension(openFileDialog.FileName);
+
+                var data = FileReader.Read(openFileDialog.FileName);
+            }
+        }
+
         private void Save_Click(object sender, RoutedEventArgs e)
         {
 
@@ -100,7 +120,7 @@ namespace AnimationManager
                 MainWindowViewModel.SavePath = saveFileDialog.FileName;
                 MainWindowViewModel.FileName = System.IO.Path.GetFileNameWithoutExtension(saveFileDialog.FileName);
 
-                FileReadWrite.Write(saveFileDialog.FileName, TextureAtlasViewModel);
+                FileWriter.Write(saveFileDialog.FileName, TextureAtlasViewModel);
 
                 return true;
             }

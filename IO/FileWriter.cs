@@ -9,15 +9,8 @@ using System.Xml.Serialization;
 
 namespace AnimationManager.IO
 {
-    public class FileReadWrite
+    public class FileWriter
     {
-        public static TextureAtlasViewModel Read(string filename)
-        {
-            var viewModel = new TextureAtlasViewModel();
-
-            return viewModel;
-        }
-
         public static void Write(string filename, TextureAtlasViewModel viewModel)
         {
             var directory = Path.GetDirectoryName(filename);
