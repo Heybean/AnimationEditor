@@ -7,6 +7,7 @@
         xmlns:controls="clr-namespace:AnimationManager.Controls"
         xmlns:graphics="clr-namespace:AnimationManager.Graphics"
         xmlns:e="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         mc:Ignorable="d"
         Title="Animation Manager" Height="450" Width="800"
         Loaded="Window_Loaded" Closing="Window_Closing" WindowState="Maximized">
@@ -58,7 +59,7 @@
                         </ToolBar>
                     </ToolBarTray>
 
-                    <controls:MultiSelectTreeView x:Name="trv_Atlas" ItemsSource="{Binding Path=TextureAtlases}"
+                    <controls:MultiSelectTreeView x:Name="trv_Atlas" ItemsSource="{Binding TextureAtlasesView}"
                               ItemContainerStyle="{StaticResource TreeViewItem_SelectStyle}"
                               ItemsSelected="TreeView_ItemsSelected">
 
@@ -67,13 +68,13 @@
                         </e:Interaction.Behaviors>
 
                         <TreeView.Resources>
-                            <HierarchicalDataTemplate DataType="{x:Type graphics:WpfTextureAtlas}" ItemsSource="{Binding Children}">
+                            <HierarchicalDataTemplate DataType="{x:Type graphics:WpfTextureAtlas}" ItemsSource="{Binding ChildrenView}">
                                 <TextBlock Text="{Binding Name}" />
                             </HierarchicalDataTemplate>
-                            <HierarchicalDataTemplate DataType="{x:Type graphics:TextureAtlasItem}" ItemsSource="{Binding Children}">
+                            <HierarchicalDataTemplate DataType="{x:Type graphics:TextureAtlasItem}" ItemsSource="{Binding ChildrenView}">
                                 <TextBlock Text="{Binding Name}" />
                             </HierarchicalDataTemplate>
-                            <HierarchicalDataTemplate DataType="{x:Type graphics:WpfSprite}" ItemsSource="{Binding Children}">
+                            <HierarchicalDataTemplate DataType="{x:Type graphics:WpfSprite}" ItemsSource="{Binding ChildrenView}">
                                 <TextBlock Text="{Binding Name}" />
                             </HierarchicalDataTemplate>
                         </TreeView.Resources>

@@ -18,6 +18,8 @@ namespace AnimationManager.Graphics
     {
         public virtual ObservableCollection<object> Children { get; private set; } = new ObservableCollection<object>();
 
+        public virtual ICollectionView ChildrenView { get; private set; }
+
         [XmlAttribute("name")]
         public virtual string Name
         {
@@ -35,6 +37,8 @@ namespace AnimationManager.Graphics
 
         public TextureAtlasItem()
         {
+            ChildrenView = CollectionViewSource.GetDefaultView(Children);
+            ChildrenView.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending));
         }
 
 
