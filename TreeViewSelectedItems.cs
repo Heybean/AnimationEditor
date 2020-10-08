@@ -38,7 +38,7 @@ namespace AnimationManager
 
         public int? FPS
         {
-            get => GetValue();
+            get => GetValue<int?>();
 
             set
             {
@@ -55,7 +55,7 @@ namespace AnimationManager
 
         public int? OriginX
         {
-            get => GetValue();
+            get => GetValue<int?>();
 
             set
             {
@@ -77,7 +77,7 @@ namespace AnimationManager
 
         public int? OriginY
         {
-            get => GetValue();
+            get => GetValue<int?>();
 
             set
             {
@@ -99,12 +99,40 @@ namespace AnimationManager
 
         public SpriteHorizontalAlignment? HorizontalAlignment
         {
-            get; set;
+            get => GetValue<SpriteHorizontalAlignment?>();
+            set
+            {
+                if (!IsAllOfType(typeof(WpfSprite)))
+                {
+                    return;
+                }
+
+                foreach(WpfSprite sprite in _selectedItems)
+                {
+                    sprite.HorizontalAlignment = value ?? SpriteHorizontalAlignment.Center;
+                }
+
+                NotifyPropertyChanged();
+            }
         }
 
         public SpriteVerticalAlignment? VerticalAlignment
         {
-            get;set;
+            get => GetValue<SpriteVerticalAlignment?>();
+            set
+            {
+                if (!IsAllOfType(typeof(WpfSprite)))
+                {
+                    return;
+                }
+
+                foreach (WpfSprite sprite in _selectedItems)
+                {
+                    sprite.VerticalAlignment = value ?? SpriteVerticalAlignment.Center;
+                }
+
+                NotifyPropertyChanged();
+            }
         }
 
         public TreeViewSelectedItems(IList<object> selectedItems)
@@ -129,25 +157,25 @@ namespace AnimationManager
         /// <summary>
         /// Retrieve value from all the given selected items. If all values are the same, returns that value. If not, returns null.
         /// </summary>
-        private int? GetValue([CallerMemberName] string propertyName = "")
+        private T GetValue<T>([CallerMemberName] string propertyName = "")
         {
             if (IsAllOfType(typeof(WpfSprite)))
             {
-                int? n = null;
+                T value = default(T);
                 var type = typeof(WpfSprite);
                 var propertyInfo = type.GetProperty(propertyName);
 
                 foreach (WpfSprite sprite in _selectedItems)
                 {
-                    if (n == null)
-                        n = (int?)propertyInfo.GetValue(sprite);
-                    else if (n != (int?)propertyInfo.GetValue(sprite))
-                        return null;
+                    if (value == null)
+                        value = (T)propertyInfo.GetValue(sprite);
+                    else if (!EqualityComparer<T>.Default.Equals(value, (T)propertyInfo.GetValue(sprite)))
+                        return default(T);
                 }
-                return n;
+                return value;
             }
 
-            return null;
+            return default(T);
         }
 
         private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
