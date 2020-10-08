@@ -113,6 +113,8 @@ namespace AnimationManager
                 }
 
                 NotifyPropertyChanged();
+                if (value != SpriteHorizontalAlignment.Custom)
+                    NotifyPropertyChanged("OriginX");
             }
         }
 
@@ -132,6 +134,8 @@ namespace AnimationManager
                 }
 
                 NotifyPropertyChanged();
+                if (value != SpriteVerticalAlignment.Custom)
+                    NotifyPropertyChanged("OriginY");
             }
         }
 
