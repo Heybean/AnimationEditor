@@ -16,6 +16,8 @@ namespace AnimationManager
         /// </summary>
         public string SavePath { get; set; }
 
+        public bool UnsavedChanges { get; set; }
+
         public SpritePreviewWindow SpritePreviewWindow { get; } = new SpritePreviewWindow();
     }
 }

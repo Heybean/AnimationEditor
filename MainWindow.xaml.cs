@@ -76,6 +76,26 @@ namespace AnimationManager
             StartNewFile();
         }
 
+        /// <summary>
+        /// Prompt save if unsaved changes exists.
+        /// </summary>
+        /// <returns>True if save or no save was made. False if cancelled.</returns>
+        private bool PromptUnsavedChanges()
+        {
+            if (!MainWindowViewModel.UnsavedChanges)
+                return false;
+
+            return false;
+        }
+
+        private void New_Click(object sender, RoutedEventArgs e)
+        {
+            //if (!PromptUnsavedChanges())
+            //    return;
+
+            StartNewFile();
+        }
+
         private void Open_Click(object sender, RoutedEventArgs e)
         {
             var openFileDialog = new OpenFileDialog()
@@ -87,12 +107,11 @@ namespace AnimationManager
             if (openFileDialog.ShowDialog() == true)
             {
                 MainWindowViewModel = new MainWindowViewModel();
-                TextureAtlasViewModel = new TextureAtlasViewModel();
-
                 MainWindowViewModel.SavePath = openFileDialog.FileName;
                 MainWindowViewModel.FileName = System.IO.Path.GetFileNameWithoutExtension(openFileDialog.FileName);
 
                 var data = FileReader.Read(openFileDialog.FileName);
+                LoadData(data);
             }
         }
 
@@ -260,6 +279,7 @@ namespace AnimationManager
                     _spriteDisplay.Fill = sprite.Regions[0].ImageBrush;
 
                     UpdateMainRender();
+                    UpdateOriginMarker();
 
                     _spritePreviewWindow.SetSprite(sprite);
                 }
@@ -303,7 +323,6 @@ namespace AnimationManager
         private void StartNewFile()
         {
             TextureAtlasViewModel = new TextureAtlasViewModel();
-            _atlasTreeView.Items.Clear();
             _atlasTreeView.DataContext = TextureAtlasViewModel;
         }
 
@@ -392,5 +411,14 @@ namespace AnimationManager
                 _spritePreviewWindow.Visibility = Visibility.Visible;
         }
 
+        private void LoadData(AnimationsFileData data)
+        {
+            TextureAtlasViewModel = new TextureAtlasViewModel();
+
+            foreach(var atlas in data.Root.Atlases)
+            {
+                TextureAtlasViewModel.RegisteredTextureAtlases.Add(System.IO.Path.GetFileNameWithoutExtension(atlas.File));
+            }
+        }
     }
 }

@@ -52,25 +52,10 @@ namespace AnimationManager.IO
                     writer.WriteStartElement("Sprite");
                     writer.WriteAttributeString("name", sprite.Name);
                     writer.WriteAttributeString("fps", sprite.FPS.ToString());
-                    // Origin X
-                    if (sprite.HorizontalAlignment == SpriteHorizontalAlignment.Custom)
-                    {
-                        writer.WriteAttributeString("originx", sprite.OriginX.ToString());
-                    }
-                    else
-                    {
-                        writer.WriteAttributeString("originx", sprite.HorizontalAlignment.ToString());
-                    }
-
-                    // Origin Y
-                    if (sprite.VerticalAlignment == SpriteVerticalAlignment.Custom)
-                    {
-                        writer.WriteAttributeString("originy", sprite.OriginY.ToString());
-                    }
-                    else
-                    {
-                        writer.WriteAttributeString("originy", sprite.VerticalAlignment.ToString());
-                    }
+                    writer.WriteAttributeString("originx", sprite.OriginX.ToString());
+                    writer.WriteAttributeString("originy", sprite.OriginY.ToString());
+                    writer.WriteAttributeString("halign", sprite.HorizontalAlignment.ToString());
+                    writer.WriteAttributeString("valign", sprite.VerticalAlignment.ToString());
                     writer.WriteEndElement();
                 }
             }
