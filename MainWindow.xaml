@@ -93,10 +93,14 @@
                 <DockPanel MinWidth="100" Grid.Column="4" x:Name="dock_Properties">
                     <Label Content="Properties" Background="SlateGray"  Foreground="White" DockPanel.Dock="Top"/>
                     <Grid Margin="0 0 8 0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="49*"/>
+                            <ColumnDefinition Width="143*"/>
+                        </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <StackPanel Grid.Row="0">
+                        <StackPanel Grid.Row="0" Grid.ColumnSpan="2">
                             <Grid Margin="3">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="60"/>

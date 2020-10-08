@@ -234,6 +234,8 @@ namespace AnimationManager
 
         private void TreeView_ItemsSelected(object sender, RoutedEventArgs e)
         {
+            _propertiesPanel.DataContext = new TreeViewSelectedItems(TextureAtlasViewModel.SelectedItems);
+
             // Toggle Remove Atlas button based on which items are selected
             bool onlyTextureAtlasesSelected = true;
             foreach(var item in TextureAtlasViewModel.SelectedItems)
@@ -258,8 +260,6 @@ namespace AnimationManager
                     _spriteDisplay.Fill = sprite.Regions[0].ImageBrush;
 
                     UpdateMainRender();
-
-                    _propertiesPanel.DataContext = sprite;
 
                     _spritePreviewWindow.SetSprite(sprite);
                 }
@@ -307,12 +307,12 @@ namespace AnimationManager
             _atlasTreeView.DataContext = TextureAtlasViewModel;
         }
 
-        private void OriginX_ValueChanged(object sender, RoutedPropertyChangedEventArgs<int> e)
+        private void OriginX_ValueChanged(object sender, RoutedPropertyChangedEventArgs<int?> e)
         {
             UpdateOriginMarker();
         }
 
-        private void OriginY_ValueChanged(object sender, RoutedPropertyChangedEventArgs<int> e)
+        private void OriginY_ValueChanged(object sender, RoutedPropertyChangedEventArgs<int?> e)
         {
             UpdateOriginMarker();
         }
@@ -361,8 +361,11 @@ namespace AnimationManager
         private void UpdateOriginMarker()
         {
             // Update the origin marker position
-            int originx = _originX.Value;
-            int originy = _originY.Value;
+            int? originx = _originX.Value;
+            int? originy = _originY.Value;
+
+            if (originx == null || originy == null)
+                return;
 
             int x = (int)(_mainRender.ActualWidth - _spriteDisplay.Width * _mainRenderScale.ScaleX) / 2;
             int y = (int)(_mainRender.ActualHeight - _spriteDisplay.Height * _mainRenderScale.ScaleY) / 2;

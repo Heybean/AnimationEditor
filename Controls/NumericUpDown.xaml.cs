@@ -103,18 +103,25 @@ namespace AnimationManager.Controls
         /// Identifies the Value dependency property
         /// </summary>
         public static readonly DependencyProperty ValueProperty =
-            DependencyProperty.Register("Value", typeof(int), typeof(NumericUpDown),
+            DependencyProperty.Register("Value", typeof(int?), typeof(NumericUpDown),
                 new FrameworkPropertyMetadata(0, new PropertyChangedCallback(OnValueChanged), new CoerceValueCallback(CoerceValue)));
 
-        public int Value
+        public int? Value
         {
-            get { return (int)GetValue(ValueProperty); }
+            get { return (int?)GetValue(ValueProperty); }
             set { SetValue(ValueProperty, value); }
         }
 
         private static object CoerceValue(DependencyObject obj, object baseValue)
         {
             var control = (NumericUpDown)obj;
+
+            if (baseValue == null)
+            {
+                control.TextBox.Text = "";
+                return Math.Max(control.MinValue, 0);
+            }
+
             var newValue = Math.Max(control.MinValue, Math.Min(control.MaxValue, (int)baseValue));
 
             if (control.TextBox == null)
@@ -131,18 +138,18 @@ namespace AnimationManager.Controls
         /// </summary>
         public static readonly RoutedEvent ValueChangedEvent = EventManager.RegisterRoutedEvent(
             "ValueChanged", RoutingStrategy.Bubble,
-            typeof(RoutedPropertyChangedEventHandler<int>), typeof(NumericUpDown));
+            typeof(RoutedPropertyChangedEventHandler<int?>), typeof(NumericUpDown));
 
         /// <summary>
         /// Occurs when the Value property changes
         /// </summary>
-        public event RoutedPropertyChangedEventHandler<int> ValueChanged
+        public event RoutedPropertyChangedEventHandler<int?> ValueChanged
         {
             add { AddHandler(ValueChangedEvent, value); }
             remove { RemoveHandler(ValueChangedEvent, value); }
         }
 
-        protected virtual void OnValueChanged(RoutedPropertyChangedEventArgs<int> args)
+        protected virtual void OnValueChanged(RoutedPropertyChangedEventArgs<int?> args)
         {
             RaiseEvent(args);
         }
@@ -150,8 +157,8 @@ namespace AnimationManager.Controls
         private static void OnValueChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
         {
             var control = (NumericUpDown)obj;
-            RoutedPropertyChangedEventArgs<int> e = new RoutedPropertyChangedEventArgs<int>(
-                (int)args.OldValue, (int)args.NewValue, ValueChangedEvent);
+            RoutedPropertyChangedEventArgs<int?> e = new RoutedPropertyChangedEventArgs<int?>(
+                (int?)args.OldValue, (int?)args.NewValue, ValueChangedEvent);
             control.OnValueChanged(e);
         }
         #endregion
