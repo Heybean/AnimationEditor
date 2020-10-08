@@ -106,12 +106,12 @@ namespace AnimationManager
 
             if (openFileDialog.ShowDialog() == true)
             {
-                MainWindowViewModel = new MainWindowViewModel();
+                MainWindowViewModel.Clear();
                 MainWindowViewModel.SavePath = openFileDialog.FileName;
                 MainWindowViewModel.FileName = System.IO.Path.GetFileNameWithoutExtension(openFileDialog.FileName);
 
                 var data = FileReader.Read(openFileDialog.FileName);
-                LoadData(data);
+                LoadData(openFileDialog.FileName, data);
             }
         }
 
@@ -136,6 +136,7 @@ namespace AnimationManager
 
             if (saveFileDialog.ShowDialog() == true)
             {
+                MainWindowViewModel.UnsavedChanges = false;
                 MainWindowViewModel.SavePath = saveFileDialog.FileName;
                 MainWindowViewModel.FileName = System.IO.Path.GetFileNameWithoutExtension(saveFileDialog.FileName);
 
@@ -292,9 +293,10 @@ namespace AnimationManager
         }
 
         /// <summary>
-        /// Adds a single texture atlas into the project.
+        /// Adds a single texture atlas into the project. Texture files that can't be added are placed in invalidFiles (optional)
         /// </summary>
-        private void AddTextureAtlas(string file, List<string> invalidFiles = null)
+        /// <returns>The atlas that was created</returns>
+        private WpfTextureAtlas AddTextureAtlas(string file, List<string> invalidFiles = null)
         {
             var atlasName = System.IO.Path.GetFileNameWithoutExtension(file);
 
@@ -302,13 +304,15 @@ namespace AnimationManager
             {
                 if (invalidFiles != null)
                     invalidFiles.Add(atlasName);
-                return;
+                return null;
             }
 
             // Load the atlas
             var atlas = new WpfTextureAtlas(file);
             TextureAtlasViewModel.RegisteredTextureAtlases.Add(atlasName);
             TextureAtlasViewModel.TextureAtlases.Add(atlas);
+
+            return atlas;
         }
 
         /// <summary>
@@ -324,6 +328,19 @@ namespace AnimationManager
         {
             TextureAtlasViewModel = new TextureAtlasViewModel();
             _atlasTreeView.DataContext = TextureAtlasViewModel;
+            _propertiesPanel.DataContext = null;
+            _spritePreviewWindow.SetSprite(null);
+
+            _spriteDisplay.Width = 0;
+            _spriteDisplay.Height = 0;
+            _spriteDisplay.Fill = null;
+
+            _spriteOutline.Width = 0;
+            _spriteOutline.Height = 0;
+            _spriteOutline.StrokeThickness = 0;
+
+            UpdateMainRender();
+            UpdateOriginMarker();
         }
 
         private void OriginX_ValueChanged(object sender, RoutedPropertyChangedEventArgs<int?> e)
@@ -411,13 +428,57 @@ namespace AnimationManager
                 _spritePreviewWindow.Visibility = Visibility.Visible;
         }
 
-        private void LoadData(AnimationsFileData data)
+        private void LoadData(string filename, AnimationsFileData data)
         {
-            TextureAtlasViewModel = new TextureAtlasViewModel();
+            StartNewFile();
 
-            foreach(var atlas in data.Root.Atlases)
+            var rootFolder = System.IO.Path.GetDirectoryName(filename);
+            foreach(var atlasData in data.Root.Atlases)
             {
-                TextureAtlasViewModel.RegisteredTextureAtlases.Add(System.IO.Path.GetFileNameWithoutExtension(atlas.File));
+                var atlas = AddTextureAtlas(rootFolder + "\\" + atlasData.File);
+
+                // Create simple dictionary for quick atlas lookup
+                var atlasDict = new Dictionary<string, WpfSprite>();
+                foreach(WpfSprite sprite in atlas.Children)
+                {
+                    atlasDict.Add(sprite.Name, sprite);
+                }
+
+                RecreateStructure(atlasData, atlas, atlas, atlasDict);
+            }
+        }
+
+        private void RecreateStructure(AnimationsFileData.Folder folderRoot, TextureAtlasItem atlasItem, WpfTextureAtlas atlas, Dictionary<string, WpfSprite> atlasDict)
+        {
+            // Create the folder in the atlas
+            foreach(var folderData in folderRoot.Folders)
+            {
+                var folder = new TextureAtlasItem() { Name = folderData.Name };
+                atlasItem.Children.Add(folder);
+                RecreateStructure(folderData, folder, atlas, atlasDict);
+            }
+
+            // Find the sprite in the atlasDict
+            foreach(var spriteData in folderRoot.Sprites)
+            {
+                WpfSprite sprite;
+                atlasDict.TryGetValue(spriteData.Name, out sprite);
+                if (sprite == null)
+                    continue;
+
+                // Update the sprite
+                sprite.FPS = spriteData.FPS;
+                sprite.OriginX = spriteData.OriginX;
+                sprite.OriginY = spriteData.OriginY;
+                sprite.HorizontalAlignment = (SpriteHorizontalAlignment)Enum.Parse(typeof(SpriteHorizontalAlignment), spriteData.HorizontalAlignment, true);
+                sprite.VerticalAlignment = (SpriteVerticalAlignment)Enum.Parse(typeof(SpriteVerticalAlignment), spriteData.VerticalAlignment, true);
+
+                // Remove sprite and place in its proper position
+                if (!atlasItem.Children.Contains(sprite))
+                {
+                    atlas.Children.Remove(sprite);
+                    atlasItem.Children.Add(sprite);
+                }
             }
         }
     }

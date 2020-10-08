@@ -19,5 +19,18 @@ namespace AnimationManager
         public bool UnsavedChanges { get; set; }
 
         public SpritePreviewWindow SpritePreviewWindow { get; } = new SpritePreviewWindow();
+
+        public MainWindowViewModel()
+        {
+            Clear();
+        }
+
+        public void Clear()
+        {
+            FileName = "Untitled";
+            SavePath = "";
+            UnsavedChanges = false;
+            SpritePreviewWindow.DataContext = null;
+        }
     }
 }

@@ -28,6 +28,7 @@ namespace AnimationManager.IO
                 {
                     writer.Formatting = Formatting.Indented;
                     writer.WriteStartElement("Atlas");
+                    writer.WriteAttributeString("name", atlas.Name);
                     writer.WriteAttributeString("file", atlas.RelativePath);
                     WriteChildren(writer, atlas.Children);
                     writer.WriteEndElement();

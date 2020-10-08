@@ -40,13 +40,15 @@ namespace AnimationManager
         public void SetSprite(WpfSprite sprite)
         {
             _sprite = sprite;
-            _spriteDisplay.Width = sprite.Regions[0].width;
-            _spriteDisplay.Height = sprite.Regions[0].height;
-
-            //_spriteDisplay.DataContext = _sprite;
             _previewRender.DataContext = _sprite;
 
-            UpdatePreviewRender();
+            if (sprite != null)
+            {
+                _spriteDisplay.Width = sprite.Regions[0].width;
+                _spriteDisplay.Height = sprite.Regions[0].height;
+
+                UpdatePreviewRender();
+            }
         }
 
         private void PreviewRender_SizeChanged(object sender, SizeChangedEventArgs e)
