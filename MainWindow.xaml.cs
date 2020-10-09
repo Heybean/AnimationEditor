@@ -82,22 +82,39 @@ namespace AnimationManager
         /// <returns>True if save or no save was made. False if cancelled.</returns>
         private bool PromptUnsavedChanges()
         {
+            // No unsaved changes detected
             if (!MainWindowViewModel.UnsavedChanges)
-                return false;
+                return true;
+
+            // Prompt for saving
+            var result = MessageBox.Show(this, $"Do you want to save changes to {MainWindowViewModel.FileName}? Unsaved changes will be lost!", "Save File?", MessageBoxButton.YesNoCancel);
+
+            switch (result)
+            {
+                case MessageBoxResult.Yes:
+                    return PerformSave();
+                case MessageBoxResult.No:
+                    return true;
+                case MessageBoxResult.Cancel:
+                    return false;
+            }
 
             return false;
         }
 
         private void New_Click(object sender, RoutedEventArgs e)
         {
-            //if (!PromptUnsavedChanges())
-            //    return;
+            if (!PromptUnsavedChanges())
+                return;
 
             StartNewFile();
         }
 
         private void Open_Click(object sender, RoutedEventArgs e)
         {
+            if (!PromptUnsavedChanges())
+                return;
+
             var openFileDialog = new OpenFileDialog()
             {
                 Title = "Open File",
@@ -117,12 +134,26 @@ namespace AnimationManager
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-
+            PerformSave();
         }
 
         private void SaveAs_Click(object sender, RoutedEventArgs e)
         {
             PerformSaveFile("Save File As");
+        }
+
+        private bool PerformSave()
+        {
+            if (MainWindowViewModel.SavePath.Length <= 0)
+            {
+                return PerformSaveFile("Save File");
+            }
+            else
+            {
+                FileWriter.Write(MainWindowViewModel.SavePath, TextureAtlasViewModel);
+                MainWindowViewModel.UnsavedChanges = false;
+                return true;
+            }
         }
 
         private bool PerformSaveFile(string title)
@@ -174,6 +205,13 @@ namespace AnimationManager
 
         private void Window_Closing(object sender, CancelEventArgs e)
         {
+            if (!PromptUnsavedChanges())
+            {
+                e.Cancel = true;
+                return;
+            }
+
+
             // Save settings
             var properties = GetProperties();
             AppPropertiesReaderWriter.Write(PropertiesFile, properties);
@@ -228,10 +266,15 @@ namespace AnimationManager
             if (openFileDialog.ShowDialog() == true)
             {
                 var invalidFiles = new List<string>();
+                bool addedAtlas = false;
                 foreach (var filename in openFileDialog.FileNames)
                 {
                     AddTextureAtlas(filename, invalidFiles);
+                    addedAtlas = true;
                 }
+
+                if (addedAtlas)
+                    MainWindowViewModel.UnsavedChanges = true;
 
                 if (invalidFiles.Count > 0)
                 {
@@ -242,19 +285,25 @@ namespace AnimationManager
 
         private void RemoveAtlas_Click(object sender, RoutedEventArgs e)
         {
+            bool removedAtlas = false;
+
             // Remove all selected texture atlases
             foreach(var x in TextureAtlasViewModel.SelectedItems.ToList())
             {
                 if (x is WpfTextureAtlas atlas)
                 {
                     RemoveTextureAtlas(atlas);
+                    removedAtlas = true;
                 }
             }
+
+            if (removedAtlas)
+                MainWindowViewModel.UnsavedChanges = true;
         }
 
         private void TreeView_ItemsSelected(object sender, RoutedEventArgs e)
         {
-            _propertiesPanel.DataContext = new TreeViewSelectedItems(TextureAtlasViewModel.SelectedItems);
+            _propertiesPanel.DataContext = new TreeViewSelectedItems(TextureAtlasViewModel.SelectedItems, MainWindowViewModel);
 
             // Toggle Remove Atlas button based on which items are selected
             bool onlyTextureAtlasesSelected = true;
@@ -480,6 +529,16 @@ namespace AnimationManager
                     atlasItem.Children.Add(sprite);
                 }
             }
+        }
+
+        private void MarkUnsavedChanges()
+        {
+            MainWindowViewModel.UnsavedChanges = true;
+        }
+
+        private void NumericUpDown_ValueChanged(object sender, RoutedPropertyChangedEventArgs<int?> e)
+        {
+
         }
     }
 }

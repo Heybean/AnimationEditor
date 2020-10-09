@@ -14,6 +14,7 @@ namespace AnimationManager
     /// </summary>
     public class TreeViewSelectedItems : INotifyPropertyChanged
     {
+        private MainWindowViewModel _mainWindowViewModel;
         private IList<object> _selectedItems;
         private bool _doNotInvoke;
 
@@ -48,6 +49,7 @@ namespace AnimationManager
                 foreach(WpfSprite sprite in _selectedItems)
                 {
                     sprite.FPS = value ?? 0;
+                    _mainWindowViewModel.UnsavedChanges = true;
                 }
                 NotifyPropertyChanged();
             }
@@ -64,7 +66,10 @@ namespace AnimationManager
                     return;
                 }
 
-                foreach(WpfSprite sprite in _selectedItems)
+                if (_selectedItems.Count > 0)
+                    _mainWindowViewModel.UnsavedChanges = true;
+
+                foreach (WpfSprite sprite in _selectedItems)
                 {
                     sprite.OriginX = value ?? 0;
                     sprite.HorizontalAlignment = SpriteHorizontalAlignment.Custom;
@@ -85,6 +90,9 @@ namespace AnimationManager
                 {
                     return;
                 }
+
+                if (_selectedItems.Count > 0)
+                    _mainWindowViewModel.UnsavedChanges = true;
 
                 foreach (WpfSprite sprite in _selectedItems)
                 {
@@ -107,7 +115,10 @@ namespace AnimationManager
                     return;
                 }
 
-                foreach(WpfSprite sprite in _selectedItems)
+                if (_selectedItems.Count > 0)
+                    _mainWindowViewModel.UnsavedChanges = true;
+
+                foreach (WpfSprite sprite in _selectedItems)
                 {
                     sprite.HorizontalAlignment = value ?? SpriteHorizontalAlignment.Center;
                 }
@@ -128,6 +139,9 @@ namespace AnimationManager
                     return;
                 }
 
+                if (_selectedItems.Count > 0)
+                    _mainWindowViewModel.UnsavedChanges = true;
+
                 foreach (WpfSprite sprite in _selectedItems)
                 {
                     sprite.VerticalAlignment = value ?? SpriteVerticalAlignment.Center;
@@ -139,8 +153,9 @@ namespace AnimationManager
             }
         }
 
-        public TreeViewSelectedItems(IList<object> selectedItems)
+        public TreeViewSelectedItems(IList<object> selectedItems, MainWindowViewModel mainWindowViewModel)
         {
+            _mainWindowViewModel = mainWindowViewModel;
             _selectedItems = selectedItems;
             _doNotInvoke = false;
         }
