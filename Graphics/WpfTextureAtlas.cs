@@ -34,7 +34,8 @@ namespace AnimationManager.Graphics
         {
             Filename = packFile;
 
-            var atlasData = new TextureAtlasData(packFile, false);
+            var atlasData = new TextureAtlasData();
+            atlasData.Load(packFile, false);
 
             Name = Path.GetFileNameWithoutExtension(packFile);
 
