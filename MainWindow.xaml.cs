@@ -6,6 +6,7 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -40,6 +41,8 @@ namespace AnimationManager
         private Image _originMarker;
         private SpritePreviewWindow _spritePreviewWindow;
 
+        private bool _processingCommandLine;
+
         private MainWindowViewModel MainWindowViewModel { get; set; } = new MainWindowViewModel();
 
         public TextureAtlasViewModel TextureAtlasViewModel { get; private set; }
@@ -47,6 +50,11 @@ namespace AnimationManager
         public MainWindow()
         {
             InitializeComponent();
+
+            ProcessCommandLineArguments();
+
+            if (_processingCommandLine)
+                return;
 
             DataContext = MainWindowViewModel;
 
@@ -376,6 +384,10 @@ namespace AnimationManager
         private void StartNewFile()
         {
             TextureAtlasViewModel = new TextureAtlasViewModel();
+
+            if (_processingCommandLine)
+                return;
+
             _atlasTreeView.DataContext = TextureAtlasViewModel;
             _propertiesPanel.DataContext = null;
             _spritePreviewWindow.SetSprite(null);
@@ -539,6 +551,73 @@ namespace AnimationManager
         private void NumericUpDown_ValueChanged(object sender, RoutedPropertyChangedEventArgs<int?> e)
         {
 
+        }
+
+        private void ProcessCommandLineArguments()
+        {
+            if (App.Args.Length == 0)
+                return;
+
+            Console.WriteLine("Dungeon Sphere Animation Manager");
+            _processingCommandLine = true;
+
+            var args = App.Args;
+            for(int i = 0; i < args.Length; i++)
+            {
+                var arg = args[i];
+
+                // Is a command flag
+                if (arg.StartsWith('-'))
+                {
+                    i = HandleOption(arg, i);
+                }
+            }
+
+            // If running with command line arguments, completely kill the program. Do not allow window to open.
+            Process.GetCurrentProcess().Kill();
+        }
+
+        /// <summary>
+        /// Handles the option from the command line arguments. Returns the new index after processing occurs
+        /// </summary>
+        /// <param name="option">The option to process</param>
+        /// <param name="index">The index of the option within the arguments</param>
+        /// <returns>The new index after processing has occurred.</returns>
+        private int HandleOption(string option, int index)
+        {
+            if (option.Length == 1)
+                return index;
+
+            var args = App.Args;
+
+            option = option.Substring(1);
+
+            switch(option)
+            {
+                case "open":
+                    break;
+                case "save":
+                    break;
+                case "refresh":
+                    // Opens file, reads data, ands saves it back into same file. This is done is update any new sprites added into the atlas.
+                    if (args.Length <= index + 1)
+                    {
+                        Console.WriteLine("\tExpected filename after " + option);
+                        Process.GetCurrentProcess().Kill();
+                    }
+                    index++;
+                    var filename = args[index];
+                    Console.WriteLine("\tRefreshing file " + filename);
+
+                    filename = System.IO.Path.GetFullPath(filename);
+
+                    var data = FileReader.Read(filename);
+                    LoadData(filename, data);
+                    FileWriter.Write(filename, TextureAtlasViewModel);
+                    break;
+            }
+
+            return index;
         }
     }
 }
