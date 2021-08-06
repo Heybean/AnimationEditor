@@ -16,9 +16,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="origin_point.png" />
+    <Reference Include="Heybean">
+      <HintPath>..\Heybean\Heybean\bin\Debug\netstandard2.0\Heybean.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
-  <Import Project="..\Dungeon Sphere Project\DungeonSphere.Shared\DungeonSphere.Shared.projitems" Label="Shared" />
+  <ItemGroup>
+    <Resource Include="origin_point.png" />
+  </ItemGroup>
 
 </Project>

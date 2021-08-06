@@ -1,5 +1,4 @@
 ﻿using AnimationManager.Graphics;
-using DungeonSphere.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

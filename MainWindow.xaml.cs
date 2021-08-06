@@ -1,7 +1,7 @@
 ﻿using AnimationManager.Controls;
 using AnimationManager.Graphics;
 using AnimationManager.IO;
-using DungeonSphere.Graphics;
+using Heybean.Graphics;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -548,17 +548,12 @@ namespace AnimationManager
             MainWindowViewModel.UnsavedChanges = true;
         }
 
-        private void NumericUpDown_ValueChanged(object sender, RoutedPropertyChangedEventArgs<int?> e)
-        {
-
-        }
-
         private void ProcessCommandLineArguments()
         {
             if (App.Args.Length == 0)
                 return;
 
-            Console.WriteLine("Dungeon Sphere Animation Manager");
+            Console.WriteLine("Running Dungeon Sphere Animation Manager through command line...");
             _processingCommandLine = true;
 
             var args = App.Args;
@@ -599,7 +594,7 @@ namespace AnimationManager
                 case "save":
                     break;
                 case "refresh":
-                    // Opens file, reads data, ands saves it back into same file. This is done is update any new sprites added into the atlas.
+                    // Opens file, reads data, ands saves it back into same file. This is done to update any new sprites added into the atlas.
                     if (args.Length <= index + 1)
                     {
                         Console.WriteLine("\tExpected filename after " + option);
