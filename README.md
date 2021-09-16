@@ -1,3 +1,3 @@
-# AnimationManager
+# Animation Editor
 
-Simple program to help manage the sprite animations in my game projects.
+Simple program to help edit the fps and origin for sprites in my game projects.
