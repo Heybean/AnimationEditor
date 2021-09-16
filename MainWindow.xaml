@@ -22,20 +22,39 @@
         </Style>
     </Window.Resources>
 
+    <Window.CommandBindings>
+        <CommandBinding Command="New" Executed="NewCommandBinding_Executed" />
+        <CommandBinding Command="Open" Executed="OpenCommandBinding_Executed" />
+        <CommandBinding Command="Save" Executed="SaveCommandBinding_Executed" />
+        <CommandBinding Command="SaveAs" Executed="SaveAsCommandBinding_Executed" />
+        <CommandBinding Command="Undo" Executed="UndoCommandBinding_Executed" />
+        <CommandBinding Command="Redo" Executed="RedoCommandBinding_Executed" />
+    </Window.CommandBindings>
+
+    <Window.InputBindings>
+        <KeyBinding Key="N" Modifiers="Ctrl" Command="New" />
+        <KeyBinding Key="O" Modifiers="Ctrl" Command="Open" />
+        <KeyBinding Key="S" Modifiers="Ctrl" Command="Save" />
+        <KeyBinding Key="S" Modifiers="Ctrl+Shift" Command="SaveAs" />
+        <KeyBinding Key="Z" Modifiers="Ctrl" Command="Undo" />
+        <KeyBinding Key="Y" Modifiers="Ctrl" Command="Redo" />
+    </Window.InputBindings>
+
     <Grid>
         <DockPanel>
             <Menu DockPanel.Dock="Top">
                 <MenuItem Header="_File">
-                    <MenuItem Header="_New" Click="New_Click"/>
-                    <MenuItem Header="_Open" Click="Open_Click"/>
-                    <MenuItem Header="_Save" Click="Save_Click"/>
-                    <MenuItem Header="_Save As" Click="SaveAs_Click"/>
+                    <MenuItem Header="_New" Command="New" InputGestureText="Ctrl+N"/>
+                    <MenuItem Header="_Open" Command="Open" InputGestureText="Ctrl+O"/>
                     <Separator />
-                    <MenuItem Header="_Exit" Click="Exit_Click" />
+                    <MenuItem Header="_Save" Command="Save" InputGestureText="Ctrl+S"/>
+                    <MenuItem Header="_Save As" Command="SaveAs" InputGestureText="Ctrl+Shift+S"/>
+                    <Separator />
+                    <MenuItem Header="_Exit" Click="Exit_Click"/>
                 </MenuItem>
                 <MenuItem Header="_Edit">
-                    <MenuItem Header="_Undo" />
-                    <MenuItem Header="_Redo" />
+                    <MenuItem Header="_Undo" Command="Undo" InputGestureText="Ctrl+Z" />
+                    <MenuItem Header="_Redo" Command="Redo" InputGestureText="Ctrl+Y" />
                 </MenuItem>
                 <MenuItem Header="_Window">
                     <MenuItem Header="_Sprite Preview" IsCheckable="True" Click="SpritePreviewWindow_Click"

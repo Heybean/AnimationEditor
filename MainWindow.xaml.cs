@@ -110,7 +110,7 @@ namespace AnimationEditor
             return false;
         }
 
-        private void New_Click(object sender, RoutedEventArgs e)
+        private void NewCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             if (!PromptUnsavedChanges())
                 return;
@@ -118,7 +118,7 @@ namespace AnimationEditor
             StartNewFile();
         }
 
-        private void Open_Click(object sender, RoutedEventArgs e)
+        private void OpenCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             if (!PromptUnsavedChanges())
                 return;
@@ -140,12 +140,12 @@ namespace AnimationEditor
             }
         }
 
-        private void Save_Click(object sender, RoutedEventArgs e)
+        private void SaveCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             PerformSave();
         }
 
-        private void SaveAs_Click(object sender, RoutedEventArgs e)
+        private void SaveAsCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             PerformSaveFile("Save File As");
         }
@@ -190,6 +190,16 @@ namespace AnimationEditor
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void UndoCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+
+        }
+
+        private void RedoCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+
         }
 
         private void Window_Loaded(object sender, EventArgs e)
