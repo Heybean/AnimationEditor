@@ -12,7 +12,7 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 
-namespace AnimationManager.Controls
+namespace AnimationEditor.Controls
 {
     /// <summary>
     /// Based off https://searchcode.com/codesearch/view/10571351/ and http://www.codecadwallader.com/2015/11/22/wpf-treeview-with-multi-select/

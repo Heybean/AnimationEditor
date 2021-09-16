@@ -4,7 +4,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace AnimationManager.Controls
+namespace AnimationEditor.Controls
 {
     public class MultiSelectTreeView : TreeView
     {

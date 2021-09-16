@@ -6,7 +6,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace AnimationManager.Graphics
+namespace AnimationEditor.Graphics
 {
     public class WpfTextureRegion : TextureAtlasData.Region
     {

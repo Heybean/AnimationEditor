@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace AnimationManager.Controls
+namespace AnimationEditor.Controls
 {
     [TemplatePart(Name = "PART_TextBox", Type = typeof(TextBox))]
     [TemplatePart(Name = "Part_IncreaseButton", Type = typeof(RepeatButton))]

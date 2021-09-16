@@ -4,7 +4,7 @@ using System.IO;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace AnimationManager
+namespace AnimationEditor
 {
     [Serializable]
     [XmlRoot]

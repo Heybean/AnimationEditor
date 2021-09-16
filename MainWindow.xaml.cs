@@ -1,6 +1,6 @@
-﻿using AnimationManager.Controls;
-using AnimationManager.Graphics;
-using AnimationManager.IO;
+﻿using AnimationEditor.Controls;
+using AnimationEditor.Graphics;
+using AnimationEditor.IO;
 using Heybean.Graphics;
 using Microsoft.Win32;
 using System;
@@ -22,7 +22,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 
-namespace AnimationManager
+namespace AnimationEditor
 {
     public partial class MainWindow : Window
     {

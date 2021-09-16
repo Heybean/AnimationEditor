@@ -5,7 +5,7 @@ using System.IO;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace AnimationManager.IO
+namespace AnimationEditor.IO
 {
     public class FileReader
     {

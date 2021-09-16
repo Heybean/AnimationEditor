@@ -1,4 +1,4 @@
-﻿using AnimationManager.Graphics;
+﻿using AnimationEditor.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Xml.Serialization;
 
-namespace AnimationManager
+namespace AnimationEditor
 {
     /// <summary>
     /// Holds information on current working data

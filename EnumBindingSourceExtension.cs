@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Markup;
 
-namespace AnimationManager
+namespace AnimationEditor
 {
     /// <summary>
     /// Code from https://brianlagunas.com/a-better-way-to-data-bind-enums-in-wpf/

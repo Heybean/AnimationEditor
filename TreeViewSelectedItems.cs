@@ -1,4 +1,4 @@
-﻿using AnimationManager.Graphics;
+﻿using AnimationEditor.Graphics;
 using System;
 using System.CodeDom;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace AnimationManager
+namespace AnimationEditor
 {
     /// <summary>
     /// A wrapper class for all the selected items in the tree view, mostly done for binding purposes

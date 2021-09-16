@@ -7,7 +7,7 @@ using System.Text;
 using System.Windows.Data;
 using System.Xml.Serialization;
 
-namespace AnimationManager.Graphics
+namespace AnimationEditor.Graphics
 {
     [Serializable]
     [XmlRoot("Item")]

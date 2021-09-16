@@ -8,7 +8,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Xml.Serialization;
 
-namespace AnimationManager.Graphics
+namespace AnimationEditor.Graphics
 {
     public enum SpriteHorizontalAlignment
     {
