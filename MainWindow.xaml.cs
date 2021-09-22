@@ -624,5 +624,14 @@ namespace AnimationEditor
 
             return index;
         }
+
+        private void combo_mainRenderScale_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var combo = sender as ComboBox;
+            _mainRenderScale = new ScaleTransform(combo.SelectedIndex + 1, combo.SelectedIndex + 1);
+
+            UpdateMainRender();
+            UpdateOriginMarker();
+        }
     }
 }
