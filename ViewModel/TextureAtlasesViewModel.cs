@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -84,7 +85,21 @@ namespace AnimationEditor.ViewModel
 
         private void RemoveAtlasExecute(object sender)
         {
+            bool removedAtlas = false;
 
+            // Remove all selected texture atlases
+            foreach (var x in SelectedItems.ToList())
+            {
+                if (x is TextureAtlas atlas)
+                {
+                    _model.RemoveTextureAtlas(atlas.AtlasName);
+                    _textureAtlases.Remove(atlas);
+                    removedAtlas = true;
+                }
+            }
+
+            //if (removedAtlas)
+            //    MainWindowVM.UnsavedChanges = true;
         }
     }
 }
