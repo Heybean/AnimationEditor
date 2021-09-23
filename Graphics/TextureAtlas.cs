@@ -26,17 +26,11 @@ namespace AnimationEditor.Graphics
         public string RelativePath { get; set; }
 
         //[XmlIgnore]
-        private List<BitmapImage> Textures { get; }
+        private List<BitmapImage> Textures { get; } = new List<BitmapImage>();
 
-        private List<Sprite> Sprites { get; }
+        private List<Sprite> Sprites { get; } = new List<Sprite>();
 
-        public TextureAtlas()
-        {
-            Textures = new List<BitmapImage>();
-            Sprites = new List<Sprite>();
-        }
-
-        public TextureAtlas(string packFile) : base()
+        public TextureAtlas(string packFile)
         {
             Filename = packFile;
 

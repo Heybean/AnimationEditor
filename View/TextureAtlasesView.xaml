@@ -24,7 +24,7 @@
 
         <controls:MultiSelectTreeView x:Name="trv_Atlas">
             <TreeView.Resources>
-                <HierarchicalDataTemplate DataType="{x:Type graphics:TextureAtlas}" ItemsSource="{Binding ChildrenView}">
+                <HierarchicalDataTemplate DataType="{x:Type graphics:TextureAtlas}" ItemsSource="{Binding TextureAtlases}">
                     <TextBlock Text="{Binding Name}" />
                 </HierarchicalDataTemplate>
                 <!--
