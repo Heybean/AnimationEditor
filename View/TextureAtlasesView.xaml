@@ -1,0 +1,36 @@
+﻿<UserControl x:Class="AnimationEditor.View.TextureAtlasesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:controls="clr-namespace:AnimationEditor.Controls"
+             xmlns:graphics="clr-namespace:AnimationEditor.Graphics"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    
+    <DockPanel>
+        <Label DockPanel.Dock="Top" Content="Texture Atlases" Background="SlateGray"  Foreground="White"/>
+        <ToolBarTray DockPanel.Dock="Bottom">
+            <ToolBar ToolBarTray.IsLocked="True">
+                <Button ToolTip="Add Texture Atlas">Add</Button>
+                <Button ToolTip="Remove Texture Atlas" x:Name="btn_RemoveAtlas" IsEnabled="False">Remove</Button>
+            </ToolBar>
+        </ToolBarTray>
+
+        <controls:MultiSelectTreeView x:Name="trv_Atlas">
+            <TreeView.Resources>
+                <HierarchicalDataTemplate DataType="{x:Type graphics:WpfTextureAtlas}" ItemsSource="{Binding ChildrenView}">
+                    <TextBlock Text="{Binding Name}" />
+                </HierarchicalDataTemplate>
+                <!--
+                <HierarchicalDataTemplate DataType="{x:Type graphics:TextureAtlasItem}" ItemsSource="{Binding ChildrenView}">
+                    <TextBlock Text="{Binding Name}" />
+                </HierarchicalDataTemplate>
+                <HierarchicalDataTemplate DataType="{x:Type graphics:WpfSprite}" ItemsSource="{Binding ChildrenView}">
+                    <TextBlock Text="{Binding Name}" />
+                </HierarchicalDataTemplate>
+                -->
+            </TreeView.Resources>
+        </controls:MultiSelectTreeView>
+    </DockPanel>
+</UserControl>
