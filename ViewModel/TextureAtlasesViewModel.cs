@@ -17,44 +17,42 @@ namespace AnimationEditor.ViewModel
 {
     public class TextureAtlasesViewModel : Observable
     {
+        private Node _selectedItem;
         private TextureAtlasesModel _model;
-        private ObservableCollection<TextureAtlas> _textureAtlases;
-        private List<object> _selectedItems;
 
         public IEnumerable HierarchySource
         {
             get
             {
-                yield return this.Root;
+                yield return Root;
             }
         }
 
-        public TreeListBoxNode Root { get; private set; }
+        public Node Root { get; private set; }
 
-        public ICollectionView TextureAtlasesCollectionView { get; }
-        public IList<object> SelectedItems
+        public Node SelectedItem
         {
-            get => _selectedItems;
-            /*set
+            get => _selectedItem;
+            set
             {
-                _selectedItems = (List<object>)value;
-                OnPropertyChanged("SelectedItems");
-            }*/
+                SetValue(ref _selectedItem, value);
+            }
         }
+
         public ICommand AddAtlasCommand { get; }
         public ICommand RemoveAtlasCommand { get; }
 
         public TextureAtlasesViewModel()
         {
+            
             _model = new TextureAtlasesModel();
 
-            Root = new TreeListBoxNode { Name = "Untitled.anim" };
+            Root = new Node { Name = "Untitled.anim" };
+            SelectedItem = Root;
 
-            _textureAtlases = new ObservableCollection<TextureAtlas>(_model.TextureAtlases.Values);
+            /*_textureAtlases = new ObservableCollection<TextureAtlas>(_model.TextureAtlases.Values);
             TextureAtlasesCollectionView = CollectionViewSource.GetDefaultView(_textureAtlases);
-            TextureAtlasesCollectionView.SortDescriptions.Add(new SortDescription("AtlasName", ListSortDirection.Ascending));
-
-            _selectedItems = new List<object>();
+            TextureAtlasesCollectionView.SortDescriptions.Add(new SortDescription("AtlasName", ListSortDirection.Ascending));*/
 
             AddAtlasCommand = new RelayCommand(_ => AddAtlasExecute(null));
             RemoveAtlasCommand = new RelayCommand(x => RemoveAtlasExecute(x));
@@ -84,7 +82,9 @@ namespace AnimationEditor.ViewModel
                     else
                     {
                         addedAtlas = true;
-                        _textureAtlases.Add(newAtlas);
+                        Root.SubNodes.Add(newAtlas);
+                        Root.ShowChildren = true;
+                        //_textureAtlases.Add(newAtlas);
                     }
                 }
 
@@ -101,14 +101,18 @@ namespace AnimationEditor.ViewModel
         private void RemoveAtlasExecute(object sender)
         {
             bool removedAtlas = false;
+            var selectedItems = (IList<object>)sender;
+
+            if (selectedItems == null)
+                return;
 
             // Remove all selected texture atlases
-            foreach (var x in SelectedItems.ToList())
+            foreach (var x in selectedItems.ToList())
             {
                 if (x is TextureAtlas atlas)
                 {
-                    _model.RemoveTextureAtlas(atlas.AtlasName);
-                    _textureAtlases.Remove(atlas);
+                    _model.RemoveTextureAtlas(atlas.Name);
+                    Root.SubNodes.Remove(atlas);
                     removedAtlas = true;
                 }
             }

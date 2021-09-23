@@ -34,14 +34,13 @@
             <ToolBar ToolBarTray.IsLocked="True">
                 <Button ToolTip="Add Texture Atlas" Command="{Binding AddAtlasCommand}">Add</Button>
                 <Button ToolTip="Remove Texture Atlas"
-                        Command="{Binding RemoveAtlasCommand}">
+                        Command="{Binding RemoveAtlasCommand}" CommandParameter="{Binding SelectedItems, ElementName=tree}">
                     Remove
                 </Button>
             </ToolBar>
         </ToolBarTray>
 
-        <pt:TreeListBox HierarchySource="{Binding HierarchySource}" ChildrenPath="SubNodes">
-        </pt:TreeListBox>
+        <pt:TreeListBox x:Name="tree"  HierarchySource="{Binding HierarchySource}" ChildrenPath="SubNodes" IsExpandedPath="ShowChildren" SelectedItem="{Binding SelectedItem}"/>
         <!--
 
         <controls:MultiSelectTreeView x:Name="trv_Atlas" ItemsSource="{Binding TextureAtlasesCollectionView}" ItemContainerStyle="{StaticResource TreeViewItem_SelectStyle}">

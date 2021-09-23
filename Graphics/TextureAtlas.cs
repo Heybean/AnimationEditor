@@ -13,9 +13,8 @@ using System.Xml.Serialization;
 
 namespace AnimationEditor.Graphics
 {
-    public class TextureAtlas
+    public class TextureAtlas : Node
     {
-        public string AtlasName { get; }
         //[XmlIgnore]
         public string Filename { get; }
 
@@ -28,8 +27,6 @@ namespace AnimationEditor.Graphics
         //[XmlIgnore]
         private List<BitmapImage> Textures { get; } = new List<BitmapImage>();
 
-        private List<Sprite> Sprites { get; } = new List<Sprite>();
-
         public TextureAtlas(string packFile)
         {
             Filename = packFile;
@@ -37,7 +34,7 @@ namespace AnimationEditor.Graphics
             //var atlasData = new TextureAtlasData();
             //atlasData.Load(packFile, false);
 
-            AtlasName = Path.GetFileNameWithoutExtension(packFile);
+            Name = Path.GetFileNameWithoutExtension(packFile);
 
             // Load the bitmap images
             /*foreach (var page in atlasData.Pages)
