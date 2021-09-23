@@ -1,6 +1,9 @@
 ﻿using AnimationEditor.Graphics;
 using AnimationEditor.Model;
 using Microsoft.Win32;
+using PropertyTools;
+using PropertyTools.Wpf;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -12,11 +15,21 @@ using System.Windows.Input;
 
 namespace AnimationEditor.ViewModel
 {
-    public class TextureAtlasesViewModel : ViewModelBase
+    public class TextureAtlasesViewModel : Observable
     {
         private TextureAtlasesModel _model;
         private ObservableCollection<TextureAtlas> _textureAtlases;
         private List<object> _selectedItems;
+
+        public IEnumerable HierarchySource
+        {
+            get
+            {
+                yield return this.Root;
+            }
+        }
+
+        public TreeListBoxNode Root { get; private set; }
 
         public ICollectionView TextureAtlasesCollectionView { get; }
         public IList<object> SelectedItems
@@ -34,6 +47,8 @@ namespace AnimationEditor.ViewModel
         public TextureAtlasesViewModel()
         {
             _model = new TextureAtlasesModel();
+
+            Root = new TreeListBoxNode { Name = "Untitled.anim" };
 
             _textureAtlases = new ObservableCollection<TextureAtlas>(_model.TextureAtlases.Values);
             TextureAtlasesCollectionView = CollectionViewSource.GetDefaultView(_textureAtlases);

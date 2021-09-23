@@ -40,8 +40,7 @@
             </ToolBar>
         </ToolBarTray>
 
-        <pt:TreeListBox>
-            
+        <pt:TreeListBox HierarchySource="{Binding HierarchySource}" ChildrenPath="SubNodes">
         </pt:TreeListBox>
         <!--
 
