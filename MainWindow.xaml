@@ -43,6 +43,60 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
+                <MenuItem Header="_New" InputGestureText="Ctrl+N"/>
+                <MenuItem Header="_Open" InputGestureText="Ctrl+O"/>
+                <Separator />
+                <MenuItem Header="_Save" InputGestureText="Ctrl+S"/>
+                <MenuItem Header="_Save As" InputGestureText="Ctrl+Shift+S"/>
+                <Separator />
+                <MenuItem Header="_Exit"/>
+            </MenuItem>
+            <MenuItem Header="_Edit">
+                <MenuItem Header="_Undo" InputGestureText="Ctrl+Z" />
+                <MenuItem Header="_Redo" InputGestureText="Ctrl+Y" />
+            </MenuItem>
+            <MenuItem Header="_Window">
+                <MenuItem Header="_Sprite Preview" IsCheckable="True"/>
+            </MenuItem>
+        </Menu>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200" MinWidth="100" MaxWidth="300"/>
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition Width="200" MinWidth="200" MaxWidth="300"/>
+            </Grid.ColumnDefinitions>
+            <DockPanel Grid.Column="0">
+                <Label DockPanel.Dock="Top" Content="Texture Atlases" Background="SlateGray"  Foreground="White"/>
+                <ToolBarTray DockPanel.Dock="Bottom">
+                    <ToolBar ToolBarTray.IsLocked="True">
+                        <Button ToolTip="Add Texture Atlas">Add</Button>
+                        <Button ToolTip="Remove Texture Atlas" x:Name="btn_RemoveAtlas" IsEnabled="False">Remove</Button>
+                    </ToolBar>
+                </ToolBarTray>
+
+                <controls:MultiSelectTreeView x:Name="trv_Atlas" ItemContainerStyle="{StaticResource TreeViewItem_SelectStyle}">
+                    <TreeView.Resources>
+                        <HierarchicalDataTemplate DataType="{x:Type graphics:WpfTextureAtlas}" ItemsSource="{Binding ChildrenView}">
+                            <TextBlock Text="{Binding Name}" />
+                        </HierarchicalDataTemplate>
+                        <HierarchicalDataTemplate DataType="{x:Type graphics:TextureAtlasItem}" ItemsSource="{Binding ChildrenView}">
+                            <TextBlock Text="{Binding Name}" />
+                        </HierarchicalDataTemplate>
+                        <HierarchicalDataTemplate DataType="{x:Type graphics:WpfSprite}" ItemsSource="{Binding ChildrenView}">
+                            <TextBlock Text="{Binding Name}" />
+                        </HierarchicalDataTemplate>
+                    </TreeView.Resources>
+                </controls:MultiSelectTreeView>
+            </DockPanel>
+        </Grid>
+    </DockPanel>
+<!--
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File">
                 <MenuItem Header="_New" Command="New" InputGestureText="Ctrl+N"/>
                 <MenuItem Header="_Open" Command="Open" InputGestureText="Ctrl+O"/>
                 <Separator />
@@ -187,4 +241,5 @@
             </DockPanel>
         </Grid>
     </DockPanel>
+    -->
 </Window>

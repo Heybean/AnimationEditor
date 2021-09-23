@@ -14,12 +14,12 @@ namespace AnimationEditor.ViewModel
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public ObservableCollection<WpfTextureAtlas> TextureAtlases { get; set; }
+        public ObservableCollection<TextureAtlas> TextureAtlases { get; set; }
 
         public MainViewModel(TextureAtlasesModel model)
         {
             _textureAtlasesModel = model;
-            TextureAtlases = new ObservableCollection<WpfTextureAtlas>(_textureAtlasesModel.TextureAtlases.Values);
+            TextureAtlases = new ObservableCollection<TextureAtlas>(_textureAtlasesModel.TextureAtlases.Values);
         }
 
         public void Changed(string name)

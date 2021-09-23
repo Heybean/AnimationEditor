@@ -53,7 +53,7 @@ namespace AnimationEditor
         {
             InitializeComponent();
 
-            ProcessCommandLineArguments();
+            /*ProcessCommandLineArguments();
 
             if (_processingCommandLine)
                 return;
@@ -85,7 +85,7 @@ namespace AnimationEditor
             _mainRenderScale = new ScaleTransform(3, 3);
             _zoomScale.SelectedIndex = 2;
 
-            StartNewFile();
+            StartNewFile();*/
         }
 
         /// <summary>
@@ -208,7 +208,7 @@ namespace AnimationEditor
 
         private void Window_Loaded(object sender, EventArgs e)
         {
-            _spritePreviewWindow.Owner = this;
+            /*_spritePreviewWindow.Owner = this;
 
             if (File.Exists(PropertiesFile))
             {
@@ -222,12 +222,12 @@ namespace AnimationEditor
                 var position = _mainRender.TransformToAncestor(this).Transform(new Point(0, 0));
                 _spritePreviewWindow.Left = position.X + _mainRender.ActualWidth - _spritePreviewWindow.Width;
                 _spritePreviewWindow.Top = position.Y + 50;
-            }
+            }*/
         }
 
         private void Window_Closing(object sender, CancelEventArgs e)
         {
-            if (!PromptUnsavedChanges())
+            /*if (!PromptUnsavedChanges())
             {
                 e.Cancel = true;
                 return;
@@ -238,7 +238,7 @@ namespace AnimationEditor
             var properties = GetProperties();
             AppPropertiesReaderWriter.Write(PropertiesFile, properties);
 
-            _spritePreviewWindow.Close();
+            _spritePreviewWindow.Close();*/
         }
 
         private void ApplyProperties(AppProperties properties)
