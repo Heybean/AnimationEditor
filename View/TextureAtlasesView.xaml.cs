@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AnimationEditor.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -18,9 +19,14 @@ namespace AnimationEditor.View
     /// </summary>
     public partial class TextureAtlasesView : UserControl
     {
+        private TextureAtlasesViewModel _viewModel;
+
         public TextureAtlasesView()
         {
             InitializeComponent();
+
+            _viewModel = new TextureAtlasesViewModel();
+            DataContext = _viewModel;
         }
     }
 }
