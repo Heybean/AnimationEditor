@@ -9,9 +9,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
-    <UserControl.Resources>
-        <vm:TextureAtlasesViewModel x:Key="TextureAtlasesViewModel" />
-    </UserControl.Resources>
+    <UserControl.DataContext>
+        <vm:TextureAtlasesViewModel />
+    </UserControl.DataContext>
 
     <DockPanel>
         <Label DockPanel.Dock="Top" Content="Texture Atlases" Background="SlateGray"  Foreground="White"/>
@@ -22,10 +22,11 @@
             </ToolBar>
         </ToolBarTray>
 
-        <controls:MultiSelectTreeView x:Name="trv_Atlas">
-            <TreeView.Resources>
-                <HierarchicalDataTemplate DataType="{x:Type graphics:TextureAtlas}" ItemsSource="{Binding TextureAtlases}">
-                    <TextBlock Text="{Binding Name}" />
+
+        <controls:MultiSelectTreeView x:Name="trv_Atlas" ItemsSource="{Binding TextureAtlasesCollectionView}">
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate DataType="{x:Type graphics:Sprite}" ItemsSource="{Binding Sprites}">
+                    <TextBlock Text="{Binding AtlasName}" />
                 </HierarchicalDataTemplate>
                 <!--
                 <HierarchicalDataTemplate DataType="{x:Type graphics:TextureAtlasItem}" ItemsSource="{Binding ChildrenView}">
@@ -35,7 +36,17 @@
                     <TextBlock Text="{Binding Name}" />
                 </HierarchicalDataTemplate>
                 -->
-            </TreeView.Resources>
+            </TreeView.ItemTemplate>
         </controls:MultiSelectTreeView>
+
+        <!--
+        <TreeView ItemsSource="{Binding TextureAtlases}">
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate ItemsSource="{Binding Sprites}" DataType="{x:Type graphics:Sprite}">
+                    <Label Content="{Binding Name}"/>
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+        </TreeView>
+        -->
     </DockPanel>
 </UserControl>

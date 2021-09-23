@@ -15,7 +15,7 @@ namespace AnimationEditor.Graphics
 {
     public class TextureAtlas
     {
-        public string Name { get; set; }
+        public string AtlasName { get; }
         //[XmlIgnore]
         public string Filename { get; }
 
@@ -34,13 +34,13 @@ namespace AnimationEditor.Graphics
         {
             Filename = packFile;
 
-            var atlasData = new TextureAtlasData();
-            atlasData.Load(packFile, false);
+            //var atlasData = new TextureAtlasData();
+            //atlasData.Load(packFile, false);
 
-            Name = Path.GetFileNameWithoutExtension(packFile);
+            AtlasName = Path.GetFileNameWithoutExtension(packFile);
 
             // Load the bitmap images
-            foreach (var page in atlasData.Pages)
+            /*foreach (var page in atlasData.Pages)
             {
                 var uri = new Uri(Path.GetFullPath(page.textureName + ".png"));
                 Textures.Add(new BitmapImage(uri));
@@ -62,7 +62,7 @@ namespace AnimationEditor.Graphics
             {
                 entry.Value.Sort((x, y) => x.index.CompareTo(y.index));
                 Sprites.Add(new Sprite(entry.Key, entry.Value));
-            }
+            }*/
         }
     }
 }

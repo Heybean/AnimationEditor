@@ -25,20 +25,20 @@ namespace AnimationEditor.Model
             _textureAtlases = new Dictionary<string, TextureAtlas>();
         }
 
-        public bool AddTextureAtlas(string file)
+        public TextureAtlas AddTextureAtlas(string file)
         {
             var atlasName = System.IO.Path.GetFileNameWithoutExtension(file);
 
             if (_textureAtlases.ContainsKey(atlasName))
             {
-                return false;
+                return null;
             }
 
             // Load the atlas
             var atlas = new TextureAtlas(file);
             _textureAtlases.Add(atlasName, atlas);
 
-            return true;
+            return atlas;
         }
 
         public bool RemoveTextureAtlas(string atlasName)
