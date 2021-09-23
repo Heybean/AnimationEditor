@@ -14,7 +14,7 @@ using System.Xml.Serialization;
 namespace AnimationEditor.Graphics
 {
     [XmlRoot("Atlas")]
-    public class WpfTextureAtlas : TextureAtlasItem, INotifyPropertyChanged
+    public class WpfTextureAtlas : TextureAtlasTreeItem, INotifyPropertyChanged
     {
         [XmlIgnore]
         public string Filename { get; }
@@ -27,6 +27,8 @@ namespace AnimationEditor.Graphics
 
         [XmlIgnore]
         private List<BitmapImage> Textures { get; } = new List<BitmapImage>();
+
+        public override FileType FileType => FileType.TextureAtlas;
 
         public WpfTextureAtlas() { }
 

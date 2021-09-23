@@ -8,6 +8,7 @@
              xmlns:vm="clr-namespace:AnimationEditor.ViewModel"
              xmlns:cv="clr-namespace:AnimationEditor.Converter"
              xmlns:e="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:pt="http://propertytools.org/wpf"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
@@ -39,6 +40,10 @@
             </ToolBar>
         </ToolBarTray>
 
+        <pt:TreeListBox>
+            
+        </pt:TreeListBox>
+        <!--
 
         <controls:MultiSelectTreeView x:Name="trv_Atlas" ItemsSource="{Binding TextureAtlasesCollectionView}" ItemContainerStyle="{StaticResource TreeViewItem_SelectStyle}">
             <e:Interaction.Behaviors>
@@ -47,20 +52,21 @@
             
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate DataType="{x:Type graphics:Sprite}" ItemsSource="{Binding Sprites}">
-                    <TextBlock Text="{Binding AtlasName}" />
+                    <TextBlock Text="{Binding Name}" />
                 </HierarchicalDataTemplate>
-                <!--
+                
+                <
                 <HierarchicalDataTemplate DataType="{x:Type graphics:TextureAtlasItem}" ItemsSource="{Binding ChildrenView}">
                     <TextBlock Text="{Binding Name}" />
                 </HierarchicalDataTemplate>
                 <HierarchicalDataTemplate DataType="{x:Type graphics:WpfSprite}" ItemsSource="{Binding ChildrenView}">
                     <TextBlock Text="{Binding Name}" />
                 </HierarchicalDataTemplate>
-                -->
+                -
             </TreeView.ItemTemplate>
         </controls:MultiSelectTreeView>
 
-        <!--
+       
         <TreeView ItemsSource="{Binding TextureAtlases}">
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding Sprites}" DataType="{x:Type graphics:Sprite}">

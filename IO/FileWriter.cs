@@ -42,7 +42,7 @@ namespace AnimationEditor.IO
         {
             foreach (var child in list)
             {
-                if (child is TextureAtlasItem folder)
+                if (child is TextureAtlasTreeItem folder)
                 {
                     writer.WriteStartElement("Folder");
                     writer.WriteAttributeString("name", folder.Name);

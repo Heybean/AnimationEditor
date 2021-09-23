@@ -525,12 +525,12 @@ namespace AnimationEditor
             }
         }
 
-        private void RecreateStructure(AnimationsFileData.Folder folderRoot, TextureAtlasItem atlasItem, WpfTextureAtlas atlas, Dictionary<string, WpfSprite> atlasDict)
+        private void RecreateStructure(AnimationsFileData.Folder folderRoot, TextureAtlasTreeItem atlasItem, WpfTextureAtlas atlas, Dictionary<string, WpfSprite> atlasDict)
         {
             // Create the folder in the atlas
-            foreach(var folderData in folderRoot.Folders)
+            /*foreach(var folderData in folderRoot.Folders)
             {
-                var folder = new TextureAtlasItem() { Name = folderData.Name };
+                var folder = new TextureAtlasTreeItem() { Name = folderData.Name };
                 atlasItem.Children.Add(folder);
                 RecreateStructure(folderData, folder, atlas, atlasDict);
             }
@@ -556,7 +556,7 @@ namespace AnimationEditor
                     atlas.Children.Remove(sprite);
                     atlasItem.Children.Add(sprite);
                 }
-            }
+            }*/
         }
 
         private void MarkUnsavedChanges()

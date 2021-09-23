@@ -30,7 +30,7 @@ namespace AnimationEditor
                     var item = _selectedItems[0];
                     if (item is WpfSprite sprite)
                         return sprite.Name;
-                    else if (item is TextureAtlasItem tai)
+                    else if (item is TextureAtlasTreeItem tai)
                         return tai.Name;
                 }
 
