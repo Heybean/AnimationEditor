@@ -14,8 +14,7 @@ namespace AnimationEditor.ViewModel
     public class TextureAtlasesViewModel : ViewModelBase
     {
         private TextureAtlasesModel _model;
-
-        public ObservableCollection<TextureAtlas> TextureAtlases { get; }
+        private ObservableCollection<TextureAtlas> _textureAtlases;
 
         public ICollectionView TextureAtlasesCollectionView { get; }
 
@@ -26,8 +25,8 @@ namespace AnimationEditor.ViewModel
         {
             _model = new TextureAtlasesModel();
 
-            TextureAtlases = new ObservableCollection<TextureAtlas>(_model.TextureAtlases.Values);
-            TextureAtlasesCollectionView = CollectionViewSource.GetDefaultView(TextureAtlases);
+            _textureAtlases = new ObservableCollection<TextureAtlas>(_model.TextureAtlases.Values);
+            TextureAtlasesCollectionView = CollectionViewSource.GetDefaultView(_textureAtlases);
             TextureAtlasesCollectionView.SortDescriptions.Add(new SortDescription("AtlasName", ListSortDirection.Ascending));
 
             AddAtlasCommand = new RelayCommand(_ => AddAtlasExecute(null));
@@ -58,13 +57,12 @@ namespace AnimationEditor.ViewModel
                     else
                     {
                         addedAtlas = true;
-                        TextureAtlases.Add(newAtlas);
+                        _textureAtlases.Add(newAtlas);
                     }
                 }
 
                 //if (addedAtlas)
                 //    MainWindowVM.UnsavedChanges = true;
-                //TextureAtlases = new ObservableCollection<TextureAtlas>(_model.TextureAtlases.Values);
 
                 if (invalidFiles.Count > 0)
                 {
