@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace AnimationEditor
+namespace AnimationEditor.ViewModel
 {
     public class MainWindowViewModel
     {

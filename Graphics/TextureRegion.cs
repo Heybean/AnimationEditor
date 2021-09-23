@@ -8,7 +8,7 @@ using System.Windows.Media.Imaging;
 
 namespace AnimationEditor.Graphics
 {
-    public class WpfTextureRegion : TextureAtlasData.Region
+    public class TextureRegion : TextureAtlasData.Region
     {
         /// <summary>
         /// The texture atlas the sprite is from
@@ -20,7 +20,7 @@ namespace AnimationEditor.Graphics
         /// </summary>
         public ImageBrush ImageBrush { get; private set; }
 
-        public WpfTextureRegion(BitmapImage atlas, TextureAtlasData.Region region)
+        public TextureRegion(BitmapImage atlas, TextureAtlasData.Region region)
         {
             page = region.page;
             top = region.top;

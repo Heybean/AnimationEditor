@@ -1,4 +1,5 @@
 ﻿using AnimationEditor.Graphics;
+using AnimationEditor.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,7 +14,7 @@ namespace AnimationEditor.IO
     {
         public static void Write(string filename, TextureAtlasViewModel viewModel)
         {
-            var directory = Path.GetDirectoryName(filename);
+            /*var directory = Path.GetDirectoryName(filename);
 
             // Find the relative paths for each texture atlas
             foreach(var atlas in viewModel.TextureAtlases)
@@ -34,7 +35,7 @@ namespace AnimationEditor.IO
                     writer.WriteEndElement();
                 }
                 writer.WriteEndElement();
-            }
+            }*/
         }
 
         private static void WriteChildren(XmlTextWriter writer, IList<object> list)

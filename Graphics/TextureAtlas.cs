@@ -13,24 +13,30 @@ using System.Xml.Serialization;
 
 namespace AnimationEditor.Graphics
 {
-    [XmlRoot("Atlas")]
-    public class WpfTextureAtlas : TextureAtlasItem, INotifyPropertyChanged
+    public class TextureAtlas
     {
-        [XmlIgnore]
+        public string Name { get; set; }
+        //[XmlIgnore]
         public string Filename { get; }
 
         /// <summary>
         /// Used by the FileReadWrite for relative path to the animation file
         /// </summary>
-        [XmlAttribute("file")]
+        //[XmlAttribute("file")]
         public string RelativePath { get; set; }
 
-        [XmlIgnore]
-        private List<BitmapImage> Textures { get; } = new List<BitmapImage>();
+        //[XmlIgnore]
+        private List<BitmapImage> Textures { get; }
 
-        public WpfTextureAtlas() { }
+        private List<Sprite> Sprites { get; }
 
-        public WpfTextureAtlas(string packFile)
+        public TextureAtlas()
+        {
+            Textures = new List<BitmapImage>();
+            Sprites = new List<Sprite>();
+        }
+
+        public TextureAtlas(string packFile) : base()
         {
             Filename = packFile;
 
@@ -53,15 +59,15 @@ namespace AnimationEditor.Graphics
                 if (!regionMaps.ContainsKey(region.name))
                     regionMaps.Add(region.name, new List<TextureRegion>());
 
-                var wpfTextureRegion = new TextureRegion(Textures[region.pageIndex], region);
-                regionMaps[region.name].Add(wpfTextureRegion);
+                var textureRegion = new TextureRegion(Textures[region.pageIndex], region);
+                regionMaps[region.name].Add(textureRegion);
             }
 
             // Sort the indexes for proper animation order then create the sprite for it
             foreach(var entry in regionMaps)
             {
                 entry.Value.Sort((x, y) => x.index.CompareTo(y.index));
-                Children.Add(new WpfSprite(entry.Key, entry.Value));
+                Sprites.Add(new Sprite(entry.Key, entry.Value));
             }
         }
     }

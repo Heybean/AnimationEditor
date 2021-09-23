@@ -1,4 +1,5 @@
 ﻿using AnimationEditor.Graphics;
+using AnimationEditor.ViewModel;
 using System;
 using System.CodeDom;
 using System.Collections.Generic;

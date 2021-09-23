@@ -10,10 +10,9 @@ using System.Xml.Serialization;
 
 namespace AnimationEditor.Graphics
 {
-
     [XmlRoot("Sprite")]
-    [XmlInclude(typeof(WpfSprite))]
-    public class WpfSprite : INotifyPropertyChanged
+    [XmlInclude(typeof(Sprite))]
+    public class Sprite
     {
         [XmlAttribute("name")]
         public string Name { get; set; }
@@ -32,9 +31,6 @@ namespace AnimationEditor.Graphics
             {
                 _originX = value;
                 _hAlign = SpriteHorizontalAlignment.Custom;
-                if (!_doNotInvoke)
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("HorizontalAlignment"));
-                NotifyPropertyChanged();
             }
         }
 
@@ -46,9 +42,6 @@ namespace AnimationEditor.Graphics
             {
                 _originY = value;
                 _vAlign = SpriteVerticalAlignment.Custom;
-                if (!_doNotInvoke)
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("VerticalAlignment"));
-                NotifyPropertyChanged();
             }
         }
 
@@ -59,10 +52,7 @@ namespace AnimationEditor.Graphics
             set
             {
                 _hAlign = value;
-                _doNotInvoke = true;
                 UpdateAlignmentOriginX();
-                _doNotInvoke = false;
-                NotifyPropertyChanged();
             }
         }
 
@@ -73,10 +63,7 @@ namespace AnimationEditor.Graphics
             set
             {
                 _vAlign = value;
-                _doNotInvoke = true;
                 UpdateAlignmentOriginY();
-                _doNotInvoke = false;
-                NotifyPropertyChanged();
             }
         }
 
@@ -84,30 +71,17 @@ namespace AnimationEditor.Graphics
         public List<TextureRegion> Regions { get; private set; }
 
         [XmlIgnore]
-        public ImageBrush CurrentFrame
-        {
-            get => _currentFrame;
-            set
-            {
-                _currentFrame = value;
-                NotifyPropertyChanged();
-            }
-        }
-
+        public ImageBrush CurrentFrame { get; set; }
 
         private SpriteHorizontalAlignment _hAlign;
         private SpriteVerticalAlignment _vAlign;
-        private ImageBrush _currentFrame;
         private int _originX;
         private int _originY;
         private double _timeElapsed;
-        private bool _doNotInvoke;
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public Sprite() { }
 
-        public WpfSprite() { }
-
-        public WpfSprite(string name, List<TextureRegion> regions)
+        public Sprite(string name, List<TextureRegion> regions)
         {
             Name = name;
             Regions = regions;
@@ -183,11 +157,6 @@ namespace AnimationEditor.Graphics
             }
 
             _vAlign = holdValign;
-        }
-
-        private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

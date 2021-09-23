@@ -1,6 +1,7 @@
 ﻿using AnimationEditor.Controls;
 using AnimationEditor.Graphics;
 using AnimationEditor.IO;
+using AnimationEditor.ViewModel;
 using Heybean.Graphics;
 using Microsoft.Win32;
 using System;
@@ -44,7 +45,7 @@ namespace AnimationEditor
 
         private bool _processingCommandLine;
 
-        private MainWindowViewModel MainWindowViewModel { get; set; } = new MainWindowViewModel();
+        private MainWindowViewModel MainWindowVM { get; set; } = new MainWindowViewModel();
 
         public TextureAtlasViewModel TextureAtlasViewModel { get; private set; }
 
@@ -57,7 +58,7 @@ namespace AnimationEditor
             if (_processingCommandLine)
                 return;
 
-            DataContext = MainWindowViewModel;
+            DataContext = MainWindowVM;
 
             _gameTickTimer = new DispatcherTimer();
             _gameTickTimer.Tick += GameTickTimer_Tick;
@@ -79,7 +80,7 @@ namespace AnimationEditor
             RenderOptions.SetBitmapScalingMode(_spriteDisplay, BitmapScalingMode.NearestNeighbor);
             RenderOptions.SetBitmapScalingMode(_originMarker, BitmapScalingMode.NearestNeighbor);
 
-            _spritePreviewWindow = MainWindowViewModel.SpritePreviewWindow;
+            _spritePreviewWindow = MainWindowVM.SpritePreviewWindow;
 
             _mainRenderScale = new ScaleTransform(3, 3);
             _zoomScale.SelectedIndex = 2;
@@ -94,11 +95,11 @@ namespace AnimationEditor
         private bool PromptUnsavedChanges()
         {
             // No unsaved changes detected
-            if (!MainWindowViewModel.UnsavedChanges)
+            if (!MainWindowVM.UnsavedChanges)
                 return true;
 
             // Prompt for saving
-            var result = MessageBox.Show(this, $"Do you want to save changes to {MainWindowViewModel.FileName}? Unsaved changes will be lost!", "Save File?", MessageBoxButton.YesNoCancel);
+            var result = MessageBox.Show(this, $"Do you want to save changes to {MainWindowVM.FileName}? Unsaved changes will be lost!", "Save File?", MessageBoxButton.YesNoCancel);
 
             switch (result)
             {
@@ -134,9 +135,9 @@ namespace AnimationEditor
 
             if (openFileDialog.ShowDialog() == true)
             {
-                MainWindowViewModel.Clear();
-                MainWindowViewModel.SavePath = openFileDialog.FileName;
-                MainWindowViewModel.FileName = System.IO.Path.GetFileNameWithoutExtension(openFileDialog.FileName);
+                MainWindowVM.Clear();
+                MainWindowVM.SavePath = openFileDialog.FileName;
+                MainWindowVM.FileName = System.IO.Path.GetFileNameWithoutExtension(openFileDialog.FileName);
 
                 var data = FileReader.Read(openFileDialog.FileName);
                 LoadData(openFileDialog.FileName, data);
@@ -155,14 +156,14 @@ namespace AnimationEditor
 
         private bool PerformSave()
         {
-            if (MainWindowViewModel.SavePath.Length <= 0)
+            if (MainWindowVM.SavePath.Length <= 0)
             {
                 return PerformSaveFile("Save File");
             }
             else
             {
-                FileWriter.Write(MainWindowViewModel.SavePath, TextureAtlasViewModel);
-                MainWindowViewModel.UnsavedChanges = false;
+                FileWriter.Write(MainWindowVM.SavePath, TextureAtlasViewModel);
+                MainWindowVM.UnsavedChanges = false;
                 return true;
             }
         }
@@ -178,9 +179,9 @@ namespace AnimationEditor
 
             if (saveFileDialog.ShowDialog() == true)
             {
-                MainWindowViewModel.UnsavedChanges = false;
-                MainWindowViewModel.SavePath = saveFileDialog.FileName;
-                MainWindowViewModel.FileName = System.IO.Path.GetFileNameWithoutExtension(saveFileDialog.FileName);
+                MainWindowVM.UnsavedChanges = false;
+                MainWindowVM.SavePath = saveFileDialog.FileName;
+                MainWindowVM.FileName = System.IO.Path.GetFileNameWithoutExtension(saveFileDialog.FileName);
 
                 FileWriter.Write(saveFileDialog.FileName, TextureAtlasViewModel);
 
@@ -297,7 +298,7 @@ namespace AnimationEditor
                 }
 
                 if (addedAtlas)
-                    MainWindowViewModel.UnsavedChanges = true;
+                    MainWindowVM.UnsavedChanges = true;
 
                 if (invalidFiles.Count > 0)
                 {
@@ -321,12 +322,12 @@ namespace AnimationEditor
             }
 
             if (removedAtlas)
-                MainWindowViewModel.UnsavedChanges = true;
+                MainWindowVM.UnsavedChanges = true;
         }
 
         private void TreeView_ItemsSelected(object sender, RoutedEventArgs e)
         {
-            _propertiesPanel.DataContext = new TreeViewSelectedItems(TextureAtlasViewModel.SelectedItems, MainWindowViewModel);
+            _propertiesPanel.DataContext = new TreeViewSelectedItems(TextureAtlasViewModel.SelectedItems, this.MainWindowVM);
 
             // Toggle Remove Atlas button based on which items are selected
             bool onlyTextureAtlasesSelected = true;
@@ -560,7 +561,7 @@ namespace AnimationEditor
 
         private void MarkUnsavedChanges()
         {
-            MainWindowViewModel.UnsavedChanges = true;
+            MainWindowVM.UnsavedChanges = true;
         }
 
         private void ProcessCommandLineArguments()
