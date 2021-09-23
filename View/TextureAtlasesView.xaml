@@ -7,6 +7,7 @@
              xmlns:graphics="clr-namespace:AnimationEditor.Graphics"
              xmlns:vm="clr-namespace:AnimationEditor.ViewModel"
              xmlns:cv="clr-namespace:AnimationEditor.Converter"
+             xmlns:e="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
@@ -16,6 +17,14 @@
 
     <UserControl.Resources>
         <cv:ListCountConverter x:Key="listCountConverter" />
+        <Style x:Key="TreeViewItem_SelectStyle" TargetType="{x:Type TreeViewItem}">
+            <Style.Triggers>
+                <Trigger Property="controls:MultiSelectTreeViewBehavior.IsItemSelected" Value="True">
+                    <Setter Property="Background" Value="{x:Static SystemColors.HighlightBrush}" />
+                    <Setter Property="Foreground" Value="{x:Static SystemColors.HighlightTextBrush}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </UserControl.Resources>
 
     <DockPanel>
@@ -24,7 +33,6 @@
             <ToolBar ToolBarTray.IsLocked="True">
                 <Button ToolTip="Add Texture Atlas" Command="{Binding AddAtlasCommand}">Add</Button>
                 <Button ToolTip="Remove Texture Atlas"
-                        IsEnabled="{Binding Path=TextureAtlasesCollectionView.Count, Converter={StaticResource listCountConverter}}"
                         Command="{Binding RemoveAtlasCommand}">
                     Remove
                 </Button>
@@ -32,7 +40,11 @@
         </ToolBarTray>
 
 
-        <controls:MultiSelectTreeView x:Name="trv_Atlas" ItemsSource="{Binding TextureAtlasesCollectionView}">
+        <controls:MultiSelectTreeView x:Name="trv_Atlas" ItemsSource="{Binding TextureAtlasesCollectionView}" ItemContainerStyle="{StaticResource TreeViewItem_SelectStyle}">
+            <e:Interaction.Behaviors>
+                <controls:MultiSelectTreeViewBehavior SelectedItems="{Binding Path=SelectedItems}"/>
+            </e:Interaction.Behaviors>
+            
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate DataType="{x:Type graphics:Sprite}" ItemsSource="{Binding Sprites}">
                     <TextBlock Text="{Binding AtlasName}" />

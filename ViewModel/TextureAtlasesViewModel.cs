@@ -15,9 +15,18 @@ namespace AnimationEditor.ViewModel
     {
         private TextureAtlasesModel _model;
         private ObservableCollection<TextureAtlas> _textureAtlases;
+        private List<object> _selectedItems;
 
         public ICollectionView TextureAtlasesCollectionView { get; }
-
+        public IList<object> SelectedItems
+        {
+            get => _selectedItems;
+            /*set
+            {
+                _selectedItems = (List<object>)value;
+                OnPropertyChanged("SelectedItems");
+            }*/
+        }
         public ICommand AddAtlasCommand { get; }
         public ICommand RemoveAtlasCommand { get; }
 
@@ -29,8 +38,10 @@ namespace AnimationEditor.ViewModel
             TextureAtlasesCollectionView = CollectionViewSource.GetDefaultView(_textureAtlases);
             TextureAtlasesCollectionView.SortDescriptions.Add(new SortDescription("AtlasName", ListSortDirection.Ascending));
 
+            _selectedItems = new List<object>();
+
             AddAtlasCommand = new RelayCommand(_ => AddAtlasExecute(null));
-            RemoveAtlasCommand = new RelayCommand(_ => RemoveAtlasExecute(null));
+            RemoveAtlasCommand = new RelayCommand(x => RemoveAtlasExecute(x));
         }
 
         private void AddAtlasExecute(object sender)
