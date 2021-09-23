@@ -40,6 +40,7 @@ namespace AnimationEditor
         private NumericUpDown _originY;
         private Image _originMarker;
         private SpritePreviewWindow _spritePreviewWindow;
+        private ComboBox _zoomScale;
 
         private bool _processingCommandLine;
 
@@ -72,14 +73,16 @@ namespace AnimationEditor
             _originMarker = (Image)FindName("img_Origin");
             _originX = (NumericUpDown)FindName("num_OriginX");
             _originY = (NumericUpDown)FindName("num_OriginY");
+            _zoomScale = (ComboBox)FindName("combo_mainRenderScale");
 
             RenderOptions.SetBitmapScalingMode(_spriteOutline, BitmapScalingMode.NearestNeighbor);
             RenderOptions.SetBitmapScalingMode(_spriteDisplay, BitmapScalingMode.NearestNeighbor);
             RenderOptions.SetBitmapScalingMode(_originMarker, BitmapScalingMode.NearestNeighbor);
 
-            _mainRenderScale = new ScaleTransform(3, 3);
-
             _spritePreviewWindow = MainWindowViewModel.SpritePreviewWindow;
+
+            _mainRenderScale = new ScaleTransform(3, 3);
+            _zoomScale.SelectedIndex = 2;
 
             StartNewFile();
         }
@@ -253,6 +256,7 @@ namespace AnimationEditor
             _spritePreviewWindow.Height = properties.PreviewHeight;
             if (properties.PreviewVisible)
                 _spritePreviewWindow.Show();
+            _zoomScale.SelectedIndex = properties.ZoomIndex;
         }
 
         public AppProperties GetProperties()
@@ -268,6 +272,7 @@ namespace AnimationEditor
             properties.PreviewWidth = _spritePreviewWindow.Width;
             properties.PreviewHeight = _spritePreviewWindow.Height;
             properties.PreviewVisible = _spritePreviewWindow.IsVisible;
+            properties.ZoomIndex = _zoomScale.SelectedIndex;
             return properties;
         }
 
@@ -632,6 +637,24 @@ namespace AnimationEditor
 
             UpdateMainRender();
             UpdateOriginMarker();
+        }
+
+        private void mainRender_OnWheelClick(object sender, MouseWheelEventArgs e)
+        {
+            if (!Keyboard.IsKeyDown(Key.LeftCtrl))
+                return;
+
+            int index = _zoomScale.SelectedIndex;
+            int maxIndex = _zoomScale.Items.Count;
+
+            if (e.Delta > 0)
+            {
+                _zoomScale.SelectedIndex = Math.Min(index + 1, maxIndex - 1);
+            }
+            else if (e.Delta < 0)
+            {
+                _zoomScale.SelectedIndex = Math.Max(index - 1, 0);
+            }
         }
     }
 }

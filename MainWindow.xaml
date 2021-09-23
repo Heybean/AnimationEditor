@@ -40,7 +40,6 @@
         <KeyBinding Key="Y" Modifiers="Ctrl" Command="Redo" />
     </Window.InputBindings>
 
-
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
@@ -120,7 +119,8 @@
 
             <GridSplitter Grid.Column="1" Width ="5" HorizontalAlignment="Stretch"/>
 
-            <Canvas x:Name="cv_MainRender" Grid.Column="2" Background="Gray" ClipToBounds="True" SizeChanged="MainRender_SizeChanged">
+            <Canvas x:Name="cv_MainRender" Grid.Column="2" Background="Gray" ClipToBounds="True" SizeChanged="MainRender_SizeChanged"
+                    MouseWheel="mainRender_OnWheelClick">
                 <Rectangle x:Name="rect_SpriteDisplay" Panel.ZIndex="1"/>
                 <Rectangle x:Name="rect_SpriteOutline" StrokeThickness="0" Stroke="Lime" Panel.ZIndex="2"/>
                 <Image x:Name="img_Origin" Source="origin_point.png" Panel.ZIndex="3" />

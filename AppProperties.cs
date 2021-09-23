@@ -30,6 +30,8 @@ namespace AnimationEditor
         public double PreviewHeight { get; set; }
         [XmlElement]
         public bool PreviewVisible { get; set; }
+        [XmlElement]
+        public int ZoomIndex { get; set; }
     }
 
     public class AppPropertiesReaderWriter
