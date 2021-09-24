@@ -277,54 +277,6 @@ namespace AnimationEditor
             return properties;
         }
 
-        private void AddAtlas_Click(object sender, RoutedEventArgs e)
-        {
-            var openFileDialog = new OpenFileDialog
-            {
-                AddExtension = true,
-                Filter = "texture atlas files (*.atlas)|*.atlas",
-                Title = "Add Texture Atlas",
-                Multiselect = true
-            };
-
-            if (openFileDialog.ShowDialog() == true)
-            {
-                var invalidFiles = new List<string>();
-                bool addedAtlas = false;
-                foreach (var filename in openFileDialog.FileNames)
-                {
-                    //AddTextureAtlas(filename, invalidFiles);
-                    addedAtlas = true;
-                }
-
-                if (addedAtlas)
-                    MainWindowVM.UnsavedChanges = true;
-
-                if (invalidFiles.Count > 0)
-                {
-                    MessageBox.Show("Cannot add '" + string.Join("', '", invalidFiles)  + "' because it already exists.", "Add Texture Atlas", MessageBoxButton.OK, MessageBoxImage.Warning);
-                }
-            }
-        }
-
-        private void RemoveAtlas_Click(object sender, RoutedEventArgs e)
-        {
-            bool removedAtlas = false;
-
-            // Remove all selected texture atlases
-            foreach(var x in TextureAtlasViewModel.SelectedItems.ToList())
-            {
-                if (x is WpfTextureAtlas atlas)
-                {
-                    RemoveTextureAtlas(atlas);
-                    removedAtlas = true;
-                }
-            }
-
-            if (removedAtlas)
-                MainWindowVM.UnsavedChanges = true;
-        }
-
         private void TreeView_ItemsSelected(object sender, RoutedEventArgs e)
         {
             _propertiesPanel.DataContext = new TreeViewSelectedItems(TextureAtlasViewModel.SelectedItems, this.MainWindowVM);
@@ -363,38 +315,6 @@ namespace AnimationEditor
                 _spriteDisplay.Fill = null;
                 _spriteOutline.StrokeThickness = 0;
             }
-        }
-
-        /// <summary>
-        /// Adds a single texture atlas into the project. Texture files that can't be added are placed in invalidFiles (optional)
-        /// </summary>
-        /// <returns>The atlas that was created</returns>
-       /*private WpfTextureAtlas AddTextureAtlas(string file, List<string> invalidFiles = null)
-        {
-            var atlasName = System.IO.Path.GetFileNameWithoutExtension(file);
-
-            if (TextureAtlasViewModel.RegisteredTextureAtlases.Contains(atlasName))
-            {
-                if (invalidFiles != null)
-                    invalidFiles.Add(atlasName);
-                return null;
-            }
-
-            // Load the atlas
-            var atlas = new WpfTextureAtlas(file);
-            TextureAtlasViewModel.RegisteredTextureAtlases.Add(atlasName);
-            TextureAtlasViewModel.TextureAtlases.Add(atlas);
-
-            return atlas;
-        }*/
-
-        /// <summary>
-        /// Removes a single texture atlas from the project
-        /// </summary>
-        private void RemoveTextureAtlas(WpfTextureAtlas atlas)
-        {
-            //TextureAtlasViewModel.RegisteredTextureAtlases.Remove(atlas.Name);
-            //TextureAtlasViewModel.TextureAtlases.Remove(atlas);
         }
 
         private void StartNewFile()
