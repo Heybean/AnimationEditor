@@ -17,6 +17,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Heybean\Heybean\Heybean.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="Heybean">
       <HintPath>..\Heybean\Heybean\bin\Debug\netstandard2.0\Heybean.dll</HintPath>
     </Reference>

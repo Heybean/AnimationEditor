@@ -16,16 +16,16 @@ namespace AnimationEditor.Model
     /// </summary>
     public class TextureAtlasesModel
     {
-        private Dictionary<string, TextureAtlas> _textureAtlases;
+        private Dictionary<string, TextureAtlasModel> _textureAtlases;
 
-        public IReadOnlyDictionary<string, TextureAtlas> TextureAtlases { get => _textureAtlases; }
+        public IReadOnlyDictionary<string, TextureAtlasModel> TextureAtlases { get => _textureAtlases; }
 
         public TextureAtlasesModel()
         {
-            _textureAtlases = new Dictionary<string, TextureAtlas>();
+            _textureAtlases = new Dictionary<string, TextureAtlasModel>();
         }
 
-        public TextureAtlas AddTextureAtlas(string file)
+        public TextureAtlasModel AddTextureAtlas(string file)
         {
             var atlasName = System.IO.Path.GetFileNameWithoutExtension(file);
 
@@ -35,7 +35,7 @@ namespace AnimationEditor.Model
             }
 
             // Load the atlas
-            var atlas = new TextureAtlas(file);
+            var atlas = new TextureAtlasModel(file);
             _textureAtlases.Add(atlasName, atlas);
 
             return atlas;

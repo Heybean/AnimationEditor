@@ -28,7 +28,7 @@ namespace AnimationEditor
                 if (_selectedItems.Count == 1)
                 {
                     var item = _selectedItems[0];
-                    if (item is WpfSprite sprite)
+                    if (item is SpriteModel sprite)
                         return sprite.Name;
                     else if (item is TextureAtlasTreeItem tai)
                         return tai.Name;
@@ -44,10 +44,10 @@ namespace AnimationEditor
 
             set
             {
-                if (!IsAllOfType(typeof(WpfSprite)))
+                if (!IsAllOfType(typeof(SpriteModel)))
                     return;
 
-                foreach(WpfSprite sprite in _selectedItems)
+                foreach(SpriteModel sprite in _selectedItems)
                 {
                     sprite.FPS = value ?? 0;
                     _mainWindowViewModel.UnsavedChanges = true;
@@ -62,7 +62,7 @@ namespace AnimationEditor
 
             set
             {
-                if (!IsAllOfType(typeof(WpfSprite)))
+                if (!IsAllOfType(typeof(SpriteModel)))
                 {
                     return;
                 }
@@ -70,7 +70,7 @@ namespace AnimationEditor
                 if (_selectedItems.Count > 0)
                     _mainWindowViewModel.UnsavedChanges = true;
 
-                foreach (WpfSprite sprite in _selectedItems)
+                foreach (SpriteModel sprite in _selectedItems)
                 {
                     sprite.OriginX = value ?? 0;
                     sprite.HorizontalAlignment = SpriteHorizontalAlignment.Custom;
@@ -87,7 +87,7 @@ namespace AnimationEditor
 
             set
             {
-                if (!IsAllOfType(typeof(WpfSprite)))
+                if (!IsAllOfType(typeof(SpriteModel)))
                 {
                     return;
                 }
@@ -95,7 +95,7 @@ namespace AnimationEditor
                 if (_selectedItems.Count > 0)
                     _mainWindowViewModel.UnsavedChanges = true;
 
-                foreach (WpfSprite sprite in _selectedItems)
+                foreach (SpriteModel sprite in _selectedItems)
                 {
                     sprite.OriginY = value ?? 0;
                     sprite.VerticalAlignment = SpriteVerticalAlignment.Custom;
@@ -111,7 +111,7 @@ namespace AnimationEditor
             get => GetValue<SpriteHorizontalAlignment?>();
             set
             {
-                if (!IsAllOfType(typeof(WpfSprite)))
+                if (!IsAllOfType(typeof(SpriteModel)))
                 {
                     return;
                 }
@@ -119,7 +119,7 @@ namespace AnimationEditor
                 if (_selectedItems.Count > 0)
                     _mainWindowViewModel.UnsavedChanges = true;
 
-                foreach (WpfSprite sprite in _selectedItems)
+                foreach (SpriteModel sprite in _selectedItems)
                 {
                     sprite.HorizontalAlignment = value ?? SpriteHorizontalAlignment.Center;
                 }
@@ -135,7 +135,7 @@ namespace AnimationEditor
             get => GetValue<SpriteVerticalAlignment?>();
             set
             {
-                if (!IsAllOfType(typeof(WpfSprite)))
+                if (!IsAllOfType(typeof(SpriteModel)))
                 {
                     return;
                 }
@@ -143,7 +143,7 @@ namespace AnimationEditor
                 if (_selectedItems.Count > 0)
                     _mainWindowViewModel.UnsavedChanges = true;
 
-                foreach (WpfSprite sprite in _selectedItems)
+                foreach (SpriteModel sprite in _selectedItems)
                 {
                     sprite.VerticalAlignment = value ?? SpriteVerticalAlignment.Center;
                 }
@@ -179,13 +179,13 @@ namespace AnimationEditor
         /// </summary>
         private T GetValue<T>([CallerMemberName] string propertyName = "")
         {
-            if (IsAllOfType(typeof(WpfSprite)))
+            if (IsAllOfType(typeof(SpriteModel)))
             {
                 T value = default(T);
-                var type = typeof(WpfSprite);
+                var type = typeof(SpriteModel);
                 var propertyInfo = type.GetProperty(propertyName);
 
-                foreach (WpfSprite sprite in _selectedItems)
+                foreach (SpriteModel sprite in _selectedItems)
                 {
                     if (value == null)
                         value = (T)propertyInfo.GetValue(sprite);

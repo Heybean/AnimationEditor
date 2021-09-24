@@ -344,7 +344,7 @@ namespace AnimationEditor
 
             if (TextureAtlasViewModel.SelectedItems.Count == 1) // Single Item Selected
             {
-                if (TextureAtlasViewModel.SelectedItems[0] is WpfSprite sprite)
+                if (TextureAtlasViewModel.SelectedItems[0] is SpriteModel sprite)
                 {
                     _spriteOutline.StrokeThickness = 1;
 
@@ -434,7 +434,7 @@ namespace AnimationEditor
         {
             if (TextureAtlasViewModel.SelectedItems.Count == 1)
             {
-                if (TextureAtlasViewModel.SelectedItems[0] is WpfSprite sprite)
+                if (TextureAtlasViewModel.SelectedItems[0] is SpriteModel sprite)
                 {
                     sprite.Update(_gameTickTimer.Interval.TotalMilliseconds);
                 }
@@ -515,8 +515,8 @@ namespace AnimationEditor
                 var atlas = AddTextureAtlas(rootFolder + "\\" + atlasData.File);
 
                 // Create simple dictionary for quick atlas lookup
-                var atlasDict = new Dictionary<string, WpfSprite>();
-                foreach(WpfSprite sprite in atlas.Children)
+                var atlasDict = new Dictionary<string, SpriteModel>();
+                foreach(SpriteModel sprite in atlas.Children)
                 {
                     atlasDict.Add(sprite.Name, sprite);
                 }
@@ -525,7 +525,7 @@ namespace AnimationEditor
             }
         }
 
-        private void RecreateStructure(AnimationsFileData.Folder folderRoot, TextureAtlasTreeItem atlasItem, WpfTextureAtlas atlas, Dictionary<string, WpfSprite> atlasDict)
+        private void RecreateStructure(AnimationsFileData.Folder folderRoot, TextureAtlasTreeItem atlasItem, WpfTextureAtlas atlas, Dictionary<string, SpriteModel> atlasDict)
         {
             // Create the folder in the atlas
             /*foreach(var folderData in folderRoot.Folders)

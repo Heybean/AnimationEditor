@@ -30,17 +30,9 @@ namespace AnimationEditor.ViewModel
 
         public Node Root { get; private set; }
 
-        public Node SelectedItem
-        {
-            get => _selectedItem;
-            set
-            {
-                SetValue(ref _selectedItem, value);
-            }
-        }
-
         public ICommand AddAtlasCommand { get; }
         public ICommand RemoveAtlasCommand { get; }
+        public ICommand SelectedItemsChangedCommand { get; }
 
         public TextureAtlasesViewModel()
         {
@@ -48,7 +40,6 @@ namespace AnimationEditor.ViewModel
             _model = new TextureAtlasesModel();
 
             Root = new Node { Name = "Untitled.anim" };
-            SelectedItem = Root;
 
             /*_textureAtlases = new ObservableCollection<TextureAtlas>(_model.TextureAtlases.Values);
             TextureAtlasesCollectionView = CollectionViewSource.GetDefaultView(_textureAtlases);
@@ -56,9 +47,10 @@ namespace AnimationEditor.ViewModel
 
             AddAtlasCommand = new RelayCommand(_ => AddAtlasExecute(null));
             RemoveAtlasCommand = new RelayCommand(x => RemoveAtlasExecute(x));
+            SelectedItemsChangedCommand = new RelayCommand(x => SelectedItemsChangedExecute(x));
         }
 
-        private void AddAtlasExecute(object sender)
+        private void AddAtlasExecute(object parameters)
         {
             var openFileDialog = new OpenFileDialog
             {
@@ -98,10 +90,10 @@ namespace AnimationEditor.ViewModel
             }
         }
 
-        private void RemoveAtlasExecute(object sender)
+        private void RemoveAtlasExecute(object parameters)
         {
             bool removedAtlas = false;
-            var selectedItems = (IList<object>)sender;
+            var selectedItems = (IList<object>)parameters;
 
             if (selectedItems == null)
                 return;
@@ -109,7 +101,7 @@ namespace AnimationEditor.ViewModel
             // Remove all selected texture atlases
             foreach (var x in selectedItems.ToList())
             {
-                if (x is TextureAtlas atlas)
+                if (x is TextureAtlasModel atlas)
                 {
                     _model.RemoveTextureAtlas(atlas.Name);
                     Root.SubNodes.Remove(atlas);
@@ -119,6 +111,11 @@ namespace AnimationEditor.ViewModel
 
             //if (removedAtlas)
             //    MainWindowVM.UnsavedChanges = true;
+        }
+
+        private void SelectedItemsChangedExecute(object parameters)
+        {
+
         }
     }
 }

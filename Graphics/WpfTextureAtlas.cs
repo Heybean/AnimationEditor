@@ -49,13 +49,13 @@ namespace AnimationEditor.Graphics
             }
 
             // Create the sprite animations for each set of animations
-            var regionMaps = new Dictionary<string, List<TextureRegion>>();
+            var regionMaps = new Dictionary<string, List<WpfTextureRegion>>();
             foreach (var region in atlasData.Regions)
             {
                 if (!regionMaps.ContainsKey(region.name))
-                    regionMaps.Add(region.name, new List<TextureRegion>());
+                    regionMaps.Add(region.name, new List<WpfTextureRegion>());
 
-                var wpfTextureRegion = new TextureRegion(Textures[region.pageIndex], region);
+                var wpfTextureRegion = new WpfTextureRegion(Textures[region.pageIndex], region);
                 regionMaps[region.name].Add(wpfTextureRegion);
             }
 
@@ -63,7 +63,7 @@ namespace AnimationEditor.Graphics
             foreach(var entry in regionMaps)
             {
                 entry.Value.Sort((x, y) => x.index.CompareTo(y.index));
-                Children.Add(new WpfSprite(entry.Key, entry.Value));
+                Children.Add(new SpriteModel(entry.Key, entry.Value));
             }
         }
     }

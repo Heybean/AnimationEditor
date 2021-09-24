@@ -1,4 +1,5 @@
-﻿using Heybean.Graphics;
+﻿using AnimationEditor.Graphics;
+using Heybean.Graphics;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -11,9 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Xml.Serialization;
 
-namespace AnimationEditor.Graphics
+namespace AnimationEditor.Model
 {
-    public class TextureAtlas : Node
+    public class TextureAtlasModel : Node
     {
         //[XmlIgnore]
         public string Filename { get; }
@@ -27,30 +28,30 @@ namespace AnimationEditor.Graphics
         //[XmlIgnore]
         private List<BitmapImage> Textures { get; } = new List<BitmapImage>();
 
-        public TextureAtlas(string packFile)
+        public TextureAtlasModel(string packFile)
         {
             Filename = packFile;
 
-            //var atlasData = new TextureAtlasData();
-            //atlasData.Load(packFile, false);
+            var atlasData = new TextureAtlasData();
+            atlasData.Load(packFile, false);
 
             Name = Path.GetFileNameWithoutExtension(packFile);
 
             // Load the bitmap images
-            /*foreach (var page in atlasData.Pages)
+            foreach (var page in atlasData.Pages)
             {
                 var uri = new Uri(Path.GetFullPath(page.textureName + ".png"));
                 Textures.Add(new BitmapImage(uri));
             }
 
             // Create the sprite animations for each set of animations
-            var regionMaps = new Dictionary<string, List<TextureRegion>>();
+            var regionMaps = new Dictionary<string, List<WpfTextureRegion>>();
             foreach (var region in atlasData.Regions)
             {
                 if (!regionMaps.ContainsKey(region.name))
-                    regionMaps.Add(region.name, new List<TextureRegion>());
+                    regionMaps.Add(region.name, new List<WpfTextureRegion>());
 
-                var textureRegion = new TextureRegion(Textures[region.pageIndex], region);
+                var textureRegion = new WpfTextureRegion(Textures[region.pageIndex], region);
                 regionMaps[region.name].Add(textureRegion);
             }
 
@@ -58,8 +59,8 @@ namespace AnimationEditor.Graphics
             foreach(var entry in regionMaps)
             {
                 entry.Value.Sort((x, y) => x.index.CompareTo(y.index));
-                Sprites.Add(new Sprite(entry.Key, entry.Value));
-            }*/
+                SubNodes.Add(new SpriteModel(entry.Key, entry.Value));
+            }
         }
     }
 }

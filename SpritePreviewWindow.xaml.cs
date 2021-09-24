@@ -20,7 +20,7 @@ namespace AnimationEditor
     /// </summary>
     public partial class SpritePreviewWindow : Window
     {
-        private WpfSprite _sprite;
+        private SpriteModel _sprite;
         private Canvas _previewRender;
         private Rectangle _spriteDisplay;
         private ScaleTransform _previewRenderScale;
@@ -37,7 +37,7 @@ namespace AnimationEditor
             _previewRenderScale = new ScaleTransform(2, 2);
         }
 
-        public void SetSprite(WpfSprite sprite)
+        public void SetSprite(SpriteModel sprite)
         {
             _sprite = sprite;
             _previewRender.DataContext = _sprite;

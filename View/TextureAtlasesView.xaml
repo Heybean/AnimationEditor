@@ -40,7 +40,13 @@
             </ToolBar>
         </ToolBarTray>
 
-        <pt:TreeListBox x:Name="tree"  HierarchySource="{Binding HierarchySource}" ChildrenPath="SubNodes" IsExpandedPath="ShowChildren" SelectedItem="{Binding SelectedItem}"/>
+        <pt:TreeListBox x:Name="tree"  HierarchySource="{Binding HierarchySource}" ChildrenPath="SubNodes" IsExpandedPath="ShowChildren" SelectedItem="{Binding SelectedItem}">
+            <e:Interaction.Triggers>
+                <e:EventTrigger EventName="SelectionChanged">
+                    <e:InvokeCommandAction Command="{Binding SelectedItemsChangedCommand}"  CommandParameter="{Binding Path=SelectedItems, ElementName=tree}"/>
+                </e:EventTrigger>
+            </e:Interaction.Triggers>
+        </pt:TreeListBox>
         <!--
 
         <controls:MultiSelectTreeView x:Name="trv_Atlas" ItemsSource="{Binding TextureAtlasesCollectionView}" ItemContainerStyle="{StaticResource TreeViewItem_SelectStyle}">

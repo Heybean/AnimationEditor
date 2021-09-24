@@ -49,7 +49,7 @@ namespace AnimationEditor.IO
                     WriteChildren(writer, folder.Children);
                     writer.WriteEndElement();
                 }
-                else if (child is WpfSprite sprite)
+                else if (child is SpriteModel sprite)
                 {
                     writer.WriteStartElement("Sprite");
                     writer.WriteAttributeString("name", sprite.Name);
