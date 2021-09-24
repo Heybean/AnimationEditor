@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AnimationEditor.Graphics;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -8,7 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Xml.Serialization;
 
-namespace AnimationEditor.Graphics
+namespace AnimationEditor.Model
 {
 
     [XmlRoot("Sprite")]

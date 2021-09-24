@@ -13,9 +13,9 @@ namespace AnimationEditor
     /// <summary>
     /// A wrapper class for all the selected items in the tree view, mostly done for binding purposes
     /// </summary>
-    public class TreeViewSelectedItems : INotifyPropertyChanged
+    public class TreeViewSelectedItems// : INotifyPropertyChanged
     {
-        private MainViewModel _mainWindowViewModel;
+        /*private MainViewModel _mainWindowViewModel;
         private IList<object> _selectedItems;
         private bool _doNotInvoke;
 
@@ -201,6 +201,6 @@ namespace AnimationEditor
         private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        }*/
     }
 }

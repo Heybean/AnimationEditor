@@ -9,8 +9,14 @@
 
     <Grid>
         <Canvas Background="Gray" ClipToBounds="True">
-            <Rectangle x:Name="rect_SpriteDisplay" Panel.ZIndex="1"/>
-            <Rectangle x:Name="rect_SpriteOutline" StrokeThickness="0" Stroke="Lime" Panel.ZIndex="2"/>
+            <Rectangle x:Name="rect_SpriteDisplay" Panel.ZIndex="1" />
+            <Rectangle Stroke="Lime" Panel.ZIndex="2"
+                       StrokeThickness="{Binding OutlineThickness}"
+                       Canvas.Left="{Binding OutlineX}"
+                       Canvas.Right="{Binding OutlineY}"
+                       Width="{Binding OutlineWidth}"
+                       Height="{Binding OutlineHeight}"
+                       />
             <Image Source="origin_point.png" Panel.ZIndex="3" Canvas.Left="{Binding OriginPointX}" Canvas.Right="{Binding OriginPointY}"/>
         </Canvas>
     </Grid>
