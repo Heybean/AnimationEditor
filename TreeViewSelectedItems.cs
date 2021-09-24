@@ -15,7 +15,7 @@ namespace AnimationEditor
     /// </summary>
     public class TreeViewSelectedItems : INotifyPropertyChanged
     {
-        private MainWindowViewModel _mainWindowViewModel;
+        private MainViewModel _mainWindowViewModel;
         private IList<object> _selectedItems;
         private bool _doNotInvoke;
 
@@ -154,7 +154,7 @@ namespace AnimationEditor
             }
         }
 
-        public TreeViewSelectedItems(IList<object> selectedItems, MainWindowViewModel mainWindowViewModel)
+        public TreeViewSelectedItems(IList<object> selectedItems, MainViewModel mainWindowViewModel)
         {
             _mainWindowViewModel = mainWindowViewModel;
             _selectedItems = selectedItems;

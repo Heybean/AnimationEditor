@@ -12,7 +12,7 @@ using System.Xml.Serialization;
 namespace AnimationEditor.Model
 {
     /// <summary>
-    /// Model for the texture atlases data
+    /// Model for the texture atlases data. All file data can be written and stored from this.
     /// </summary>
     public class TextureAtlasesModel
     {

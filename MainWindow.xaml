@@ -9,18 +9,16 @@
         xmlns:e="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         xmlns:view="clr-namespace:AnimationEditor.View"
+        xmlns:vm="clr-namespace:AnimationEditor.ViewModel"
         mc:Ignorable="d"
         Title="Animation Editor" Height="450" Width="800"
         Loaded="Window_Loaded" Closing="Window_Closing" WindowState="Maximized">
+
+    <Window.DataContext>
+        <vm:MainViewModel x:Name="mainVM"/>
+    </Window.DataContext>
+
     <Window.Resources>
-        <Style x:Key="TreeViewItem_SelectStyle" TargetType="{x:Type TreeViewItem}">
-            <Style.Triggers>
-                <Trigger Property="controls:MultiSelectTreeViewBehavior.IsItemSelected" Value="True">
-                    <Setter Property="Background" Value="{x:Static SystemColors.HighlightBrush}" />
-                    <Setter Property="Foreground" Value="{x:Static SystemColors.HighlightTextBrush}" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
     </Window.Resources>
 
     <Window.CommandBindings>
@@ -70,11 +68,11 @@
                 <ColumnDefinition Width="200" MinWidth="200" MaxWidth="300"/>
             </Grid.ColumnDefinitions>
 
-            <view:TextureAtlasesView Grid.Column="0" />
+            <view:TextureAtlasesView Grid.Column="0" DataContext="{Binding ElementName=mainVM, Path=TextureAtlasesViewModel}"/>
 
             <GridSplitter Grid.Column="1" Width ="5" HorizontalAlignment="Stretch"/>
 
-            <view:MainCanvas Grid.Column="2" />
+            <view:MainCanvas Grid.Column="2" DataContext="{Binding ElementName=mainVM, Path=MainCanvasViewModel}"/>
 
             <GridSplitter Grid.Column="3" Width ="5" HorizontalAlignment="Stretch"/>
         </Grid>

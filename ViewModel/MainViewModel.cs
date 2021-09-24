@@ -4,7 +4,7 @@ using System.Text;
 
 namespace AnimationEditor.ViewModel
 {
-    public class MainWindowViewModel
+    public class MainViewModel
     {
         /// <summary>
         /// File name without extension
@@ -20,17 +20,21 @@ namespace AnimationEditor.ViewModel
 
         public SpritePreviewWindow SpritePreviewWindow { get; } = new SpritePreviewWindow();
 
-        public MainWindowViewModel()
+        public TextureAtlasesViewModel TextureAtlasesViewModel { get; }
+        public MainCanvasViewModel MainCanvasViewModel { get; }
+
+        public MainViewModel()
         {
-            Clear();
+            TextureAtlasesViewModel = new TextureAtlasesViewModel();
+            MainCanvasViewModel = new MainCanvasViewModel();
         }
 
-        public void Clear()
+        /*public void Clear()
         {
             FileName = "Untitled";
             SavePath = "";
             UnsavedChanges = false;
             SpritePreviewWindow.DataContext = null;
-        }
+        }*/
     }
 }

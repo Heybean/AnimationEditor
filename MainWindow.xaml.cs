@@ -29,23 +29,9 @@ namespace AnimationEditor
     {
         private const string PropertiesFile = "app_prop.xml";
 
-        private TreeView _atlasTreeView;
-        private Button _buttonRemoveAtlas;
-        private Canvas _mainRender;
-        private ScaleTransform _mainRenderScale;
-        private DispatcherTimer _gameTickTimer;
-        private Rectangle _spriteOutline;
-        private Rectangle _spriteDisplay;
-        private DockPanel _propertiesPanel;
-        private NumericUpDown _originX;
-        private NumericUpDown _originY;
-        private Image _originMarker;
-        private SpritePreviewWindow _spritePreviewWindow;
-        private ComboBox _zoomScale;
-
         private bool _processingCommandLine;
 
-        private MainWindowViewModel MainWindowVM { get; set; } = new MainWindowViewModel();
+        private MainViewModel MainWindowVM { get; set; } = new MainViewModel();
 
         public TextureAtlasViewModel TextureAtlasViewModel { get; private set; }
 
@@ -95,7 +81,7 @@ namespace AnimationEditor
         private bool PromptUnsavedChanges()
         {
             // No unsaved changes detected
-            if (!MainWindowVM.UnsavedChanges)
+            /*if (!MainWindowVM.UnsavedChanges)
                 return true;
 
             // Prompt for saving
@@ -111,20 +97,21 @@ namespace AnimationEditor
                     return false;
             }
 
-            return false;
+            return false;*/
+            return true;
         }
 
         private void NewCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            if (!PromptUnsavedChanges())
+            /*if (!PromptUnsavedChanges())
                 return;
 
-            StartNewFile();
+            StartNewFile();*/
         }
 
         private void OpenCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            if (!PromptUnsavedChanges())
+            /*if (!PromptUnsavedChanges())
                 return;
 
             var openFileDialog = new OpenFileDialog()
@@ -141,22 +128,22 @@ namespace AnimationEditor
 
                 var data = FileReader.Read(openFileDialog.FileName);
                 LoadData(openFileDialog.FileName, data);
-            }
+            }*/
         }
 
         private void SaveCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            PerformSave();
+            //PerformSave();
         }
 
         private void SaveAsCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            PerformSaveFile("Save File As");
+            //PerformSaveFile("Save File As");
         }
 
         private bool PerformSave()
         {
-            if (MainWindowVM.SavePath.Length <= 0)
+            /*if (MainWindowVM.SavePath.Length <= 0)
             {
                 return PerformSaveFile("Save File");
             }
@@ -165,12 +152,13 @@ namespace AnimationEditor
                 FileWriter.Write(MainWindowVM.SavePath, TextureAtlasViewModel);
                 MainWindowVM.UnsavedChanges = false;
                 return true;
-            }
+            }*/
+            return true;
         }
 
         private bool PerformSaveFile(string title)
         {
-            var saveFileDialog = new SaveFileDialog()
+            /*var saveFileDialog = new SaveFileDialog()
             {
                 Title = title,
                 Filter = "animation files (*.anim)|*.anim",
@@ -188,12 +176,13 @@ namespace AnimationEditor
                 return true;
             }
 
-            return false;
+            return false;*/
+            return true;
         }
 
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
-            Close();
+            //Close();
         }
 
         private void UndoCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
@@ -243,7 +232,7 @@ namespace AnimationEditor
 
         private void ApplyProperties(AppProperties properties)
         {
-            Top = properties.MainTop;
+            /*Top = properties.MainTop;
             Left = properties.MainLeft;
             Width = properties.MainWidth;
             Height = properties.MainHeight;
@@ -257,12 +246,12 @@ namespace AnimationEditor
             _spritePreviewWindow.Height = properties.PreviewHeight;
             if (properties.PreviewVisible)
                 _spritePreviewWindow.Show();
-            _zoomScale.SelectedIndex = properties.ZoomIndex;
+            _zoomScale.SelectedIndex = properties.ZoomIndex;*/
         }
 
         public AppProperties GetProperties()
         {
-            var properties = new AppProperties();
+            /*var properties = new AppProperties();
             properties.MainTop = Top;
             properties.MainLeft = Left;
             properties.MainWidth = Width;
@@ -274,12 +263,13 @@ namespace AnimationEditor
             properties.PreviewHeight = _spritePreviewWindow.Height;
             properties.PreviewVisible = _spritePreviewWindow.IsVisible;
             properties.ZoomIndex = _zoomScale.SelectedIndex;
-            return properties;
+            return properties;*/
+            return null;
         }
 
         private void TreeView_ItemsSelected(object sender, RoutedEventArgs e)
         {
-            _propertiesPanel.DataContext = new TreeViewSelectedItems(TextureAtlasViewModel.SelectedItems, this.MainWindowVM);
+            /*_propertiesPanel.DataContext = new TreeViewSelectedItems(TextureAtlasViewModel.SelectedItems, this.MainWindowVM);
 
             // Toggle Remove Atlas button based on which items are selected
             bool onlyTextureAtlasesSelected = true;
@@ -314,12 +304,12 @@ namespace AnimationEditor
             {
                 _spriteDisplay.Fill = null;
                 _spriteOutline.StrokeThickness = 0;
-            }
+            }*/
         }
 
         private void StartNewFile()
         {
-            TextureAtlasViewModel = new TextureAtlasViewModel();
+            /*TextureAtlasViewModel = new TextureAtlasViewModel();
 
             if (_processingCommandLine)
                 return;
@@ -337,39 +327,39 @@ namespace AnimationEditor
             _spriteOutline.StrokeThickness = 0;
 
             UpdateMainRender();
-            UpdateOriginMarker();
+            UpdateOriginMarker();*/
         }
 
         private void OriginX_ValueChanged(object sender, RoutedPropertyChangedEventArgs<int?> e)
         {
-            UpdateOriginMarker();
+            //UpdateOriginMarker();
         }
 
         private void OriginY_ValueChanged(object sender, RoutedPropertyChangedEventArgs<int?> e)
         {
-            UpdateOriginMarker();
+           // UpdateOriginMarker();
         }
 
         private void GameTickTimer_Tick(object sender, EventArgs e)
         {
-            if (TextureAtlasViewModel.SelectedItems.Count == 1)
+            /*if (TextureAtlasViewModel.SelectedItems.Count == 1)
             {
                 if (TextureAtlasViewModel.SelectedItems[0] is SpriteModel sprite)
                 {
                     sprite.Update(_gameTickTimer.Interval.TotalMilliseconds);
                 }
-            }
+            }*/
         }
 
         private void MainRender_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            UpdateMainRender();
-            UpdateOriginMarker();
+            //UpdateMainRender();
+            //UpdateOriginMarker();
         }
 
         private void UpdateMainRender()
         {
-            int x = (int)(_mainRender.ActualWidth - _spriteDisplay.Width) / 2;
+            /*int x = (int)(_mainRender.ActualWidth - _spriteDisplay.Width) / 2;
             int y = (int)(_mainRender.ActualHeight - _spriteDisplay.Height) / 2;
 
             _mainRenderScale.CenterX = _spriteDisplay.Width / 2;
@@ -388,13 +378,13 @@ namespace AnimationEditor
             y = (int)(_mainRender.ActualHeight - _spriteDisplay.Height * _mainRenderScale.ScaleY) / 2;
 
             Canvas.SetLeft(_spriteOutline, x - 1);
-            Canvas.SetTop(_spriteOutline, y - 1);
+            Canvas.SetTop(_spriteOutline, y - 1);*/
         }
 
         private void UpdateOriginMarker()
         {
             // Update the origin marker position
-            int? originx = _originX.Value;
+            /*int? originx = _originX.Value;
             int? originy = _originY.Value;
 
             if (originx == null || originy == null)
@@ -412,17 +402,17 @@ namespace AnimationEditor
             Canvas.SetLeft(_originMarker, x);
             Canvas.SetTop(_originMarker, y);
 
-            _spritePreviewWindow.UpdatePreviewRender();
+            _spritePreviewWindow.UpdatePreviewRender();*/
         }
         
         private void SpritePreviewWindow_Click(object sender, RoutedEventArgs e)
         {
-            if (_spritePreviewWindow.IsVisible)
+            /*if (_spritePreviewWindow.IsVisible)
             {
                 _spritePreviewWindow.Visibility = Visibility.Hidden;
             }
             else
-                _spritePreviewWindow.Visibility = Visibility.Visible;
+                _spritePreviewWindow.Visibility = Visibility.Visible;*/
         }
 
         private void LoadData(string filename, AnimationsFileData data)
@@ -481,12 +471,12 @@ namespace AnimationEditor
 
         private void MarkUnsavedChanges()
         {
-            MainWindowVM.UnsavedChanges = true;
+            //MainWindowVM.UnsavedChanges = true;
         }
 
         private void ProcessCommandLineArguments()
         {
-            if (App.Args.Length == 0)
+            /*if (App.Args.Length == 0)
                 return;
 
             Console.WriteLine("Running Dungeon Sphere Animation Manager through command line...");
@@ -505,7 +495,7 @@ namespace AnimationEditor
             }
 
             // If running with command line arguments, completely kill the program. Do not allow window to open.
-            Process.GetCurrentProcess().Kill();
+            Process.GetCurrentProcess().Kill();*/
         }
 
         /// <summary>
@@ -516,7 +506,7 @@ namespace AnimationEditor
         /// <returns>The new index after processing has occurred.</returns>
         private int HandleOption(string option, int index)
         {
-            if (option.Length == 1)
+            /*if (option.Length == 1)
                 return index;
 
             var args = App.Args;
@@ -548,21 +538,22 @@ namespace AnimationEditor
                     break;
             }
 
-            return index;
+            return index;*/
+            return 0;
         }
 
         private void combo_mainRenderScale_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var combo = sender as ComboBox;
+            /*var combo = sender as ComboBox;
             _mainRenderScale = new ScaleTransform(combo.SelectedIndex + 1, combo.SelectedIndex + 1);
 
             UpdateMainRender();
-            UpdateOriginMarker();
+            UpdateOriginMarker();*/
         }
 
         private void mainRender_OnWheelClick(object sender, MouseWheelEventArgs e)
         {
-            if (!Keyboard.IsKeyDown(Key.LeftCtrl))
+            /*if (!Keyboard.IsKeyDown(Key.LeftCtrl))
                 return;
 
             int index = _zoomScale.SelectedIndex;
@@ -575,7 +566,7 @@ namespace AnimationEditor
             else if (e.Delta < 0)
             {
                 _zoomScale.SelectedIndex = Math.Max(index - 1, 0);
-            }
+            }*/
         }
     }
 }
