@@ -3,28 +3,19 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:controls="clr-namespace:AnimationEditor.Controls"
-             xmlns:graphics="clr-namespace:AnimationEditor.Graphics"
-             xmlns:vm="clr-namespace:AnimationEditor.ViewModel"
-             xmlns:cv="clr-namespace:AnimationEditor.Converter"
              xmlns:e="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:pt="http://propertytools.org/wpf"
-             xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-<!--
-    <UserControl.DataContext>
-        <vm:TextureAtlasesViewModel />
-    </UserControl.DataContext>
-    -->
 
     <DockPanel>
         <Label DockPanel.Dock="Top" Content="Texture Atlases" Background="SlateGray"  Foreground="White"/>
         <ToolBarTray DockPanel.Dock="Bottom">
             <ToolBar ToolBarTray.IsLocked="True">
-                <Button ToolTip="Add Texture Atlas" Command="{Binding AddAtlasCommand}">Add</Button>
-                <Button ToolTip="Remove Texture Atlas"
-                        Command="{Binding RemoveAtlasCommand}" CommandParameter="{Binding SelectedItems, ElementName=tree}">
+                <Button ToolTip="Add Texture Atlas" Command="{Binding AddAtlasCommand}">
+                    Add
+                </Button>
+                <Button ToolTip="Remove Texture Atlas" Command="{Binding RemoveAtlasCommand}" CommandParameter="{Binding SelectedItems, ElementName=tree}">
                     Remove
                 </Button>
             </ToolBar>
@@ -37,37 +28,5 @@
                 </e:EventTrigger>
             </e:Interaction.Triggers>
         </pt:TreeListBox>
-        <!--
-
-        <controls:MultiSelectTreeView x:Name="trv_Atlas" ItemsSource="{Binding TextureAtlasesCollectionView}" ItemContainerStyle="{StaticResource TreeViewItem_SelectStyle}">
-            <e:Interaction.Behaviors>
-                <controls:MultiSelectTreeViewBehavior SelectedItems="{Binding Path=SelectedItems}"/>
-            </e:Interaction.Behaviors>
-            
-            <TreeView.ItemTemplate>
-                <HierarchicalDataTemplate DataType="{x:Type graphics:Sprite}" ItemsSource="{Binding Sprites}">
-                    <TextBlock Text="{Binding Name}" />
-                </HierarchicalDataTemplate>
-                
-                <
-                <HierarchicalDataTemplate DataType="{x:Type graphics:TextureAtlasItem}" ItemsSource="{Binding ChildrenView}">
-                    <TextBlock Text="{Binding Name}" />
-                </HierarchicalDataTemplate>
-                <HierarchicalDataTemplate DataType="{x:Type graphics:WpfSprite}" ItemsSource="{Binding ChildrenView}">
-                    <TextBlock Text="{Binding Name}" />
-                </HierarchicalDataTemplate>
-                -
-            </TreeView.ItemTemplate>
-        </controls:MultiSelectTreeView>
-
-       
-        <TreeView ItemsSource="{Binding TextureAtlases}">
-            <TreeView.ItemTemplate>
-                <HierarchicalDataTemplate ItemsSource="{Binding Sprites}" DataType="{x:Type graphics:Sprite}">
-                    <Label Content="{Binding Name}"/>
-                </HierarchicalDataTemplate>
-            </TreeView.ItemTemplate>
-        </TreeView>
-        -->
     </DockPanel>
 </UserControl>

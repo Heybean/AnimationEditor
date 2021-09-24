@@ -18,15 +18,17 @@ namespace AnimationEditor.ViewModel
 
         public bool UnsavedChanges { get; set; }
 
-        public SpritePreviewWindow SpritePreviewWindow { get; } = new SpritePreviewWindow();
+        //public SpritePreviewWindow SpritePreviewWindow { get; } = new SpritePreviewWindow();
 
-        public TextureAtlasesViewModel TextureAtlasesViewModel { get; }
-        public MainCanvasViewModel MainCanvasViewModel { get; }
+        public TextureAtlasesViewModel TextureAtlasesVM { get; }
+        public MainCanvasViewModel MainCanvasVM { get; }
 
         public MainViewModel()
         {
-            TextureAtlasesViewModel = new TextureAtlasesViewModel();
-            MainCanvasViewModel = new MainCanvasViewModel();
+            TextureAtlasesVM = new TextureAtlasesViewModel();
+            MainCanvasVM = new MainCanvasViewModel();
+
+            TextureAtlasesVM.SelectionChanged += MainCanvasVM.TextureAtlasSelectionChanged;
         }
 
         /*public void Clear()

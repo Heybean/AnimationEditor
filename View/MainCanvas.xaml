@@ -7,9 +7,11 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
-    <Canvas Background="Gray" ClipToBounds="True">
-        <Rectangle x:Name="rect_SpriteDisplay" Panel.ZIndex="1"/>
-        <Rectangle x:Name="rect_SpriteOutline" StrokeThickness="0" Stroke="Lime" Panel.ZIndex="2"/>
-        <Image x:Name="img_Origin" Source="origin_point.png" Panel.ZIndex="3" />
-    </Canvas>
+    <Grid>
+        <Canvas Background="Gray" ClipToBounds="True">
+            <Rectangle x:Name="rect_SpriteDisplay" Panel.ZIndex="1"/>
+            <Rectangle x:Name="rect_SpriteOutline" StrokeThickness="0" Stroke="Lime" Panel.ZIndex="2"/>
+            <Image Source="origin_point.png" Panel.ZIndex="3" Canvas.Left="{Binding OriginPointX}" Canvas.Right="{Binding OriginPointY}"/>
+        </Canvas>
+    </Grid>
 </UserControl>

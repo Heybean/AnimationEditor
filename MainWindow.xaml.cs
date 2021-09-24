@@ -195,7 +195,7 @@ namespace AnimationEditor
 
         }
 
-        private void Window_Loaded(object sender, EventArgs e)
+        private void Window_Loaded(object sender, System.EventArgs e)
         {
             /*_spritePreviewWindow.Owner = this;
 
@@ -340,7 +340,7 @@ namespace AnimationEditor
            // UpdateOriginMarker();
         }
 
-        private void GameTickTimer_Tick(object sender, EventArgs e)
+        private void GameTickTimer_Tick(object sender, System.EventArgs e)
         {
             /*if (TextureAtlasViewModel.SelectedItems.Count == 1)
             {

@@ -34,6 +34,9 @@ namespace AnimationEditor.ViewModel
         public ICommand RemoveAtlasCommand { get; }
         public ICommand SelectedItemsChangedCommand { get; }
 
+        public delegate void SelectionChangedEventHandler(object sender, EventArgs e);
+        public event SelectionChangedEventHandler SelectionChanged;
+
         public TextureAtlasesViewModel()
         {
             _model = new TextureAtlasesModel();
@@ -119,6 +122,7 @@ namespace AnimationEditor.ViewModel
         private void SelectedItemsChangedExecute(object parameters)
         {
 
+            SelectionChanged?.Invoke(this, new EventArgs() { Parameters = parameters });
         }
     }
 }
