@@ -73,6 +73,10 @@
             <view:TextureAtlasesView Grid.Column="0" />
 
             <GridSplitter Grid.Column="1" Width ="5" HorizontalAlignment="Stretch"/>
+
+            <view:MainCanvas Grid.Column="2" />
+
+            <GridSplitter Grid.Column="3" Width ="5" HorizontalAlignment="Stretch"/>
         </Grid>
     </DockPanel>
 <!--

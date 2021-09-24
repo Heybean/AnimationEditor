@@ -27,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="origin_point.png" />
+    <Resource Include="View\origin_point.png" />
   </ItemGroup>
 
 </Project>
