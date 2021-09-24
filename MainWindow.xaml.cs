@@ -293,7 +293,7 @@ namespace AnimationEditor
                 bool addedAtlas = false;
                 foreach (var filename in openFileDialog.FileNames)
                 {
-                    AddTextureAtlas(filename, invalidFiles);
+                    //AddTextureAtlas(filename, invalidFiles);
                     addedAtlas = true;
                 }
 
@@ -369,7 +369,7 @@ namespace AnimationEditor
         /// Adds a single texture atlas into the project. Texture files that can't be added are placed in invalidFiles (optional)
         /// </summary>
         /// <returns>The atlas that was created</returns>
-        private WpfTextureAtlas AddTextureAtlas(string file, List<string> invalidFiles = null)
+       /*private WpfTextureAtlas AddTextureAtlas(string file, List<string> invalidFiles = null)
         {
             var atlasName = System.IO.Path.GetFileNameWithoutExtension(file);
 
@@ -386,15 +386,15 @@ namespace AnimationEditor
             TextureAtlasViewModel.TextureAtlases.Add(atlas);
 
             return atlas;
-        }
+        }*/
 
         /// <summary>
         /// Removes a single texture atlas from the project
         /// </summary>
         private void RemoveTextureAtlas(WpfTextureAtlas atlas)
         {
-            TextureAtlasViewModel.RegisteredTextureAtlases.Remove(atlas.Name);
-            TextureAtlasViewModel.TextureAtlases.Remove(atlas);
+            //TextureAtlasViewModel.RegisteredTextureAtlases.Remove(atlas.Name);
+            //TextureAtlasViewModel.TextureAtlases.Remove(atlas);
         }
 
         private void StartNewFile()
@@ -507,7 +507,7 @@ namespace AnimationEditor
 
         private void LoadData(string filename, AnimationsFileData data)
         {
-            StartNewFile();
+            /*StartNewFile();
 
             var rootFolder = System.IO.Path.GetDirectoryName(filename);
             foreach(var atlasData in data.Root.Atlases)
@@ -522,13 +522,13 @@ namespace AnimationEditor
                 }
 
                 RecreateStructure(atlasData, atlas, atlas, atlasDict);
-            }
+            }*/
         }
 
-        private void RecreateStructure(AnimationsFileData.Folder folderRoot, TextureAtlasTreeItem atlasItem, WpfTextureAtlas atlas, Dictionary<string, SpriteModel> atlasDict)
+        /*private void RecreateStructure(AnimationsFileData.Folder folderRoot, TextureAtlasTreeItem atlasItem, WpfTextureAtlas atlas, Dictionary<string, SpriteModel> atlasDict)
         {
             // Create the folder in the atlas
-            /*foreach(var folderData in folderRoot.Folders)
+            foreach(var folderData in folderRoot.Folders)
             {
                 var folder = new TextureAtlasTreeItem() { Name = folderData.Name };
                 atlasItem.Children.Add(folder);
@@ -556,8 +556,8 @@ namespace AnimationEditor
                     atlas.Children.Remove(sprite);
                     atlasItem.Children.Add(sprite);
                 }
-            }*/
-        }
+            }
+        }*/
 
         private void MarkUnsavedChanges()
         {

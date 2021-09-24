@@ -61,6 +61,8 @@ namespace AnimationEditor.Model
                 entry.Value.Sort((x, y) => x.index.CompareTo(y.index));
                 SubNodes.Add(new SpriteModel(entry.Key, entry.Value));
             }
+
+            SortSubNodes();
         }
     }
 }

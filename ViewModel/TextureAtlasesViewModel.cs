@@ -20,7 +20,7 @@ namespace AnimationEditor.ViewModel
         private Node _selectedItem;
         private TextureAtlasesModel _model;
 
-        public IEnumerable HierarchySource
+        public IEnumerable AtlasRoot
         {
             get
             {
@@ -36,7 +36,6 @@ namespace AnimationEditor.ViewModel
 
         public TextureAtlasesViewModel()
         {
-            
             _model = new TextureAtlasesModel();
 
             Root = new Node { Name = "Untitled.anim" };
@@ -80,6 +79,8 @@ namespace AnimationEditor.ViewModel
                     }
                 }
 
+                Root.SortSubNodes();
+
                 //if (addedAtlas)
                 //    MainWindowVM.UnsavedChanges = true;
 
@@ -108,6 +109,8 @@ namespace AnimationEditor.ViewModel
                     removedAtlas = true;
                 }
             }
+
+            Root.SortSubNodes();
 
             //if (removedAtlas)
             //    MainWindowVM.UnsavedChanges = true;

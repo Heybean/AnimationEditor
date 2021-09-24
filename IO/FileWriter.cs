@@ -40,7 +40,7 @@ namespace AnimationEditor.IO
 
         private static void WriteChildren(XmlTextWriter writer, IList<object> list)
         {
-            foreach (var child in list)
+            /*foreach (var child in list)
             {
                 if (child is TextureAtlasTreeItem folder)
                 {
@@ -60,7 +60,7 @@ namespace AnimationEditor.IO
                     writer.WriteAttributeString("valign", sprite.VerticalAlignment.ToString());
                     writer.WriteEndElement();
                 }
-            }
+            }*/
         }
     }
 }

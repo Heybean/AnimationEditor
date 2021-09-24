@@ -4,9 +4,9 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace AnimationEditor.ViewModel
+namespace AnimationEditor
 {
-    public class ViewModelBase : INotifyPropertyChanged
+    public class NotifyBase : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

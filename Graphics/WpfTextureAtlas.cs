@@ -14,9 +14,9 @@ using System.Xml.Serialization;
 namespace AnimationEditor.Graphics
 {
     [XmlRoot("Atlas")]
-    public class WpfTextureAtlas : TextureAtlasTreeItem, INotifyPropertyChanged
+    public class WpfTextureAtlas
     {
-        [XmlIgnore]
+        /*[XmlIgnore]
         public string Filename { get; }
 
         /// <summary>
@@ -65,6 +65,6 @@ namespace AnimationEditor.Graphics
                 entry.Value.Sort((x, y) => x.index.CompareTo(y.index));
                 Children.Add(new SpriteModel(entry.Key, entry.Value));
             }
-        }
+        }*/
     }
 }

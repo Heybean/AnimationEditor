@@ -30,8 +30,8 @@ namespace AnimationEditor
                     var item = _selectedItems[0];
                     if (item is SpriteModel sprite)
                         return sprite.Name;
-                    else if (item is TextureAtlasTreeItem tai)
-                        return tai.Name;
+                    //else if (item is TextureAtlasTreeItem tai)
+                    //    return tai.Name;
                 }
 
                 return $"Selected Items: [{_selectedItems.Count}]";
