@@ -10,7 +10,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
-    <DockPanel IsEnabled="False">
+    <DockPanel>
         <Grid Margin="0 0 8 0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="49*"/>
@@ -26,7 +26,7 @@
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                     <Label Content="Name" Grid.Column="0"/>
-                    <Label Grid.Column="1" Background="AliceBlue" Content="{Binding Path=SpriteName}"/>
+                    <Label Grid.Column="1" Background="AliceBlue" Content="{Binding Path=SpriteName, Mode=OneWay}"/>
                 </Grid>
                 <Grid Margin="3">
                     <Grid.ColumnDefinitions>
