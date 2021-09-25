@@ -38,7 +38,9 @@
                 </e:EventTrigger>
             </e:Interaction.Triggers>
 
-            <Rectangle x:Name="rect_SpriteDisplay" Panel.ZIndex="1" RenderTransform="{Binding RenderScale}"/>
+            <Rectangle x:Name="rect_SpriteDisplay" Panel.ZIndex="1" RenderTransform="{Binding RenderScale}" Fill="{Binding DisplaySprite}"
+                       Width="{Binding SpriteWidth}" Height="{Binding SpriteHeight}"
+                       RenderOptions.BitmapScalingMode="NearestNeighbor"/>
             <Rectangle Stroke="Lime" Panel.ZIndex="2"
                        StrokeThickness="{Binding OutlineThickness}"
                        Width="{Binding OutlineWidth}"
@@ -58,7 +60,7 @@
                     </MultiBinding>
                 </Canvas.Top>
             </Rectangle>
-            <Image Source="origin_point.png" Panel.ZIndex="3" Canvas.Left="{Binding OriginPointX}" Canvas.Right="{Binding OriginPointY}"/>
+            <Image Source="origin_point.png" Panel.ZIndex="3" Canvas.Left="{Binding OriginPointX}" Canvas.Right="{Binding OriginPointY}" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
         </Canvas>
     </DockPanel>
 </UserControl>

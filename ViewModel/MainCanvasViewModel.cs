@@ -12,70 +12,52 @@ namespace AnimationEditor.ViewModel
 {
     public class MainCanvasViewModel : Observable
     {
+        private Vector2 _spriteOrigSize;
+        private Vector2 _spriteSize;
         private Vector2 _originPoint;
         private Vector2 _spritePosition;
         private Vector2 _outlineSize;
         private ScaleTransform _renderScale;
         private float _outlineThickness;
         private int _zoomIndex;
+        private ImageBrush _displaySprite;
 
         public float OriginPointX
         {
             get => _originPoint.X;
-            set
-            {
-                SetValue(ref _originPoint.X, value);
-            }
+            set => SetValue(ref _originPoint.X, value);
         }
 
         public float OriginPointY
         {
             get => _originPoint.Y;
-            set
-            {
-                SetValue(ref _originPoint.Y, value);
-            }
+            set => SetValue(ref _originPoint.Y, value);
         }
 
         public float OutlineWidth {
             get => _outlineSize.X;
-            set
-            {
-                SetValue(ref _outlineSize.X, value);
-            }
+            set => SetValue(ref _outlineSize.X, value);
         }
         public float OutlineHeight
         {
             get => _outlineSize.Y;
-            set
-            {
-                SetValue(ref _outlineSize.Y, value);
-            }
+            set => SetValue(ref _outlineSize.Y, value);
         }
         public float OutlineThickness
         {
             get => _outlineThickness;
-            set
-            {
-                SetValue(ref _outlineThickness, value);
-            }
+            set => SetValue(ref _outlineThickness, value);
         }
 
         public float SpriteX
         {
             get => _spritePosition.X;
-            set
-            {
-                SetValue(ref _spritePosition.X, value);
-            }
+            set => SetValue(ref _spritePosition.X, value);
         }
         public float SpriteY
         {
             get => _spritePosition.Y;
-            set
-            {
-                SetValue(ref _spritePosition.Y, value);
-            }
+            set => SetValue(ref _spritePosition.Y, value);
         }
 
         public ScaleTransform RenderScale
@@ -107,6 +89,34 @@ namespace AnimationEditor.ViewModel
                 _renderScale.ScaleX = value + 1;
                 _renderScale.ScaleY = value + 1;
                 RenderScale = _renderScale;
+
+            }
+        }
+
+        public ImageBrush DisplaySprite
+        {
+            get => _displaySprite;
+            set
+            {
+                SetValue(ref _displaySprite, value);
+            }
+        }
+
+        public float SpriteWidth
+        {
+            get => _spriteSize.X;
+            set
+            {
+                SetValue(ref _spriteSize.X, value);
+            }
+        }
+
+        public float SpriteHeight
+        {
+            get => _spriteSize.Y;
+            set
+            {
+                SetValue(ref _spriteSize.Y, value);
             }
         }
 
@@ -127,9 +137,7 @@ namespace AnimationEditor.ViewModel
             {
                 if (list[0] is SpriteModel sprite)
                 {
-                    OutlineWidth = sprite.Regions[0].width;
-                    OutlineHeight = sprite.Regions[0].height;
-                    OutlineThickness = 1;
+                    LoadSprite(sprite);
                 }
                 else
                 {
@@ -171,6 +179,18 @@ namespace AnimationEditor.ViewModel
 
             OutlineX = (int)(w - OutlineWidth * RenderScale.ScaleX) / 2;
             OutlineY = (int)(h - OutlineHeight * RenderScale.ScaleY) / 2;*/
+        }
+
+        private void LoadSprite(SpriteModel sprite)
+        {
+            OutlineWidth = sprite.Regions[0].width;
+            OutlineHeight = sprite.Regions[0].height;
+            OutlineThickness = 1;
+
+            _spriteOrigSize = new Vector2(sprite.Regions[0].width, sprite.Regions[0].height);
+            SpriteWidth = _spriteOrigSize.X;
+            SpriteHeight = _spriteOrigSize.Y;
+            DisplaySprite = sprite.Regions[0].ImageBrush;
         }
 
         /*private UpdateMainRender()
