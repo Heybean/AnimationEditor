@@ -1,4 +1,5 @@
-﻿using AnimationEditor.Model;
+﻿using AnimationEditor.Graphics;
+using AnimationEditor.Model;
 using PropertyTools;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,8 @@ namespace AnimationEditor.ViewModel
         private int? _fps;
         private int? _originX;
         private int? _originY;
+        private SpriteHorizontalAlignment? _hAlign;
+        private SpriteVerticalAlignment? _vAlign;
         private IList<object> _selectedItems;
 
         public string SpriteName
@@ -55,6 +58,30 @@ namespace AnimationEditor.ViewModel
             }
         }
 
+        public SpriteHorizontalAlignment? HAlign
+        {
+            get => GetValue(ref _hAlign) ? _hAlign : null;
+            set
+            {
+                _hAlign = UpdateSelectedItems(value) ? value : null;
+                OnPropertyChanged();
+                OnPropertyChanged("OriginX");
+                OnPropertyChanged("OriginY");
+            }
+        }
+
+        public SpriteVerticalAlignment? VAlign
+        {
+            get => GetValue(ref _vAlign) ? _vAlign : null;
+            set
+            {
+                _vAlign = UpdateSelectedItems(value) ? value : null;
+                OnPropertyChanged();
+                OnPropertyChanged("OriginX");
+                OnPropertyChanged("OriginY");
+            }
+        }
+
         public SpritePropertiesViewModel()
         {
             _selectedItems = new List<object>();
@@ -84,6 +111,8 @@ namespace AnimationEditor.ViewModel
             OnPropertyChanged("FPS");
             OnPropertyChanged("OriginX");
             OnPropertyChanged("OriginY");
+            OnPropertyChanged("HAlign");
+            OnPropertyChanged("VAlign");
         }
 
         private bool GetValue<T>(ref T value, [CallerMemberName] string propertyName = "")

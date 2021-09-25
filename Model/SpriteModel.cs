@@ -52,7 +52,7 @@ namespace AnimationEditor.Model
         }
 
         [XmlIgnore]
-        public SpriteHorizontalAlignment HorizontalAlignment
+        public SpriteHorizontalAlignment HAlign
         {
             get => _hAlign;
             set
@@ -66,7 +66,7 @@ namespace AnimationEditor.Model
         }
 
         [XmlIgnore]
-        public SpriteVerticalAlignment VerticalAlignment
+        public SpriteVerticalAlignment VAlign
         {
             get => _vAlign;
             set
@@ -109,8 +109,8 @@ namespace AnimationEditor.Model
             Name = name;
             Regions = regions;
             FPS = 60;
-            HorizontalAlignment = SpriteHorizontalAlignment.Center;
-            VerticalAlignment = SpriteVerticalAlignment.Center;
+            HAlign = SpriteHorizontalAlignment.Center;
+            VAlign = SpriteVerticalAlignment.Center;
             UpdateAlignmentOriginX();
             UpdateAlignmentOriginY();
             CurrentFrame = Regions[0].ImageBrush;
@@ -145,7 +145,7 @@ namespace AnimationEditor.Model
             var region = Regions[0];
             var holdHalign = _hAlign;
 
-            switch (HorizontalAlignment)
+            switch (HAlign)
             {
                 case SpriteHorizontalAlignment.Left:
                     OriginX = 0;
@@ -166,7 +166,7 @@ namespace AnimationEditor.Model
             var region = Regions[0];
             var holdValign = _vAlign;
 
-            switch (VerticalAlignment)
+            switch (VAlign)
             {
                 case SpriteVerticalAlignment.Top:
                     OriginY = 0;

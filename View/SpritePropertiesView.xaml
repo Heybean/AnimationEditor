@@ -46,7 +46,7 @@
                     <controls:NumericUpDown Grid.Column="1" Value="{Binding Path=OriginX, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     <ComboBox Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10, 0, 0, 0"
                               ItemsSource="{Binding Source={anim:EnumBindingSource {x:Type graphics:SpriteHorizontalAlignment}}}"
-                              SelectedValue="{Binding Path=HorizontalAlignment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                              SelectedValue="{Binding Path=HAlign, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                     </ComboBox>
                 </Grid>
                 <Grid Margin="3">
@@ -59,7 +59,7 @@
                     <controls:NumericUpDown x:Name="num_OriginY" Grid.Column="1" Value="{Binding Path=OriginY, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     <ComboBox Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center"  Margin="10, 0, 0, 0"
                                           ItemsSource="{Binding Source={anim:EnumBindingSource {x:Type graphics:SpriteVerticalAlignment}}}"
-                                          SelectedValue="{Binding Path=VerticalAlignment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                          SelectedValue="{Binding Path=VAlign, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                     </ComboBox>
                 </Grid>
             </StackPanel>
