@@ -12,7 +12,24 @@
         <cv:CanvasCenterConverter x:Key="centerConverter" />
     </UserControl.Resources>
 
-    <Grid>
+    <DockPanel>
+        <StatusBar DockPanel.Dock="Bottom">
+            <StatusBarItem DockPanel.Dock="Right">
+                <ComboBox SelectedIndex="{Binding ZoomIndex}">
+                    <ComboBoxItem>100%</ComboBoxItem>
+                    <ComboBoxItem>200%</ComboBoxItem>
+                    <ComboBoxItem>300%</ComboBoxItem>
+                    <ComboBoxItem>400%</ComboBoxItem>
+                    <ComboBoxItem>500%</ComboBoxItem>
+                    <ComboBoxItem>600%</ComboBoxItem>
+                    <ComboBoxItem>700%</ComboBoxItem>
+                    <ComboBoxItem>800%</ComboBoxItem>
+                    <ComboBoxItem>900%</ComboBoxItem>
+                    <ComboBoxItem>1000%</ComboBoxItem>
+                </ComboBox>
+            </StatusBarItem>
+            <StatusBarItem></StatusBarItem>
+        </StatusBar>
         <Canvas x:Name="mainRender" Background="Gray" ClipToBounds="True"
                 Width="{Binding Path=CanvasWidth, Mode=OneWayToSource}" Height="{Binding Path=CanvasHeight, Mode=OneWayToSource}">
             <e:Interaction.Triggers>
@@ -43,5 +60,5 @@
             </Rectangle>
             <Image Source="origin_point.png" Panel.ZIndex="3" Canvas.Left="{Binding OriginPointX}" Canvas.Right="{Binding OriginPointY}"/>
         </Canvas>
-    </Grid>
+    </DockPanel>
 </UserControl>

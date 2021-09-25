@@ -14,10 +14,10 @@ namespace AnimationEditor.ViewModel
     {
         private Vector2 _originPoint;
         private Vector2 _spritePosition;
-        private Vector2 _outlinePos;
         private Vector2 _outlineSize;
         private ScaleTransform _renderScale;
         private float _outlineThickness;
+        private int _zoomIndex;
 
         public float OriginPointX
         {
@@ -37,22 +37,6 @@ namespace AnimationEditor.ViewModel
             }
         }
 
-        public float OutlineX
-        {
-            get => _outlinePos.X;
-            set
-            {
-                SetValue(ref _outlinePos.X, value);
-            }
-        }
-        public float OutlineY
-        {
-            get => _outlinePos.Y;
-            set
-            {
-                SetValue(ref _outlinePos.Y, value);
-            }
-        }
         public float OutlineWidth {
             get => _outlineSize.X;
             set
@@ -113,6 +97,19 @@ namespace AnimationEditor.ViewModel
             get; set;
         }
 
+        public int ZoomIndex
+        {
+            get => _zoomIndex;
+            set
+            {
+                SetValue(ref _zoomIndex, value);
+
+                _renderScale.ScaleX = value + 1;
+                _renderScale.ScaleY = value + 1;
+                RenderScale = _renderScale;
+            }
+        }
+
 
         public ICommand SizeChangedCommand { get; }
 
@@ -147,8 +144,6 @@ namespace AnimationEditor.ViewModel
 
         private void HideOutlineRect()
         {
-            OutlineX = 0;
-            OutlineY = 0;
             OutlineWidth = 0;
             OutlineHeight = 0;
             OutlineThickness = 0;

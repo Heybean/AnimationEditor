@@ -16,7 +16,6 @@ namespace AnimationEditor.Converter
             return Math.Floor(((double)values[0] - (float)values[1] * (double)values[2]) / 2);
         }
 
-
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
             return null;
