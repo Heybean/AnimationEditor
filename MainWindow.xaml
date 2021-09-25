@@ -12,7 +12,7 @@
         xmlns:vm="clr-namespace:AnimationEditor.ViewModel"
         mc:Ignorable="d"
         Title="Animation Editor" Height="450" Width="800"
-        Loaded="Window_Loaded" Closing="Window_Closing" WindowState="Maximized">
+        WindowState="Maximized">
 
     <Window.DataContext>
         <vm:MainViewModel x:Name="mainVM"/>

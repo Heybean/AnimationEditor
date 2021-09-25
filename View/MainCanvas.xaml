@@ -3,20 +3,44 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:AnimationEditor.View"
+             xmlns:e="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:cv="clr-namespace:AnimationEditor.Converter"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
+    <UserControl.Resources>
+        <cv:CanvasCenterConverter x:Key="centerConverter" />
+    </UserControl.Resources>
+
     <Grid>
-        <Canvas Background="Gray" ClipToBounds="True">
-            <Rectangle x:Name="rect_SpriteDisplay" Panel.ZIndex="1" />
+        <Canvas x:Name="mainRender" Background="Gray" ClipToBounds="True"
+                Width="{Binding Path=CanvasWidth, Mode=OneWayToSource}" Height="{Binding Path=CanvasHeight, Mode=OneWayToSource}">
+            <e:Interaction.Triggers>
+                <e:EventTrigger EventName="SizeChanged">
+                    <e:InvokeCommandAction Command="{Binding SizeChangedCommand}" CommandParameter="{Binding ElementName=mainRender}"/>
+                </e:EventTrigger>
+            </e:Interaction.Triggers>
+
+            <Rectangle x:Name="rect_SpriteDisplay" Panel.ZIndex="1" RenderTransform="{Binding RenderScale}"/>
             <Rectangle Stroke="Lime" Panel.ZIndex="2"
                        StrokeThickness="{Binding OutlineThickness}"
-                       Canvas.Left="{Binding OutlineX}"
-                       Canvas.Right="{Binding OutlineY}"
                        Width="{Binding OutlineWidth}"
-                       Height="{Binding OutlineHeight}"
-                       />
+                       Height="{Binding OutlineHeight}">
+                <Canvas.Left>
+                    <MultiBinding Converter="{StaticResource centerConverter}" Mode="OneWay">
+                        <Binding ElementName="mainRender" Path="ActualWidth" />
+                        <Binding Path="OutlineWidth" />
+                        <Binding Path="RenderScale.ScaleX" />
+                    </MultiBinding>
+                </Canvas.Left>
+                <Canvas.Top>
+                    <MultiBinding Converter="{StaticResource centerConverter}" Mode="OneWay">
+                        <Binding ElementName="mainRender" Path="ActualHeight" />
+                        <Binding Path="OutlineHeight" />
+                        <Binding Path="RenderScale.ScaleY" />
+                    </MultiBinding>
+                </Canvas.Top>
+            </Rectangle>
             <Image Source="origin_point.png" Panel.ZIndex="3" Canvas.Left="{Binding OriginPointX}" Canvas.Right="{Binding OriginPointY}"/>
         </Canvas>
     </Grid>

@@ -4,6 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Numerics;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
 
 namespace AnimationEditor.ViewModel
 {
@@ -13,6 +16,7 @@ namespace AnimationEditor.ViewModel
         private Vector2 _spritePosition;
         private Vector2 _outlinePos;
         private Vector2 _outlineSize;
+        private ScaleTransform _renderScale;
         private float _outlineThickness;
 
         public float OriginPointX
@@ -90,8 +94,32 @@ namespace AnimationEditor.ViewModel
             }
         }
 
+        public ScaleTransform RenderScale
+        {
+            get => _renderScale;
+            set
+            {
+                SetValue(ref _renderScale, value);
+            }
+        }
+
+        public double CanvasWidth
+        {
+            get; set;
+        }
+
+        public double CanvasHeight
+        {
+            get; set;
+        }
+
+
+        public ICommand SizeChangedCommand { get; }
+
         public MainCanvasViewModel()
         {
+            SizeChangedCommand = new RelayCommand(x => SizeChangedExecute(x));
+            _renderScale = new ScaleTransform();
         }
 
         public void TextureAtlasSelectionChanged(object sender, EventArgs e)
@@ -125,5 +153,52 @@ namespace AnimationEditor.ViewModel
             OutlineHeight = 0;
             OutlineThickness = 0;
         }
+
+        private void SizeChangedExecute(object parameters)
+        {
+            var canvas = parameters as Canvas;
+
+            if (canvas == null)
+                return;
+
+            RefreshDisplay(canvas.ActualWidth, canvas.ActualHeight);
+        }
+
+        private void RefreshDisplay(double w, double h)
+        {
+            /*_renderScale.CenterX = OutlineWidth / 2;
+            _renderScale.CenterY = OutlineHeight / 2;
+
+            //_spriteDisplay.RenderTransform = _mainRenderScale;
+
+            SpriteX = (int)(w - OutlineWidth) / 2;
+            SpriteY = (int)(h - OutlineHeight) / 2;
+
+            OutlineX = (int)(w - OutlineWidth * RenderScale.ScaleX) / 2;
+            OutlineY = (int)(h - OutlineHeight * RenderScale.ScaleY) / 2;*/
+        }
+
+        /*private UpdateMainRender()
+        {
+            int x = (int)(_mainRender.ActualWidth - _spriteDisplay.Width) / 2;
+            int y = (int)(_mainRender.ActualHeight - _spriteDisplay.Height) / 2;
+
+            _mainRenderScale.CenterX = _spriteDisplay.Width / 2;
+            _mainRenderScale.CenterY = _spriteDisplay.Height / 2;
+
+            _spriteDisplay.RenderTransform = _mainRenderScale;
+
+            Canvas.SetLeft(_spriteDisplay, x);
+            Canvas.SetTop(_spriteDisplay, y);
+
+            // Render the outline
+            _spriteOutline.Width = _spriteDisplay.Width * _mainRenderScale.ScaleX + 2;
+            _spriteOutline.Height = _spriteDisplay.Height * _mainRenderScale.ScaleY + 2;
+
+            x = (int)(_mainRender.ActualWidth - _spriteDisplay.Width * _mainRenderScale.ScaleX) / 2;
+            y = (int)(_mainRender.ActualHeight - _spriteDisplay.Height * _mainRenderScale.ScaleY) / 2;
+
+            Canvas.SetLeft(_spriteOutline, x - 1);
+            Canvas.SetTop(_spriteOutline, y - 1); */
     }
 }

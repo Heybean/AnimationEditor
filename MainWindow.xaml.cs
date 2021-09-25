@@ -29,6 +29,20 @@ namespace AnimationEditor
     {
         private const string PropertiesFile = "app_prop.xml";
 
+        private TreeView _atlasTreeView;
+        private Button _buttonRemoveAtlas;
+        private Canvas _mainRender;
+        private ScaleTransform _mainRenderScale;
+        private DispatcherTimer _gameTickTimer;
+        private Rectangle _spriteOutline;
+        private Rectangle _spriteDisplay;
+        private DockPanel _propertiesPanel;
+        private NumericUpDown _originX;
+        private NumericUpDown _originY;
+        private Image _originMarker;
+        private SpritePreviewWindow _spritePreviewWindow;
+        private ComboBox _zoomScale;
+
         private bool _processingCommandLine;
 
         private MainViewModel MainWindowVM { get; set; } = new MainViewModel();
@@ -195,7 +209,7 @@ namespace AnimationEditor
 
         }
 
-        private void Window_Loaded(object sender, System.EventArgs e)
+        private void Window_Loaded(object sender, EventArgs e)
         {
             /*_spritePreviewWindow.Owner = this;
 
@@ -340,7 +354,7 @@ namespace AnimationEditor
            // UpdateOriginMarker();
         }
 
-        private void GameTickTimer_Tick(object sender, System.EventArgs e)
+        private void GameTickTimer_Tick(object sender, EventArgs e)
         {
             /*if (TextureAtlasViewModel.SelectedItems.Count == 1)
             {
