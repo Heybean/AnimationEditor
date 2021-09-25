@@ -5,7 +5,7 @@ using System.Text;
 
 namespace AnimationEditor.ViewModel
 {
-    public class MainViewModel : Observable
+    public class MainViewModel : ViewModelBase
     {
         /// <summary>
         /// File name without extension
@@ -17,13 +17,16 @@ namespace AnimationEditor.ViewModel
         /// </summary>
         public string SavePath { get; set; }
 
-        public bool UnsavedChanges { get; set; }
+        public bool UnsavedChanges { get; }
 
         //public SpritePreviewWindow SpritePreviewWindow { get; } = new SpritePreviewWindow();
 
         public TextureAtlasesViewModel TextureAtlasesVM { get; }
         public MainCanvasViewModel MainCanvasVM { get; }
         public SpritePropertiesViewModel SpritePropertiesVM { get; }
+
+        public delegate void ModifyEventHandler(object sender);
+        public event ModifyEventHandler FileModified;
 
         public MainViewModel()
         {

@@ -45,7 +45,7 @@ namespace AnimationEditor
 
         private bool _processingCommandLine;
 
-        public TextureAtlasViewModel TextureAtlasViewModel { get; private set; }
+        //public TextureAtlasViewModel TextureAtlasViewModel { get; private set; }
 
         public MainWindow()
         {
@@ -279,46 +279,6 @@ namespace AnimationEditor
             return null;
         }
 
-        private void TreeView_ItemsSelected(object sender, RoutedEventArgs e)
-        {
-            /*_propertiesPanel.DataContext = new TreeViewSelectedItems(TextureAtlasViewModel.SelectedItems, this.MainWindowVM);
-
-            // Toggle Remove Atlas button based on which items are selected
-            bool onlyTextureAtlasesSelected = true;
-            foreach(var item in TextureAtlasViewModel.SelectedItems)
-            {
-                if (!(item is WpfTextureAtlas))
-                {
-                    onlyTextureAtlasesSelected = false;
-                    break;
-                }
-            }
-
-            _buttonRemoveAtlas.IsEnabled = onlyTextureAtlasesSelected;
-
-            if (TextureAtlasViewModel.SelectedItems.Count == 1) // Single Item Selected
-            {
-                if (TextureAtlasViewModel.SelectedItems[0] is SpriteModel sprite)
-                {
-                    _spriteOutline.StrokeThickness = 1;
-
-                    _spriteDisplay.Width = sprite.Regions[0].width;
-                    _spriteDisplay.Height = sprite.Regions[0].height;
-                    _spriteDisplay.Fill = sprite.Regions[0].ImageBrush;
-
-                    UpdateMainRender();
-                    UpdateOriginMarker();
-
-                    _spritePreviewWindow.SetSprite(sprite);
-                }
-            }
-            else
-            {
-                _spriteDisplay.Fill = null;
-                _spriteOutline.StrokeThickness = 0;
-            }*/
-        }
-
         private void StartNewFile()
         {
             /*TextureAtlasViewModel = new TextureAtlasViewModel();
@@ -361,30 +321,6 @@ namespace AnimationEditor
                     sprite.Update(_gameTickTimer.Interval.TotalMilliseconds);
                 }
             }*/
-        }
-
-        private void UpdateMainRender()
-        {
-            /*int x = (int)(_mainRender.ActualWidth - _spriteDisplay.Width) / 2;
-            int y = (int)(_mainRender.ActualHeight - _spriteDisplay.Height) / 2;
-
-            _mainRenderScale.CenterX = _spriteDisplay.Width / 2;
-            _mainRenderScale.CenterY = _spriteDisplay.Height / 2;
-
-            _spriteDisplay.RenderTransform = _mainRenderScale;
-
-            Canvas.SetLeft(_spriteDisplay, x);
-            Canvas.SetTop(_spriteDisplay, y);
-
-            // Render the outline
-            _spriteOutline.Width = _spriteDisplay.Width * _mainRenderScale.ScaleX + 2;
-            _spriteOutline.Height = _spriteDisplay.Height * _mainRenderScale.ScaleY + 2;
-
-            x = (int)(_mainRender.ActualWidth - _spriteDisplay.Width * _mainRenderScale.ScaleX) / 2;
-            y = (int)(_mainRender.ActualHeight - _spriteDisplay.Height * _mainRenderScale.ScaleY) / 2;
-
-            Canvas.SetLeft(_spriteOutline, x - 1);
-            Canvas.SetTop(_spriteOutline, y - 1);*/
         }
 
         private void UpdateOriginMarker()

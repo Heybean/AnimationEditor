@@ -8,7 +8,7 @@ using System.Text;
 
 namespace AnimationEditor.ViewModel
 {
-    public class SpritePropertiesViewModel : NotifyBase
+    public class SpritePropertiesViewModel : ViewModelBase
     {
         private string _spriteName;
         private int? _fps;

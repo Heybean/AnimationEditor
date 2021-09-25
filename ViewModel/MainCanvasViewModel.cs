@@ -10,7 +10,7 @@ using System.Windows.Media;
 
 namespace AnimationEditor.ViewModel
 {
-    public class MainCanvasViewModel : Observable
+    public class MainCanvasViewModel : ViewModelBase
     {
         private Vector2 _spriteOrigSize;
         private Vector2 _spriteSize;
@@ -25,39 +25,68 @@ namespace AnimationEditor.ViewModel
         public float OriginPointX
         {
             get => _originPoint.X;
-            set => SetValue(ref _originPoint.X, value);
+            set
+            {
+                _originPoint.X = value;
+                OnPropertyChanged();
+            }
         }
 
         public float OriginPointY
         {
             get => _originPoint.Y;
-            set => SetValue(ref _originPoint.Y, value);
+            set
+            {
+                _originPoint.Y = value;
+                OnPropertyChanged();
+            }
         }
 
-        public float OutlineWidth {
+        public float OutlineWidth
+        {
             get => _outlineSize.X;
-            set => SetValue(ref _outlineSize.X, value);
+            set
+            {
+                _outlineSize.X = value;
+                OnPropertyChanged();
+            }
         }
         public float OutlineHeight
         {
             get => _outlineSize.Y;
-            set => SetValue(ref _outlineSize.Y, value);
+            set
+            {
+                _outlineSize.Y = value;
+                OnPropertyChanged();
+            }
         }
         public float OutlineThickness
         {
             get => _outlineThickness;
-            set => SetValue(ref _outlineThickness, value);
+            set
+            {
+                _outlineThickness = value;
+                OnPropertyChanged();
+            }
         }
 
         public float SpriteX
         {
             get => _spritePosition.X;
-            set => SetValue(ref _spritePosition.X, value);
+            set
+            {
+                _spritePosition.X = value;
+                OnPropertyChanged();
+            }
         }
         public float SpriteY
         {
             get => _spritePosition.Y;
-            set => SetValue(ref _spritePosition.Y, value);
+            set
+            {
+                _spritePosition.Y = value;
+                OnPropertyChanged();
+            }
         }
 
         public ScaleTransform RenderScale
@@ -65,19 +94,10 @@ namespace AnimationEditor.ViewModel
             get => _renderScale;
             set
             {
-                SetValue(ref _renderScale, value);
+                _renderScale = value;
+                OnPropertyChanged();
                 UpdateOutlineThickness();
             }
-        }
-
-        public double CanvasWidth
-        {
-            get; set;
-        }
-
-        public double CanvasHeight
-        {
-            get; set;
         }
 
         public int ZoomIndex
@@ -85,7 +105,8 @@ namespace AnimationEditor.ViewModel
             get => _zoomIndex;
             set
             {
-                SetValue(ref _zoomIndex, value);
+                _zoomIndex = value;
+                OnPropertyChanged();
 
                 _renderScale.ScaleX = value + 1;
                 _renderScale.ScaleY = value + 1;
@@ -99,7 +120,8 @@ namespace AnimationEditor.ViewModel
             get => _displaySprite;
             set
             {
-                SetValue(ref _displaySprite, value);
+                _displaySprite = value;
+                OnPropertyChanged();
             }
         }
 
@@ -108,7 +130,8 @@ namespace AnimationEditor.ViewModel
             get => _spriteSize.X;
             set
             {
-                SetValue(ref _spriteSize.X, value);
+                _spriteSize.X = value;
+                OnPropertyChanged();
             }
         }
 
@@ -117,7 +140,8 @@ namespace AnimationEditor.ViewModel
             get => _spriteSize.Y;
             set
             {
-                SetValue(ref _spriteSize.Y, value);
+                _spriteSize.Y = value;
+                OnPropertyChanged();
             }
         }
 

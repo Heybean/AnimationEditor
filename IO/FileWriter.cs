@@ -12,9 +12,9 @@ namespace AnimationEditor.IO
 {
     public class FileWriter
     {
-        public static void Write(string filename, TextureAtlasViewModel viewModel)
+        /*public static void Write(string filename, TextureAtlasViewModel viewModel)
         {
-            /*var directory = Path.GetDirectoryName(filename);
+            var directory = Path.GetDirectoryName(filename);
 
             // Find the relative paths for each texture atlas
             foreach(var atlas in viewModel.TextureAtlases)
@@ -35,8 +35,8 @@ namespace AnimationEditor.IO
                     writer.WriteEndElement();
                 }
                 writer.WriteEndElement();
-            }*/
-        }
+            }
+        }*/
 
         private static void WriteChildren(XmlTextWriter writer, IList<object> list)
         {
