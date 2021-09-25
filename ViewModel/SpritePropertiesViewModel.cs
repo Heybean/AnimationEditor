@@ -30,29 +30,28 @@ namespace AnimationEditor.ViewModel
             get => GetValue(ref _fps) ? _fps : null;
             set
             {
-                if (!UpdateSelectedItems(value))
-                    value = null;
-
-                _fps = value;
+                _fps = UpdateSelectedItems(value) ? value : null;
                 OnPropertyChanged();
             }
         }
 
         public int? OriginX
-        {   
-            get => _originX;
+        {
+            get => GetValue(ref _originX) ? _originX : null;
             set
             {
-                //SetValue(ref _originX, value);
+                _originX = UpdateSelectedItems(value) ? value : null;
+                OnPropertyChanged();
             }
         }
 
         public int? OriginY
         {
-            get => _originY;
+            get => GetValue(ref _originY) ? _originY : null;
             set
             {
-                //SetValue(ref _originY, value);
+                _originY = UpdateSelectedItems(value) ? value : null;
+                OnPropertyChanged();
             }
         }
 
@@ -82,10 +81,9 @@ namespace AnimationEditor.ViewModel
                 SpriteName = $"Selected Items: [{_selectedItems.Count}]";
             }
 
-            if (!GetValue(ref _fps, "FPS"))
-                _fps = null;
-
             OnPropertyChanged("FPS");
+            OnPropertyChanged("OriginX");
+            OnPropertyChanged("OriginY");
         }
 
         private bool GetValue<T>(ref T value, [CallerMemberName] string propertyName = "")
