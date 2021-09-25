@@ -1,6 +1,8 @@
 ﻿using AnimationEditor.Graphics;
+using AnimationEditor.Model;
 using AnimationEditor.ViewModel;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -12,17 +14,22 @@ namespace AnimationEditor.IO
 {
     public class FileWriter
     {
-        /*public static void Write(string filename, TextureAtlasViewModel viewModel)
+        public static void Write(string filename, IEnumerable root)
         {
             var directory = Path.GetDirectoryName(filename);
 
             // Find the relative paths for each texture atlas
-            foreach(var atlas in viewModel.TextureAtlases)
+            /*foreach(Node item in atlases)
             {
-                atlas.RelativePath = Path.GetRelativePath(directory, atlas.Filename);
-            }
+                if (item is TextureAtlasModel atlas)
+                {
+                    atlas.RelativePath = Path.GetRelativePath(directory, atlas.Filename);
+                }
+            }*/
 
-            using (var writer = new XmlTextWriter(filename, null))
+            WriteNode(root);
+
+            /*using (var writer = new XmlTextWriter(filename, null))
             {
                 writer.WriteStartElement("Animations");
                 foreach(var atlas in viewModel.TextureAtlases)
@@ -35,8 +42,16 @@ namespace AnimationEditor.IO
                     writer.WriteEndElement();
                 }
                 writer.WriteEndElement();
+            }*/
+        }
+
+        private static void WriteNode(IEnumerable nodes)
+        {
+            foreach(Node item in nodes)
+            {
+                WriteNode(item.SubNodes);
             }
-        }*/
+        }
 
         private static void WriteChildren(XmlTextWriter writer, IList<object> list)
         {
