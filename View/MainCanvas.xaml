@@ -30,17 +30,21 @@
             </StatusBarItem>
             <StatusBarItem></StatusBarItem>
         </StatusBar>
+        
         <Canvas x:Name="mainRender" Background="Gray" ClipToBounds="True"
                 Width="{Binding Path=CanvasWidth, Mode=OneWayToSource}" Height="{Binding Path=CanvasHeight, Mode=OneWayToSource}">
             <e:Interaction.Triggers>
                 <e:EventTrigger EventName="SizeChanged">
                     <e:InvokeCommandAction Command="{Binding SizeChangedCommand}" CommandParameter="{Binding ElementName=mainRender}"/>
                 </e:EventTrigger>
+                <e:EventTrigger EventName="PreviewMouseWheel">
+                    <e:InvokeCommandAction Command="{Binding MouseWheelCommand}" PassEventArgsToCommand="True"/>
+                </e:EventTrigger>
             </e:Interaction.Triggers>
 
             <Rectangle x:Name="rect_SpriteDisplay" Panel.ZIndex="1" RenderTransform="{Binding RenderScale}" Fill="{Binding DisplaySprite}"
                        Width="{Binding SpriteWidth}" Height="{Binding SpriteHeight}"
-                       RenderOptions.BitmapScalingMode="NearestNeighbor">
+                       RenderOptions.BitmapScalingMode="NearestNeighbor" Stroke="Lime" StrokeThickness="{Binding OutlineThickness}">
                 <Canvas.Left>
                     <MultiBinding Converter="{StaticResource centerConverter}" Mode="OneWay">
                         <Binding ElementName="mainRender" Path="ActualWidth" />
@@ -56,26 +60,10 @@
                     </MultiBinding>
                 </Canvas.Top>
             </Rectangle>
-            <Rectangle Stroke="Lime" Panel.ZIndex="2"
-                       StrokeThickness="{Binding OutlineThickness}"
-                       Width="{Binding OutlineWidth}"
-                       Height="{Binding OutlineHeight}">
-                <Canvas.Left>
-                    <MultiBinding Converter="{StaticResource centerConverter}" Mode="OneWay">
-                        <Binding ElementName="mainRender" Path="ActualWidth" />
-                        <Binding Path="OutlineWidth" />
-                        <Binding Path="RenderScale.ScaleX" />
-                    </MultiBinding>
-                </Canvas.Left>
-                <Canvas.Top>
-                    <MultiBinding Converter="{StaticResource centerConverter}" Mode="OneWay">
-                        <Binding ElementName="mainRender" Path="ActualHeight" />
-                        <Binding Path="OutlineHeight" />
-                        <Binding Path="RenderScale.ScaleY" />
-                    </MultiBinding>
-                </Canvas.Top>
-            </Rectangle>
-            <Image Source="origin_point.png" Panel.ZIndex="3" Canvas.Left="{Binding OriginPointX}" Canvas.Right="{Binding OriginPointY}" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+            <Image Source="origin_point.png" Panel.ZIndex="3" Canvas.Left="{Binding OriginPointX}" Canvas.Right="{Binding OriginPointY}"
+                   RenderOptions.BitmapScalingMode="NearestNeighbor">
+                
+            </Image>
         </Canvas>
     </DockPanel>
 </UserControl>

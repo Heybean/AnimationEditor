@@ -45,8 +45,6 @@ namespace AnimationEditor
 
         private bool _processingCommandLine;
 
-        private MainViewModel MainWindowVM { get; set; } = new MainViewModel();
-
         public TextureAtlasViewModel TextureAtlasViewModel { get; private set; }
 
         public MainWindow()
@@ -365,12 +363,6 @@ namespace AnimationEditor
             }*/
         }
 
-        private void MainRender_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            //UpdateMainRender();
-            //UpdateOriginMarker();
-        }
-
         private void UpdateMainRender()
         {
             /*int x = (int)(_mainRender.ActualWidth - _spriteDisplay.Width) / 2;
@@ -554,33 +546,6 @@ namespace AnimationEditor
 
             return index;*/
             return 0;
-        }
-
-        private void combo_mainRenderScale_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            /*var combo = sender as ComboBox;
-            _mainRenderScale = new ScaleTransform(combo.SelectedIndex + 1, combo.SelectedIndex + 1);
-
-            UpdateMainRender();
-            UpdateOriginMarker();*/
-        }
-
-        private void mainRender_OnWheelClick(object sender, MouseWheelEventArgs e)
-        {
-            /*if (!Keyboard.IsKeyDown(Key.LeftCtrl))
-                return;
-
-            int index = _zoomScale.SelectedIndex;
-            int maxIndex = _zoomScale.Items.Count;
-
-            if (e.Delta > 0)
-            {
-                _zoomScale.SelectedIndex = Math.Min(index + 1, maxIndex - 1);
-            }
-            else if (e.Delta < 0)
-            {
-                _zoomScale.SelectedIndex = Math.Max(index - 1, 0);
-            }*/
         }
     }
 }

@@ -66,6 +66,7 @@ namespace AnimationEditor.ViewModel
             set
             {
                 SetValue(ref _renderScale, value);
+                UpdateOutlineThickness();
             }
         }
 
@@ -89,7 +90,7 @@ namespace AnimationEditor.ViewModel
                 _renderScale.ScaleX = value + 1;
                 _renderScale.ScaleY = value + 1;
                 RenderScale = _renderScale;
-
+                RefreshSprite();
             }
         }
 
@@ -122,11 +123,14 @@ namespace AnimationEditor.ViewModel
 
 
         public ICommand SizeChangedCommand { get; }
+        public ICommand MouseWheelCommand { get; }
 
         public MainCanvasViewModel()
         {
             SizeChangedCommand = new RelayCommand(x => SizeChangedExecute(x));
+            MouseWheelCommand = new RelayCommand(x => MouseWheelExecute(x));
             _renderScale = new ScaleTransform();
+            ZoomIndex = 2;
         }
 
         public void TextureAtlasSelectionChanged(object sender, EventArgs e)
@@ -142,11 +146,13 @@ namespace AnimationEditor.ViewModel
                 else
                 {
                     HideOutlineRect();
+                    DisplaySprite = null;
                 }
             }
             else
             {
                 HideOutlineRect();
+                DisplaySprite = null;
             }
         }
 
@@ -165,6 +171,25 @@ namespace AnimationEditor.ViewModel
                 return;
 
             RefreshDisplay(canvas.ActualWidth, canvas.ActualHeight);
+        }
+        private void MouseWheelExecute(object parameters)
+        {
+            var e = (MouseWheelEventArgs)parameters;
+
+            if (Keyboard.IsKeyDown(Key.LeftCtrl))
+            {
+                int index = ZoomIndex;
+                const int MaxCount = 10;
+
+                if (e.Delta > 0)
+                {
+                    ZoomIndex = Math.Min(index + 1, MaxCount - 1);
+                }
+                else if (e.Delta < 0)
+                {
+                    ZoomIndex = Math.Max(index - 1, 0);
+                }
+            }
         }
 
         private void RefreshDisplay(double w, double h)
@@ -185,12 +210,24 @@ namespace AnimationEditor.ViewModel
         {
             OutlineWidth = sprite.Regions[0].width;
             OutlineHeight = sprite.Regions[0].height;
-            OutlineThickness = 1;
+            UpdateOutlineThickness();
 
             _spriteOrigSize = new Vector2(sprite.Regions[0].width, sprite.Regions[0].height);
+            DisplaySprite = sprite.Regions[0].ImageBrush;
             SpriteWidth = _spriteOrigSize.X;
             SpriteHeight = _spriteOrigSize.Y;
-            DisplaySprite = sprite.Regions[0].ImageBrush;
+            //RefreshSprite();
+        }
+
+        private void RefreshSprite()
+        {
+            //SpriteWidth = (float)(_spriteOrigSize.X * _renderScale.ScaleX);
+            //SpriteHeight = (float)(_spriteOrigSize.Y * _renderScale.ScaleY);
+        }
+
+        private void UpdateOutlineThickness()
+        {
+            OutlineThickness = 1f / (ZoomIndex + 1);
         }
 
         /*private UpdateMainRender()
