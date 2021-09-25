@@ -35,6 +35,7 @@ namespace AnimationEditor.ViewModel
             {
                 _fps = UpdateSelectedItems(value) ? value : null;
                 OnPropertyChanged();
+                MarkFileModified();
             }
         }
 
@@ -45,6 +46,7 @@ namespace AnimationEditor.ViewModel
             {
                 _originX = UpdateSelectedItems(value) ? value : null;
                 OnPropertyChanged();
+                MarkFileModified();
             }
         }
 
@@ -55,6 +57,7 @@ namespace AnimationEditor.ViewModel
             {
                 _originY = UpdateSelectedItems(value) ? value : null;
                 OnPropertyChanged();
+                MarkFileModified();
             }
         }
 
@@ -67,6 +70,7 @@ namespace AnimationEditor.ViewModel
                 OnPropertyChanged();
                 OnPropertyChanged("OriginX");
                 OnPropertyChanged("OriginY");
+                MarkFileModified();
             }
         }
 
@@ -79,6 +83,7 @@ namespace AnimationEditor.ViewModel
                 OnPropertyChanged();
                 OnPropertyChanged("OriginX");
                 OnPropertyChanged("OriginY");
+                MarkFileModified();
             }
         }
 

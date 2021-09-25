@@ -78,14 +78,13 @@ namespace AnimationEditor.ViewModel
                         addedAtlas = true;
                         Root.SubNodes.Add(newAtlas);
                         Root.ShowChildren = true;
-                        //_textureAtlases.Add(newAtlas);
                     }
                 }
 
                 Root.SortSubNodes();
 
-                //if (addedAtlas)
-                //    MainWindowVM.UnsavedChanges = true;
+                if (addedAtlas)
+                    MarkFileModified();
 
                 if (invalidFiles.Count > 0)
                 {
@@ -115,8 +114,8 @@ namespace AnimationEditor.ViewModel
 
             Root.SortSubNodes();
 
-            //if (removedAtlas)
-            //    MainWindowVM.UnsavedChanges = true;
+            if (removedAtlas)
+                MarkFileModified();
         }
 
         private void SelectedItemsChangedExecute(object parameters)

@@ -17,7 +17,7 @@ namespace AnimationEditor.ViewModel
         /// </summary>
         public string SavePath { get; set; }
 
-        public bool UnsavedChanges { get; }
+        public bool UnsavedChanges { get; private set; }
 
         //public SpritePreviewWindow SpritePreviewWindow { get; } = new SpritePreviewWindow();
 
@@ -36,6 +36,14 @@ namespace AnimationEditor.ViewModel
 
             TextureAtlasesVM.SelectionChanged += MainCanvasVM.TextureAtlasSelectionChanged;
             TextureAtlasesVM.SelectionChanged += SpritePropertiesVM.TextureAtlasSelectionChanged;
+
+            TextureAtlasesVM.OnFileModified += FileModifiedEvent;
+            SpritePropertiesVM.OnFileModified += FileModifiedEvent;
+        }
+
+        private void FileModifiedEvent(object sender)
+        {
+            UnsavedChanges = true;
         }
 
         /*public void Clear()
