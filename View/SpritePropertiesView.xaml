@@ -1,0 +1,68 @@
+﻿<UserControl x:Class="AnimationEditor.View.SpritePropertiesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AnimationEditor.View"
+             xmlns:anim="clr-namespace:AnimationEditor"
+             xmlns:controls="clr-namespace:AnimationEditor.Controls"
+             xmlns:graphics="clr-namespace:AnimationEditor.Graphics"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <DockPanel IsEnabled="False">
+        <Grid Margin="0 0 8 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="49*"/>
+                <ColumnDefinition Width="143*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Grid.ColumnSpan="2">
+                <Grid Margin="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="60"/>
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Name" Grid.Column="0"/>
+                    <Label Grid.Column="1" Background="AliceBlue" Content="{Binding Path=SpriteName}"/>
+                </Grid>
+                <Grid Margin="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="60"/>
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Label Content="FPS" Grid.Column="0"/>
+                    <controls:NumericUpDown Grid.Column="1" MinValue="0" Value="{Binding Path=FPS, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                </Grid>
+                <Grid Margin="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="60"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="80"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Origin X" Grid.Column="0"/>
+                    <controls:NumericUpDown Grid.Column="1" Value="{Binding Path=OriginX, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <ComboBox Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10, 0, 0, 0"
+                              ItemsSource="{Binding Source={anim:EnumBindingSource {x:Type graphics:SpriteHorizontalAlignment}}}"
+                              SelectedValue="{Binding Path=HorizontalAlignment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    </ComboBox>
+                </Grid>
+                <Grid Margin="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="60"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="80"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Origin Y" Grid.Column="0"/>
+                    <controls:NumericUpDown x:Name="num_OriginY" Grid.Column="1" Value="{Binding Path=OriginY, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <ComboBox Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center"  Margin="10, 0, 0, 0"
+                                          ItemsSource="{Binding Source={anim:EnumBindingSource {x:Type graphics:SpriteVerticalAlignment}}}"
+                                          SelectedValue="{Binding Path=VerticalAlignment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    </ComboBox>
+                </Grid>
+            </StackPanel>
+        </Grid>
+    </DockPanel>
+</UserControl>

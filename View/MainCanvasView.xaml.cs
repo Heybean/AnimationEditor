@@ -14,11 +14,11 @@ using System.Windows.Shapes;
 namespace AnimationEditor.View
 {
     /// <summary>
-    /// Interaction logic for MainCanvas.xaml
+    /// Interaction logic for MainCanvasView.xaml
     /// </summary>
-    public partial class MainCanvas : UserControl
+    public partial class MainCanvasView : UserControl
     {
-        public MainCanvas()
+        public MainCanvasView()
         {
             InitializeComponent();
         }

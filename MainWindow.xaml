@@ -72,9 +72,11 @@
 
             <GridSplitter Grid.Column="1" Width ="5" HorizontalAlignment="Stretch"/>
 
-            <view:MainCanvas Grid.Column="2" DataContext="{Binding ElementName=mainVM, Path=MainCanvasVM}"/>
+            <view:MainCanvasView Grid.Column="2" DataContext="{Binding ElementName=mainVM, Path=MainCanvasVM}"/>
 
             <GridSplitter Grid.Column="3" Width ="5" HorizontalAlignment="Stretch"/>
+
+            <view:SpritePropertiesView Grid.Column="4" DataContext="{Binding ElementName=mainVM, Path=SpritePropertiesVM}"/>
         </Grid>
     </DockPanel>
 <!--
