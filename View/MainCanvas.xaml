@@ -40,7 +40,22 @@
 
             <Rectangle x:Name="rect_SpriteDisplay" Panel.ZIndex="1" RenderTransform="{Binding RenderScale}" Fill="{Binding DisplaySprite}"
                        Width="{Binding SpriteWidth}" Height="{Binding SpriteHeight}"
-                       RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+                       RenderOptions.BitmapScalingMode="NearestNeighbor">
+                <Canvas.Left>
+                    <MultiBinding Converter="{StaticResource centerConverter}" Mode="OneWay">
+                        <Binding ElementName="mainRender" Path="ActualWidth" />
+                        <Binding Path="SpriteWidth" />
+                        <Binding Path="RenderScale.ScaleX" />
+                    </MultiBinding>
+                </Canvas.Left>
+                <Canvas.Top>
+                    <MultiBinding Converter="{StaticResource centerConverter}" Mode="OneWay">
+                        <Binding ElementName="mainRender" Path="ActualHeight" />
+                        <Binding Path="SpriteHeight" />
+                        <Binding Path="RenderScale.ScaleY" />
+                    </MultiBinding>
+                </Canvas.Top>
+            </Rectangle>
             <Rectangle Stroke="Lime" Panel.ZIndex="2"
                        StrokeThickness="{Binding OutlineThickness}"
                        Width="{Binding OutlineWidth}"
