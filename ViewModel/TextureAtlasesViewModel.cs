@@ -52,6 +52,13 @@ namespace AnimationEditor.ViewModel
             SelectedItemsChangedCommand = new RelayCommand(x => SelectedItemsChangedExecute(x));
         }
 
+        public void Reset()
+        {
+            _model = new TextureAtlasesModel();
+            Root.Name = "Untitled.anim";
+            Root.SubNodes.Clear();
+        }
+
         private void AddAtlasExecute(object parameters)
         {
             var openFileDialog = new OpenFileDialog
@@ -120,7 +127,6 @@ namespace AnimationEditor.ViewModel
 
         private void SelectedItemsChangedExecute(object parameters)
         {
-
             SelectionChanged?.Invoke(this, new EventArgs() { Parameters = parameters });
         }
     }

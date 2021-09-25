@@ -29,7 +29,7 @@
     </e:Interaction.Triggers>
 
     <Window.InputBindings>
-        <KeyBinding Key="N" Modifiers="Ctrl" Command="New" />
+        <KeyBinding Key="N" Modifiers="Ctrl" Command="{Binding NewCommand}" />
         <KeyBinding Key="O" Modifiers="Ctrl" Command="Open" />
         <KeyBinding Key="S" Modifiers="Ctrl" Command="Save" />
         <KeyBinding Key="S" Modifiers="Ctrl+Shift" Command="{Binding SaveCommand}" />
@@ -40,7 +40,7 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
-                <MenuItem Header="_New" InputGestureText="Ctrl+N"/>
+                <MenuItem Header="_New" InputGestureText="Ctrl+N" Command="{Binding NewCommand}"/>
                 <MenuItem Header="_Open" InputGestureText="Ctrl+O"/>
                 <Separator />
                 <MenuItem Header="_Save" InputGestureText="Ctrl+S" Command="{Binding SaveCommand}"/>

@@ -92,6 +92,16 @@ namespace AnimationEditor.ViewModel
             _selectedItems = new List<object>();
         }
 
+        public void Reset()
+        {
+            SpriteName = "";
+            FPS = null;
+            OriginX = null;
+            OriginY = null;
+            HAlign = null;
+            VAlign = null;
+        }
+
         public void TextureAtlasSelectionChanged(object sender, EventArgs e)
         {
             _selectedItems = (IList<object>)e.Parameters;

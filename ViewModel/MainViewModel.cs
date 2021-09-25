@@ -66,10 +66,8 @@ namespace AnimationEditor.ViewModel
         {
             var e = (CancelEventArgs)parameters;
 
-            if (UnsavedChanges)
-            {
+            if (!PromptUnsavedChanges())
                 e.Cancel = true;
-            }
         }
 
         private void ExitExecute(object parameters)
@@ -80,7 +78,14 @@ namespace AnimationEditor.ViewModel
 
         private void NewExecute(object parameters)
         {
-
+            if (PromptUnsavedChanges())
+            {
+                UnsavedChanges = false;
+                FileName = "";
+                SavePath = "";
+                TextureAtlasesVM.Reset();
+                SpritePropertiesVM.Reset();
+            }
         }
 
         private void SaveExecute(object parameters)
