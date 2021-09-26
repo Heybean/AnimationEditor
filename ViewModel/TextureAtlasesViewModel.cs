@@ -62,11 +62,13 @@ namespace AnimationEditor.ViewModel
             Root.Name = "Untitled.anim";
         }
 
-        public void AddTextureAtlas(string filename)
+        public TextureAtlasModel AddTextureAtlas(string filename)
         {
             var newAtlas = _model.AddTextureAtlas(filename);
             Root.SubNodes.Add(newAtlas);
             Root.ShowChildren = true;
+
+            return newAtlas;
         }
 
         private void AddAtlasExecute(object parameters)

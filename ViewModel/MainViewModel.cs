@@ -1,4 +1,6 @@
-﻿using AnimationEditor.IO;
+﻿using AnimationEditor.Graphics;
+using AnimationEditor.IO;
+using AnimationEditor.Model;
 using Heybean.Graphics;
 using Microsoft.Win32;
 using PropertyTools;
@@ -124,23 +126,47 @@ namespace AnimationEditor.ViewModel
             var rootFolder = Path.GetDirectoryName(filename);
             TextureAtlasesVM.Root.Name = FileName + ".anim";
 
-            foreach(var atlasData in data.Root.Atlases)
+            var atlasDict = new Dictionary<string, SpriteModel>();
+            foreach (var atlasData in data.Root.Atlases)
             {
-                TextureAtlasesVM.AddTextureAtlas(rootFolder + "\\" + atlasData.File);
-                
-                /*var atlas = AddTextureAtlas(rootFolder + "\\" + atlasData.File);
-
-                // Create simple dictionary for quick atlas lookup
-                var atlasDict = new Dictionary<string, SpriteModel>();
-                foreach(SpriteModel sprite in atlas.Children)
+                var atlas = TextureAtlasesVM.AddTextureAtlas(rootFolder + "\\" + atlasData.File);
+                foreach (SpriteModel sprite in atlas.SubNodes)
                 {
                     atlasDict.Add(sprite.Name, sprite);
-                }*/
+                }
 
-                //RecreateStructure(atlasData, atlas, atlas, atlasDict);
+                RecreateStructure(atlasData, TextureAtlasesVM.Root, atlasDict);
             }
 
             UnsavedChanges = false;
+        }
+
+        private void RecreateStructure(AnimationsFileData.Folder parentFolder, Node parentNode, Dictionary<string, SpriteModel> atlasDict)
+        {
+            Node node = new Node(parentNode);
+            foreach(var folder in parentFolder.Folders)
+            {
+                Node folderNode = new Node(node);
+                RecreateStructure(folder, folderNode, atlasDict);
+                node.SubNodes.Add(folderNode);
+            }
+
+            foreach(var spriteData in parentFolder.Sprites)
+            {
+                SpriteModel sprite;
+                atlasDict.TryGetValue(spriteData.Name, out sprite);
+                if (sprite == null)
+                    continue;
+
+                // Update the sprite with data from file
+                sprite.FPS = spriteData.FPS;
+                sprite.OriginX = spriteData.OriginX;
+                sprite.OriginY = spriteData.OriginY;
+                sprite.HAlign = (SpriteHorizontalAlignment)Enum.Parse(typeof(SpriteHorizontalAlignment), spriteData.HorizontalAlignment, true);
+                sprite.VAlign = (SpriteVerticalAlignment)Enum.Parse(typeof(SpriteVerticalAlignment), spriteData.VerticalAlignment, true);
+
+                node.SubNodes.Add(sprite);
+            }
         }
 
         /*private void RecreateStructure(AnimationsFileData.Folder folderRoot, TextureAtlasTreeItem atlasItem, WpfTextureAtlas atlas, Dictionary<string, SpriteModel> atlasDict)
