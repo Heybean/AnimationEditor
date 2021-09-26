@@ -119,6 +119,7 @@ namespace AnimationEditor.ViewModel
                 _renderScale.ScaleX = value + 1;
                 _renderScale.ScaleY = value + 1;
                 RenderScale = _renderScale;
+                CenterPositionSprite();
             }
         }
 
@@ -200,28 +201,12 @@ namespace AnimationEditor.ViewModel
                 return;
             }
 
+            _originPoint.X = (int)e.X;
+            _originPoint.Y = (int)e.Y;
+
             // Update the origin marker position
-            OriginMarkerX = SpriteX;
-            OriginMarkerY = SpriteY;
-            /*int? originx = _originX.Value;
-            int? originy = _originY.Value;
-
-            if (originx == null || originy == null)
-                return;
-
-            int x = (int)(_mainRender.ActualWidth - _spriteDisplay.Width * _mainRenderScale.ScaleX) / 2;
-            int y = (int)(_mainRender.ActualHeight - _spriteDisplay.Height * _mainRenderScale.ScaleY) / 2;
-
-            x -= (int)_originMarker.Source.Width / 2;
-            y -= (int)_originMarker.Source.Height / 2;
-
-            x += (int)(originx * _mainRenderScale.ScaleX);
-            y += (int)(originy * _mainRenderScale.ScaleY);
-
-            Canvas.SetLeft(_originMarker, x);
-            Canvas.SetTop(_originMarker, y);
-
-            _spritePreviewWindow.UpdatePreviewRender();*/
+            OriginMarkerX = SpriteX + _originPoint.X * _renderScale.ScaleX - _originMarkerWidth / 2;
+            OriginMarkerY = SpriteY + _originPoint.Y * _renderScale.ScaleY - _originMarkerHeight / 2;
         }
 
         private void HideOutlineRect()
@@ -300,6 +285,8 @@ namespace AnimationEditor.ViewModel
         {
             SpriteX = (_canvasSize.X - _spriteWidth * _renderScale.ScaleX) / 2;
             SpriteY = (_canvasSize.Y - _spriteHeight * _renderScale.ScaleY) / 2;
+
+            OnOriginUpdated(this, new OriginUpdatedEventArgs { X = (int)_originPoint.X, Y = (int)_originPoint.Y });
         }
     }
 }

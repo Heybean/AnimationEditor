@@ -52,7 +52,7 @@
                        >
             </Rectangle>
             <Image x:Name="rect_origin" Source="origin_point.png" Panel.ZIndex="3" HorizontalAlignment="Center"
-                   RenderOptions.BitmapScalingMode="NearestNeighbor">
+                   RenderOptions.BitmapScalingMode="NearestNeighbor" Canvas.Left="{Binding OriginMarkerX}" Canvas.Top="{Binding OriginMarkerY}">
                 <e:Interaction.Triggers>
                     <e:EventTrigger EventName="Loaded">
                         <e:InvokeCommandAction Command="{Binding OriginMarkerLoadedCommand}" CommandParameter="{Binding ElementName=rect_origin}" />
