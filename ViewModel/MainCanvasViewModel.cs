@@ -13,34 +13,42 @@ namespace AnimationEditor.ViewModel
     public class MainCanvasViewModel : ViewModelBase
     {
         private Vector2 _spriteOrigSize;
-        private Vector2 _spriteSize;
         private Vector2 _originPoint;
-        private Vector2 _spritePosition;
         private Vector2 _outlineSize;
+        private Vector2 _canvasSize;
         private ScaleTransform _renderScale;
-        private float _outlineThickness;
+        private double _originMarkerX;
+        private double _originMarkerY;
+        private double _originMarkerWidth;
+        private double _originMarkerHeight;
+        private double _spriteX;
+        private double _spriteY;
+        private double _spriteWidth;
+        private double _spriteHeight;
+        private double _outlineThickness;
         private int _zoomIndex;
         private ImageBrush _displaySprite;
 
-        public float OriginPointX
+        public double OriginMarkerX
         {
-            get => _originPoint.X;
+            get => _originMarkerX;
             set
             {
-                _originPoint.X = value;
+                _originMarkerX = value;
                 OnPropertyChanged();
             }
         }
 
-        public float OriginPointY
+        public double OriginMarkerY
         {
-            get => _originPoint.Y;
+            get => _originMarkerY;
             set
             {
-                _originPoint.Y = value;
+                _originMarkerY = value;
                 OnPropertyChanged();
             }
         }
+
 
         public float OutlineWidth
         {
@@ -60,7 +68,7 @@ namespace AnimationEditor.ViewModel
                 OnPropertyChanged();
             }
         }
-        public float OutlineThickness
+        public double OutlineThickness
         {
             get => _outlineThickness;
             set
@@ -70,21 +78,21 @@ namespace AnimationEditor.ViewModel
             }
         }
 
-        public float SpriteX
+        public double SpriteX
         {
-            get => _spritePosition.X;
+            get => _spriteX;
             set
             {
-                _spritePosition.X = value;
+                _spriteX = value;
                 OnPropertyChanged();
             }
         }
-        public float SpriteY
+        public double SpriteY
         {
-            get => _spritePosition.Y;
+            get => _spriteY;
             set
             {
-                _spritePosition.Y = value;
+                _spriteY = value;
                 OnPropertyChanged();
             }
         }
@@ -111,7 +119,6 @@ namespace AnimationEditor.ViewModel
                 _renderScale.ScaleX = value + 1;
                 _renderScale.ScaleY = value + 1;
                 RenderScale = _renderScale;
-                RefreshSprite();
             }
         }
 
@@ -125,34 +132,37 @@ namespace AnimationEditor.ViewModel
             }
         }
 
-        public float SpriteWidth
+        public double SpriteWidth
         {
-            get => _spriteSize.X;
+            get => _spriteWidth;
             set
             {
-                _spriteSize.X = value;
+                _spriteWidth = value;
                 OnPropertyChanged();
             }
         }
 
-        public float SpriteHeight
+        public double SpriteHeight
         {
-            get => _spriteSize.Y;
+            get => _spriteHeight;
             set
             {
-                _spriteSize.Y = value;
+                _spriteHeight = value;
                 OnPropertyChanged();
             }
         }
-
 
         public ICommand SizeChangedCommand { get; }
         public ICommand MouseWheelCommand { get; }
+        public ICommand CanvasLoadedCommand { get; }
+        public ICommand OriginMarkerLoadedCommand { get; }
 
         public MainCanvasViewModel()
         {
             SizeChangedCommand = new RelayCommand(x => SizeChangedExecute(x));
             MouseWheelCommand = new RelayCommand(x => MouseWheelExecute(x));
+            CanvasLoadedCommand = new RelayCommand(x => CanvasLoadedExecute(x));
+            OriginMarkerLoadedCommand = new RelayCommand(x => OriginMarkerLoadedExecute(x));
             _renderScale = new ScaleTransform();
             ZoomIndex = 2;
         }
@@ -166,6 +176,7 @@ namespace AnimationEditor.ViewModel
                 if (list[0] is SpriteModel sprite)
                 {
                     LoadSprite(sprite);
+                    CenterPositionSprite();
                 }
                 else
                 {
@@ -178,6 +189,39 @@ namespace AnimationEditor.ViewModel
                 HideOutlineRect();
                 DisplaySprite = null;
             }
+        }
+
+        public void OnOriginUpdated(object sender, OriginUpdatedEventArgs e)
+        {
+            if (e.X == null || e.Y == null)
+            {
+                OriginMarkerX = _canvasSize.X / 2;
+                OriginMarkerY = _canvasSize.Y / 2;
+                return;
+            }
+
+            // Update the origin marker position
+            OriginMarkerX = SpriteX;
+            OriginMarkerY = SpriteY;
+            /*int? originx = _originX.Value;
+            int? originy = _originY.Value;
+
+            if (originx == null || originy == null)
+                return;
+
+            int x = (int)(_mainRender.ActualWidth - _spriteDisplay.Width * _mainRenderScale.ScaleX) / 2;
+            int y = (int)(_mainRender.ActualHeight - _spriteDisplay.Height * _mainRenderScale.ScaleY) / 2;
+
+            x -= (int)_originMarker.Source.Width / 2;
+            y -= (int)_originMarker.Source.Height / 2;
+
+            x += (int)(originx * _mainRenderScale.ScaleX);
+            y += (int)(originy * _mainRenderScale.ScaleY);
+
+            Canvas.SetLeft(_originMarker, x);
+            Canvas.SetTop(_originMarker, y);
+
+            _spritePreviewWindow.UpdatePreviewRender();*/
         }
 
         private void HideOutlineRect()
@@ -194,8 +238,16 @@ namespace AnimationEditor.ViewModel
             if (canvas == null)
                 return;
 
-            RefreshDisplay(canvas.ActualWidth, canvas.ActualHeight);
+            _canvasSize = new Vector2((float)canvas.ActualWidth, (float)canvas.ActualHeight);
+            CenterPositionSprite();
         }
+
+        private void CanvasLoadedExecute(object parameters)
+        {
+            SizeChangedExecute(parameters);
+            OnOriginUpdated(this, new OriginUpdatedEventArgs());
+        }
+
         private void MouseWheelExecute(object parameters)
         {
             var e = (MouseWheelEventArgs)parameters;
@@ -216,18 +268,14 @@ namespace AnimationEditor.ViewModel
             }
         }
 
-        private void RefreshDisplay(double w, double h)
+        private void OriginMarkerLoadedExecute(object parameters)
         {
-            /*_renderScale.CenterX = OutlineWidth / 2;
-            _renderScale.CenterY = OutlineHeight / 2;
+            var img = parameters as Image;
+            if (img == null)
+                return;
 
-            //_spriteDisplay.RenderTransform = _mainRenderScale;
-
-            SpriteX = (int)(w - OutlineWidth) / 2;
-            SpriteY = (int)(h - OutlineHeight) / 2;
-
-            OutlineX = (int)(w - OutlineWidth * RenderScale.ScaleX) / 2;
-            OutlineY = (int)(h - OutlineHeight * RenderScale.ScaleY) / 2;*/
+            _originMarkerWidth = img.ActualWidth;
+            _originMarkerHeight = img.ActualHeight;
         }
 
         private void LoadSprite(SpriteModel sprite)
@@ -243,38 +291,15 @@ namespace AnimationEditor.ViewModel
             //RefreshSprite();
         }
 
-        private void RefreshSprite()
-        {
-            //SpriteWidth = (float)(_spriteOrigSize.X * _renderScale.ScaleX);
-            //SpriteHeight = (float)(_spriteOrigSize.Y * _renderScale.ScaleY);
-        }
-
         private void UpdateOutlineThickness()
         {
             OutlineThickness = 1f / (ZoomIndex + 1);
         }
 
-        /*private UpdateMainRender()
+        private void CenterPositionSprite()
         {
-            int x = (int)(_mainRender.ActualWidth - _spriteDisplay.Width) / 2;
-            int y = (int)(_mainRender.ActualHeight - _spriteDisplay.Height) / 2;
-
-            _mainRenderScale.CenterX = _spriteDisplay.Width / 2;
-            _mainRenderScale.CenterY = _spriteDisplay.Height / 2;
-
-            _spriteDisplay.RenderTransform = _mainRenderScale;
-
-            Canvas.SetLeft(_spriteDisplay, x);
-            Canvas.SetTop(_spriteDisplay, y);
-
-            // Render the outline
-            _spriteOutline.Width = _spriteDisplay.Width * _mainRenderScale.ScaleX + 2;
-            _spriteOutline.Height = _spriteDisplay.Height * _mainRenderScale.ScaleY + 2;
-
-            x = (int)(_mainRender.ActualWidth - _spriteDisplay.Width * _mainRenderScale.ScaleX) / 2;
-            y = (int)(_mainRender.ActualHeight - _spriteDisplay.Height * _mainRenderScale.ScaleY) / 2;
-
-            Canvas.SetLeft(_spriteOutline, x - 1);
-            Canvas.SetTop(_spriteOutline, y - 1); */
+            SpriteX = (_canvasSize.X - _spriteWidth * _renderScale.ScaleX) / 2;
+            SpriteY = (_canvasSize.Y - _spriteHeight * _renderScale.ScaleY) / 2;
+        }
     }
 }

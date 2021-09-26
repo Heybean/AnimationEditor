@@ -53,6 +53,8 @@ namespace AnimationEditor.ViewModel
             TextureAtlasesVM.OnFileModified += FileModifiedEvent;
             SpritePropertiesVM.OnFileModified += FileModifiedEvent;
 
+            SpritePropertiesVM.OnUpdateOriginMarker += MainCanvasVM.OnOriginUpdated;
+
             ClosingCommand = new RelayCommand(x => ClosingExecute(x));
             ExitCommand = new RelayCommand(x => ExitExecute(x));
             NewCommand = new RelayCommand(_ => NewExecute(null));

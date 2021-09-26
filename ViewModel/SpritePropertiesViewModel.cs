@@ -47,6 +47,8 @@ namespace AnimationEditor.ViewModel
                 _originX = UpdateSelectedItems(value) ? value : null;
                 OnPropertyChanged();
                 MarkFileModified();
+
+                OnUpdateOriginMarker?.Invoke(this, new OriginUpdatedEventArgs { X = _originX, Y = _originY });
             }
         }
 
@@ -58,6 +60,8 @@ namespace AnimationEditor.ViewModel
                 _originY = UpdateSelectedItems(value) ? value : null;
                 OnPropertyChanged();
                 MarkFileModified();
+
+                OnUpdateOriginMarker?.Invoke(this, new OriginUpdatedEventArgs { X = _originX, Y = _originY });
             }
         }
 
@@ -86,6 +90,9 @@ namespace AnimationEditor.ViewModel
                 MarkFileModified();
             }
         }
+
+        public delegate void OriginUpdatedEventHandler(object sender, OriginUpdatedEventArgs e);
+        public event OriginUpdatedEventHandler OnUpdateOriginMarker;
 
         public SpritePropertiesViewModel()
         {
@@ -128,6 +135,7 @@ namespace AnimationEditor.ViewModel
             OnPropertyChanged("OriginY");
             OnPropertyChanged("HAlign");
             OnPropertyChanged("VAlign");
+            OnUpdateOriginMarker?.Invoke(this, new OriginUpdatedEventArgs { X = _originX, Y = _originY });
         }
 
         private bool GetValue<T>(ref T value, [CallerMemberName] string propertyName = "")

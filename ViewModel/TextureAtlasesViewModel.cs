@@ -46,10 +46,6 @@ namespace AnimationEditor.ViewModel
 
             Root = new Node { Name = "Untitled.anim" };
 
-            /*_textureAtlases = new ObservableCollection<TextureAtlas>(_model.TextureAtlases.Values);
-            TextureAtlasesCollectionView = CollectionViewSource.GetDefaultView(_textureAtlases);
-            TextureAtlasesCollectionView.SortDescriptions.Add(new SortDescription("AtlasName", ListSortDirection.Ascending));*/
-
             AddAtlasCommand = new RelayCommand(_ => AddAtlasExecute(null));
             RemoveAtlasCommand = new RelayCommand(x => RemoveAtlasExecute(x));
             SelectedItemsChangedCommand = new RelayCommand(x => SelectedItemsChangedExecute(x));

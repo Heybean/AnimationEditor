@@ -50,89 +50,6 @@ namespace AnimationEditor
         public MainWindow()
         {
             InitializeComponent();
-
-            /*ProcessCommandLineArguments();
-
-            if (_processingCommandLine)
-                return;
-
-            DataContext = MainWindowVM;
-
-            _gameTickTimer = new DispatcherTimer();
-            _gameTickTimer.Tick += GameTickTimer_Tick;
-            _gameTickTimer.Interval = TimeSpan.FromSeconds(1 / 60.0);
-            _gameTickTimer.IsEnabled = true;
-
-            _atlasTreeView = (TreeView)FindName("trv_Atlas");
-            _buttonRemoveAtlas = (Button)FindName("btn_RemoveAtlas");
-            _mainRender = (Canvas)FindName("cv_MainRender");
-            _spriteOutline = (Rectangle)FindName("rect_SpriteOutline");
-            _spriteDisplay = (Rectangle)FindName("rect_SpriteDisplay");
-            _propertiesPanel = (DockPanel)FindName("dock_Properties");
-            _originMarker = (Image)FindName("img_Origin");
-            _originX = (NumericUpDown)FindName("num_OriginX");
-            _originY = (NumericUpDown)FindName("num_OriginY");
-            _zoomScale = (ComboBox)FindName("combo_mainRenderScale");
-
-            RenderOptions.SetBitmapScalingMode(_spriteOutline, BitmapScalingMode.NearestNeighbor);
-            RenderOptions.SetBitmapScalingMode(_spriteDisplay, BitmapScalingMode.NearestNeighbor);
-            RenderOptions.SetBitmapScalingMode(_originMarker, BitmapScalingMode.NearestNeighbor);
-
-            _spritePreviewWindow = MainWindowVM.SpritePreviewWindow;
-
-            _mainRenderScale = new ScaleTransform(3, 3);
-            _zoomScale.SelectedIndex = 2;
-
-            StartNewFile();*/
-        }
-
-        /// <summary>
-        /// Prompt save if unsaved changes exists.
-        /// </summary>
-        /// <returns>True if save or no save was made. False if cancelled.</returns>
-        private bool PromptUnsavedChanges()
-        {
-            // No unsaved changes detected
-            /*if (!MainWindowVM.UnsavedChanges)
-                return true;
-
-            // Prompt for saving
-            var result = MessageBox.Show(this, $"Do you want to save changes to {MainWindowVM.FileName}? Unsaved changes will be lost!", "Save File?", MessageBoxButton.YesNoCancel);
-
-            switch (result)
-            {
-                case MessageBoxResult.Yes:
-                    return PerformSave();
-                case MessageBoxResult.No:
-                    return true;
-                case MessageBoxResult.Cancel:
-                    return false;
-            }
-
-            return false;*/
-            return true;
-        }
-
-        private void OpenCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            /*if (!PromptUnsavedChanges())
-                return;
-
-            var openFileDialog = new OpenFileDialog()
-            {
-                Title = "Open File",
-                Filter = "animation files (*.anim)|*.anim"
-            };
-
-            if (openFileDialog.ShowDialog() == true)
-            {
-                MainWindowVM.Clear();
-                MainWindowVM.SavePath = openFileDialog.FileName;
-                MainWindowVM.FileName = System.IO.Path.GetFileNameWithoutExtension(openFileDialog.FileName);
-
-                var data = FileReader.Read(openFileDialog.FileName);
-                LoadData(openFileDialog.FileName, data);
-            }*/
         }
 
         private bool PerformSave()
@@ -193,22 +110,6 @@ namespace AnimationEditor
             }*/
         }
 
-        private void Window_Closing(object sender, CancelEventArgs e)
-        {
-            /*if (!PromptUnsavedChanges())
-            {
-                e.Cancel = true;
-                return;
-            }
-
-
-            // Save settings
-            var properties = GetProperties();
-            AppPropertiesReaderWriter.Write(PropertiesFile, properties);
-
-            _spritePreviewWindow.Close();*/
-        }
-
         private void ApplyProperties(AppProperties properties)
         {
             /*Top = properties.MainTop;
@@ -244,29 +145,6 @@ namespace AnimationEditor
             properties.ZoomIndex = _zoomScale.SelectedIndex;
             return properties;*/
             return null;
-        }
-
-        private void StartNewFile()
-        {
-            /*TextureAtlasViewModel = new TextureAtlasViewModel();
-
-            if (_processingCommandLine)
-                return;
-
-            _atlasTreeView.DataContext = TextureAtlasViewModel;
-            _propertiesPanel.DataContext = null;
-            _spritePreviewWindow.SetSprite(null);
-
-            _spriteDisplay.Width = 0;
-            _spriteDisplay.Height = 0;
-            _spriteDisplay.Fill = null;
-
-            _spriteOutline.Width = 0;
-            _spriteOutline.Height = 0;
-            _spriteOutline.StrokeThickness = 0;
-
-            UpdateMainRender();
-            UpdateOriginMarker();*/
         }
 
         private void GameTickTimer_Tick(object sender, EventArgs e)
@@ -312,65 +190,6 @@ namespace AnimationEditor
             }
             else
                 _spritePreviewWindow.Visibility = Visibility.Visible;*/
-        }
-
-        private void LoadData(string filename, AnimationsFileData data)
-        {
-            /*StartNewFile();
-
-            var rootFolder = System.IO.Path.GetDirectoryName(filename);
-            foreach(var atlasData in data.Root.Atlases)
-            {
-                var atlas = AddTextureAtlas(rootFolder + "\\" + atlasData.File);
-
-                // Create simple dictionary for quick atlas lookup
-                var atlasDict = new Dictionary<string, SpriteModel>();
-                foreach(SpriteModel sprite in atlas.Children)
-                {
-                    atlasDict.Add(sprite.Name, sprite);
-                }
-
-                RecreateStructure(atlasData, atlas, atlas, atlasDict);
-            }*/
-        }
-
-        /*private void RecreateStructure(AnimationsFileData.Folder folderRoot, TextureAtlasTreeItem atlasItem, WpfTextureAtlas atlas, Dictionary<string, SpriteModel> atlasDict)
-        {
-            // Create the folder in the atlas
-            foreach(var folderData in folderRoot.Folders)
-            {
-                var folder = new TextureAtlasTreeItem() { Name = folderData.Name };
-                atlasItem.Children.Add(folder);
-                RecreateStructure(folderData, folder, atlas, atlasDict);
-            }
-
-            // Find the sprite in the atlasDict
-            foreach(var spriteData in folderRoot.Sprites)
-            {
-                WpfSprite sprite;
-                atlasDict.TryGetValue(spriteData.Name, out sprite);
-                if (sprite == null)
-                    continue;
-
-                // Update the sprite
-                sprite.FPS = spriteData.FPS;
-                sprite.OriginX = spriteData.OriginX;
-                sprite.OriginY = spriteData.OriginY;
-                sprite.HorizontalAlignment = (SpriteHorizontalAlignment)Enum.Parse(typeof(SpriteHorizontalAlignment), spriteData.HorizontalAlignment, true);
-                sprite.VerticalAlignment = (SpriteVerticalAlignment)Enum.Parse(typeof(SpriteVerticalAlignment), spriteData.VerticalAlignment, true);
-
-                // Remove sprite and place in its proper position
-                if (!atlasItem.Children.Contains(sprite))
-                {
-                    atlas.Children.Remove(sprite);
-                    atlasItem.Children.Add(sprite);
-                }
-            }
-        }*/
-
-        private void MarkUnsavedChanges()
-        {
-            //MainWindowVM.UnsavedChanges = true;
         }
 
         private void ProcessCommandLineArguments()

@@ -13,12 +13,23 @@ namespace AnimationEditor.Converter
         // values: [0] = canvas size (width or height), [1] = sprite width or height, [2] = render scale (x or y)
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            return Math.Floor(((double)values[0] - (float)values[1] * (double)values[2]) / 2);
+            double canvasSize = 0;
+            double spriteSize = 0;
+            double spriteScale = 0;
+
+            if (values[0] != null)
+                canvasSize = (double)values[0];
+            if (values[1] is double)
+                spriteSize = (double)values[1];
+            if (values[2] is double)
+                spriteScale = (double)values[2];
+
+            return Math.Floor((canvasSize - spriteSize * spriteScale) / 2);
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
-            return null;
+            throw new NotImplementedException();
         }
     }
 }

@@ -40,29 +40,24 @@
                 <e:EventTrigger EventName="PreviewMouseWheel">
                     <e:InvokeCommandAction Command="{Binding MouseWheelCommand}" PassEventArgsToCommand="True"/>
                 </e:EventTrigger>
+                <e:EventTrigger EventName="Loaded">
+                    <e:InvokeCommandAction Command="{Binding CanvasLoadedCommand}" CommandParameter="{Binding ElementName=mainRender}"/>
+                </e:EventTrigger>
             </e:Interaction.Triggers>
 
             <Rectangle x:Name="rect_SpriteDisplay" Panel.ZIndex="1" RenderTransform="{Binding RenderScale}" Fill="{Binding DisplaySprite}"
                        Width="{Binding SpriteWidth}" Height="{Binding SpriteHeight}"
-                       RenderOptions.BitmapScalingMode="NearestNeighbor" Stroke="Lime" StrokeThickness="{Binding OutlineThickness}">
-                <Canvas.Left>
-                    <MultiBinding Converter="{StaticResource centerConverter}" Mode="OneWay">
-                        <Binding ElementName="mainRender" Path="ActualWidth" />
-                        <Binding Path="SpriteWidth" />
-                        <Binding Path="RenderScale.ScaleX" />
-                    </MultiBinding>
-                </Canvas.Left>
-                <Canvas.Top>
-                    <MultiBinding Converter="{StaticResource centerConverter}" Mode="OneWay">
-                        <Binding ElementName="mainRender" Path="ActualHeight" />
-                        <Binding Path="SpriteHeight" />
-                        <Binding Path="RenderScale.ScaleY" />
-                    </MultiBinding>
-                </Canvas.Top>
+                       RenderOptions.BitmapScalingMode="NearestNeighbor" Stroke="Lime" StrokeThickness="{Binding OutlineThickness}"
+                       Canvas.Left="{Binding SpriteX}" Canvas.Top="{Binding SpriteY}"
+                       >
             </Rectangle>
-            <Image Source="origin_point.png" Panel.ZIndex="3" Canvas.Left="{Binding OriginPointX}" Canvas.Right="{Binding OriginPointY}"
+            <Image x:Name="rect_origin" Source="origin_point.png" Panel.ZIndex="3" HorizontalAlignment="Center"
                    RenderOptions.BitmapScalingMode="NearestNeighbor">
-                
+                <e:Interaction.Triggers>
+                    <e:EventTrigger EventName="Loaded">
+                        <e:InvokeCommandAction Command="{Binding OriginMarkerLoadedCommand}" CommandParameter="{Binding ElementName=rect_origin}" />
+                    </e:EventTrigger>
+                </e:Interaction.Triggers>
             </Image>
         </Canvas>
     </DockPanel>
