@@ -11,7 +11,7 @@ namespace AnimationEditor.IO
     {
         public static AnimationsFileData Read(string filename)
         {
-            /*var xml = new XmlSerializer(typeof(AnimationsFileData.Animations));
+            var xml = new XmlSerializer(typeof(AnimationsFileData.Animations));
 
             using (var reader = new FileStream(filename, FileMode.Open))
             {
@@ -21,9 +21,7 @@ namespace AnimationEditor.IO
                     Root = data
                 };
                 return afd;
-            }*/
-
-            return new AnimationsFileData(filename);
+            }
         }
     }
 }

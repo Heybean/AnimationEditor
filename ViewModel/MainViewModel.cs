@@ -1,8 +1,11 @@
 ﻿using AnimationEditor.IO;
+using Heybean.Graphics;
+using Microsoft.Win32;
 using PropertyTools;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;
@@ -51,6 +54,7 @@ namespace AnimationEditor.ViewModel
             ClosingCommand = new RelayCommand(x => ClosingExecute(x));
             ExitCommand = new RelayCommand(x => ExitExecute(x));
             NewCommand = new RelayCommand(_ => NewExecute(null));
+            OpenCommand = new RelayCommand(_ => OpenExecute(null));
             SaveCommand = new RelayCommand(_ => SaveExecute(null));
 
             FileName = "";
@@ -76,17 +80,102 @@ namespace AnimationEditor.ViewModel
             window.Close();
         }
 
+        private void Reset()
+        {
+            UnsavedChanges = false;
+            FileName = "";
+            SavePath = "";
+            TextureAtlasesVM.Reset();
+            SpritePropertiesVM.Reset();
+        }
+
         private void NewExecute(object parameters)
         {
             if (PromptUnsavedChanges())
             {
-                UnsavedChanges = false;
-                FileName = "";
-                SavePath = "";
-                TextureAtlasesVM.Reset();
-                SpritePropertiesVM.Reset();
+                Reset();
             }
         }
+
+        private void OpenExecute(object parameters)
+        {
+            if (!PromptUnsavedChanges())
+                return;
+
+            var openFileDialog = new OpenFileDialog()
+            {
+                Title = "Open File",
+                Filter = "animation files (*.anim)|*.anim"
+            };
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                Reset();
+                SavePath = openFileDialog.FileName;
+                FileName = Path.GetFileNameWithoutExtension(openFileDialog.FileName);
+
+                var data = FileReader.Read(openFileDialog.FileName);
+                LoadData(openFileDialog.FileName, data);
+            }
+        }
+
+        private void LoadData(string filename, AnimationsFileData data)
+        {
+            var rootFolder = Path.GetDirectoryName(filename);
+            TextureAtlasesVM.Root.Name = FileName + ".anim";
+
+            foreach(var atlasData in data.Root.Atlases)
+            {
+                TextureAtlasesVM.AddTextureAtlas(rootFolder + "\\" + atlasData.File);
+                
+                /*var atlas = AddTextureAtlas(rootFolder + "\\" + atlasData.File);
+
+                // Create simple dictionary for quick atlas lookup
+                var atlasDict = new Dictionary<string, SpriteModel>();
+                foreach(SpriteModel sprite in atlas.Children)
+                {
+                    atlasDict.Add(sprite.Name, sprite);
+                }*/
+
+                //RecreateStructure(atlasData, atlas, atlas, atlasDict);
+            }
+
+            UnsavedChanges = false;
+        }
+
+        /*private void RecreateStructure(AnimationsFileData.Folder folderRoot, TextureAtlasTreeItem atlasItem, WpfTextureAtlas atlas, Dictionary<string, SpriteModel> atlasDict)
+        {
+            // Create the folder in the atlas
+            foreach(var folderData in folderRoot.Folders)
+            {
+                var folder = new TextureAtlasTreeItem() { Name = folderData.Name };
+                atlasItem.Children.Add(folder);
+                RecreateStructure(folderData, folder, atlas, atlasDict);
+            }
+
+            // Find the sprite in the atlasDict
+            foreach(var spriteData in folderRoot.Sprites)
+            {
+                WpfSprite sprite;
+                atlasDict.TryGetValue(spriteData.Name, out sprite);
+                if (sprite == null)
+                    continue;
+
+                // Update the sprite
+                sprite.FPS = spriteData.FPS;
+                sprite.OriginX = spriteData.OriginX;
+                sprite.OriginY = spriteData.OriginY;
+                sprite.HorizontalAlignment = (SpriteHorizontalAlignment)Enum.Parse(typeof(SpriteHorizontalAlignment), spriteData.HorizontalAlignment, true);
+                sprite.VerticalAlignment = (SpriteVerticalAlignment)Enum.Parse(typeof(SpriteVerticalAlignment), spriteData.VerticalAlignment, true);
+
+                // Remove sprite and place in its proper position
+                if (!atlasItem.Children.Contains(sprite))
+                {
+                    atlas.Children.Remove(sprite);
+                    atlasItem.Children.Add(sprite);
+                }
+            }
+        }*/
 
         private void SaveExecute(object parameters)
         {
@@ -127,7 +216,7 @@ namespace AnimationEditor.ViewModel
             }
             else*/
             {
-                FileWriter.Write(FileName, TextureAtlasesVM.AtlasRoot);
+                FileWriter.Write(FileName, TextureAtlasesVM.Root.SubNodes);
                 UnsavedChanges = false;
                 return true;
             }

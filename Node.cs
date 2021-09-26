@@ -12,7 +12,13 @@ namespace AnimationEditor
     public class Node : Observable
     {
         private bool _showChildren;
-        public string Name { get; set; }
+        private string _name;
+
+        public string Name
+        {
+            get => _name;
+            set => SetValue(ref _name, value);
+        }
         public Node Parent { get; }
         public SortableObservableCollection<Node> SubNodes { get; }
 
@@ -34,11 +40,6 @@ namespace AnimationEditor
         public void SortSubNodes()
         {
             SubNodes.Sort(node => node.Name);
-        }
-
-        public override string ToString()
-        {
-            return Name;
         }
     }
 }

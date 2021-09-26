@@ -113,14 +113,6 @@ namespace AnimationEditor
             return true;
         }
 
-        private void NewCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            /*if (!PromptUnsavedChanges())
-                return;
-
-            StartNewFile();*/
-        }
-
         private void OpenCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             /*if (!PromptUnsavedChanges())
@@ -141,16 +133,6 @@ namespace AnimationEditor
                 var data = FileReader.Read(openFileDialog.FileName);
                 LoadData(openFileDialog.FileName, data);
             }*/
-        }
-
-        private void SaveCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            //PerformSave();
-        }
-
-        private void SaveAsCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            //PerformSaveFile("Save File As");
         }
 
         private bool PerformSave()
@@ -190,21 +172,6 @@ namespace AnimationEditor
 
             return false;*/
             return true;
-        }
-
-        private void Exit_Click(object sender, RoutedEventArgs e)
-        {
-            //Close();
-        }
-
-        private void UndoCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-
-        }
-
-        private void RedoCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-
         }
 
         private void Window_Loaded(object sender, EventArgs e)
@@ -300,16 +267,6 @@ namespace AnimationEditor
 
             UpdateMainRender();
             UpdateOriginMarker();*/
-        }
-
-        private void OriginX_ValueChanged(object sender, RoutedPropertyChangedEventArgs<int?> e)
-        {
-            //UpdateOriginMarker();
-        }
-
-        private void OriginY_ValueChanged(object sender, RoutedPropertyChangedEventArgs<int?> e)
-        {
-           // UpdateOriginMarker();
         }
 
         private void GameTickTimer_Tick(object sender, EventArgs e)

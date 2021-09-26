@@ -30,9 +30,9 @@
 
     <Window.InputBindings>
         <KeyBinding Key="N" Modifiers="Ctrl" Command="{Binding NewCommand}" />
-        <KeyBinding Key="O" Modifiers="Ctrl" Command="Open" />
-        <KeyBinding Key="S" Modifiers="Ctrl" Command="Save" />
-        <KeyBinding Key="S" Modifiers="Ctrl+Shift" Command="{Binding SaveCommand}" />
+        <KeyBinding Key="O" Modifiers="Ctrl" Command="{Binding OpenCommand}" />
+        <KeyBinding Key="S" Modifiers="Ctrl" Command="{Binding SaveCommand}" />
+        <KeyBinding Key="S" Modifiers="Ctrl+Shift" Command="{Binding SaveAsCommand}" />
         <KeyBinding Key="Z" Modifiers="Ctrl" Command="Undo" />
         <KeyBinding Key="Y" Modifiers="Ctrl" Command="Redo" />
     </Window.InputBindings>
@@ -41,10 +41,10 @@
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
                 <MenuItem Header="_New" InputGestureText="Ctrl+N" Command="{Binding NewCommand}"/>
-                <MenuItem Header="_Open" InputGestureText="Ctrl+O"/>
+                <MenuItem Header="_Open" InputGestureText="Ctrl+O" Command="{Binding OpenCommand}"/>
                 <Separator />
                 <MenuItem Header="_Save" InputGestureText="Ctrl+S" Command="{Binding SaveCommand}"/>
-                <MenuItem Header="_Save As" InputGestureText="Ctrl+Shift+S"/>
+                <MenuItem Header="_Save As" InputGestureText="Ctrl+Shift+S" Command="{Binding SaveAsCommand}"/>
                 <Separator />
                 <MenuItem Header="_Exit" Command="{Binding ExitCommand, Mode=OneWay}" CommandParameter="{Binding ElementName=mainWindow}"/>
             </MenuItem>
@@ -59,11 +59,11 @@
 
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200" MinWidth="100" MaxWidth="300"/>
+                <ColumnDefinition Width="200" MinWidth="100" MaxWidth="500"/>
                 <ColumnDefinition Width="5" />
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="5" />
-                <ColumnDefinition Width="200" MinWidth="200" MaxWidth="300"/>
+                <ColumnDefinition Width="200" MinWidth="200" MaxWidth="500"/>
             </Grid.ColumnDefinitions>
 
             <view:TextureAtlasesView Grid.Column="0" DataContext="{Binding ElementName=mainVM, Path=TextureAtlasesVM}"/>

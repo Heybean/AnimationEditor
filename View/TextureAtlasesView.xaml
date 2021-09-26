@@ -21,12 +21,17 @@
             </ToolBar>
         </ToolBarTray>
 
-        <pt:TreeListBox x:Name="tree" HierarchySource="{Binding AtlasRoot}" ChildrenPath="SubNodes" IsExpandedPath="ShowChildren" SelectedItem="{Binding SelectedItem}" >
+        <pt:TreeListBox x:Name="tree" HierarchySource="{Binding AtlasRoot}" ChildrenPath="SubNodes" IsExpandedPath="ShowChildren" SelectedItem="{Binding SelectedItem}">
             <e:Interaction.Triggers>
                 <e:EventTrigger EventName="SelectionChanged">
                     <e:InvokeCommandAction Command="{Binding SelectedItemsChangedCommand}" CommandParameter="{Binding Path=SelectedItems, ElementName=tree}"/>
                 </e:EventTrigger>
             </e:Interaction.Triggers>
+            <pt:TreeListBox.ItemTemplate>
+                <DataTemplate>
+                    <Label Content="{Binding Name}" />
+                </DataTemplate>
+            </pt:TreeListBox.ItemTemplate>
         </pt:TreeListBox>
     </DockPanel>
 </UserControl>

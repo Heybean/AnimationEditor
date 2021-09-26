@@ -28,7 +28,10 @@ namespace AnimationEditor.ViewModel
             }
         }
 
-        public Node Root { get; private set; }
+        public Node Root
+        {
+            get; private set;
+        }
 
         public ICommand AddAtlasCommand { get; }
         public ICommand RemoveAtlasCommand { get; }
@@ -55,8 +58,15 @@ namespace AnimationEditor.ViewModel
         public void Reset()
         {
             _model = new TextureAtlasesModel();
-            Root.Name = "Untitled.anim";
             Root.SubNodes.Clear();
+            Root.Name = "Untitled.anim";
+        }
+
+        public void AddTextureAtlas(string filename)
+        {
+            var newAtlas = _model.AddTextureAtlas(filename);
+            Root.SubNodes.Add(newAtlas);
+            Root.ShowChildren = true;
         }
 
         private void AddAtlasExecute(object parameters)

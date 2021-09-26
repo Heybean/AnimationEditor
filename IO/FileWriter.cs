@@ -16,8 +16,7 @@ namespace AnimationEditor.IO
     {
         public static void Write(string filename, IEnumerable root)
         {
-            var directory = Path.GetDirectoryName(filename);
-
+            WriteNode(filename, root);
             // Find the relative paths for each texture atlas
             /*foreach(Node item in atlases)
             {
@@ -27,7 +26,7 @@ namespace AnimationEditor.IO
                 }
             }*/
 
-            WriteNode(root);
+
 
             /*using (var writer = new XmlTextWriter(filename, null))
             {
@@ -45,11 +44,13 @@ namespace AnimationEditor.IO
             }*/
         }
 
-        private static void WriteNode(IEnumerable nodes)
+        private static void WriteNode(string filename, IEnumerable nodes)
         {
-            foreach(Node item in nodes)
+            var directory = Path.GetDirectoryName(filename);
+
+            foreach (Node item in nodes)
             {
-                WriteNode(item.SubNodes);
+                WriteNode(filename, item.SubNodes);
             }
         }
 
