@@ -62,8 +62,7 @@ namespace AnimationEditor.ViewModel
             SaveCommand = new RelayCommand(_ => SaveExecute(null));
             SaveAsCommand = new RelayCommand(_ => SaveAsExecute(null));
 
-            FileName = "Untitled.anim";
-            SavePath = "";
+            Reset();
         }
 
         private void FileModifiedEvent(object sender)
@@ -87,11 +86,11 @@ namespace AnimationEditor.ViewModel
 
         private void Reset()
         {
-            UnsavedChanges = false;
-            FileName = "";
+            FileName = "Untitled.anim";
             SavePath = "";
             TextureAtlasesVM.Reset();
             SpritePropertiesVM.Reset();
+            UnsavedChanges = false;
         }
 
         private void NewExecute(object parameters)
