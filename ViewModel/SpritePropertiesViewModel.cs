@@ -17,7 +17,7 @@ namespace AnimationEditor.ViewModel
         private SpriteHorizontalAlignment? _hAlign;
         private SpriteVerticalAlignment? _vAlign;
         private IList<object> _selectedItems;
-        private bool _doNotInvoke;
+        private bool _hasSpriteSelected;
 
         public string SpriteName
         {
@@ -104,12 +104,23 @@ namespace AnimationEditor.ViewModel
             }
         }
 
+        public bool HasSpriteSelected
+        {
+            get => _hasSpriteSelected;
+            set
+            {
+                _hasSpriteSelected = value;
+                OnPropertyChanged();
+            }
+        }
+
         public delegate void OriginUpdatedEventHandler(object sender, OriginUpdatedEventArgs e);
         public event OriginUpdatedEventHandler OnUpdateOriginMarker;
 
         public SpritePropertiesViewModel()
         {
             _selectedItems = new List<object>();
+            HasSpriteSelected = false;
         }
 
         public void Reset()
@@ -126,6 +137,8 @@ namespace AnimationEditor.ViewModel
         {
             _selectedItems = (IList<object>)e.Parameters;
 
+            HasSpriteSelected = SelectionHasType(typeof(SpriteModel));
+
             if (_selectedItems.Count == 1)
             {
                 var item = _selectedItems[0];
@@ -137,6 +150,7 @@ namespace AnimationEditor.ViewModel
             else if (_selectedItems.Count <= 0)
             {
                 SpriteName = "";
+                
             }
             else
             {
@@ -153,7 +167,7 @@ namespace AnimationEditor.ViewModel
 
         private bool GetValue<T>(ref T value, [CallerMemberName] string propertyName = "")
         {
-            if (IsAllOfType(typeof(SpriteModel)))
+            if (SelectionIsAllOfType(typeof(SpriteModel)))
             {
                 bool gotFirstValue = false;
                 var type = typeof(SpriteModel);
@@ -178,26 +192,43 @@ namespace AnimationEditor.ViewModel
 
         private bool UpdateSelectedItems(object value, [CallerMemberName] string propertyName = "")
         {
-            if (!IsAllOfType(typeof(SpriteModel)))
+            if (!SelectionIsAllOfType(typeof(SpriteModel)))
+            {
                 return false;
+            }
 
             foreach (SpriteModel sprite in _selectedItems)
             {
                 sprite.GetType().GetProperty(propertyName).SetValue(sprite, value);
-                //_mainWindowViewModel.UnsavedChanges = true;
             }
 
+            HasSpriteSelected = true;
             return true;
         }
 
-        private bool IsAllOfType(Type type)
+        private bool SelectionIsAllOfType(Type type)
         {
+            if (_selectedItems.Count <= 0)
+                return false;
+
             foreach (var item in _selectedItems)
             {
                 if (item.GetType() != type)
                     return false;
             }
+
             return true;
+        }
+
+        private bool SelectionHasType(Type type)
+        {
+            foreach(var item in _selectedItems)
+            {
+                if (item.GetType() == type)
+                    return true;
+            }
+
+            return false;
         }
     }
 }

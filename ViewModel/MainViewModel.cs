@@ -193,7 +193,7 @@ namespace AnimationEditor.ViewModel
                 return true;
 
             // Prompt for saving
-            var result = MessageBox.Show($"Do you want to save changes to {FileName}? Unsaved changes will be lost!", "Save File?", MessageBoxButton.YesNoCancel);
+            var result = MessageBox.Show($"Do you want to save changes to {FileName}.anim? Unsaved changes will be lost!", "Save File?", MessageBoxButton.YesNoCancel);
 
             switch (result)
             {

@@ -10,7 +10,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
-    <DockPanel>
+    <DockPanel IsEnabled="{Binding HasSpriteSelected}">
         <Grid Margin="0 0 8 0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="49*"/>
