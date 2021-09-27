@@ -35,6 +35,7 @@ namespace AnimationEditor.ViewModel
         public TextureAtlasesViewModel TextureAtlasesVM { get; }
         public MainCanvasViewModel MainCanvasVM { get; }
         public SpritePropertiesViewModel SpritePropertiesVM { get; }
+        public SpritePreviewViewModel SpritePreviewVM { get; }
 
         public ICommand ClosingCommand { get; }
         public ICommand ExitCommand { get; }
@@ -49,6 +50,7 @@ namespace AnimationEditor.ViewModel
             TextureAtlasesVM = new TextureAtlasesViewModel();
             MainCanvasVM = new MainCanvasViewModel();
             SpritePropertiesVM = new SpritePropertiesViewModel();
+            SpritePreviewVM = new SpritePreviewViewModel();
 
             TextureAtlasesVM.SelectionChanged += MainCanvasVM.TextureAtlasSelectionChanged;
             TextureAtlasesVM.SelectionChanged += SpritePropertiesVM.TextureAtlasSelectionChanged;
@@ -196,11 +198,15 @@ namespace AnimationEditor.ViewModel
             {
                 popup = new SpritePreviewView();
                 popup.Owner = window;
+                popup.DataContext = SpritePreviewVM;
                 popup.Show();
             }
             else
             {
-                popup.Close();
+                if (popup.Visibility == Visibility.Hidden)
+                    popup.Show();
+                else
+                    popup.Hide();
             }
         }
 
