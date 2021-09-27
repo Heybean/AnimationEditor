@@ -17,6 +17,7 @@ namespace AnimationEditor.ViewModel
         private SpriteHorizontalAlignment? _hAlign;
         private SpriteVerticalAlignment? _vAlign;
         private IList<object> _selectedItems;
+        private bool _doNotInvoke;
 
         public string SpriteName
         {
@@ -49,6 +50,9 @@ namespace AnimationEditor.ViewModel
                 MarkFileModified();
 
                 OnUpdateOriginMarker?.Invoke(this, new OriginUpdatedEventArgs { X = _originX, Y = _originY });
+
+                _hAlign = SpriteHorizontalAlignment.Custom;
+                OnPropertyChanged("HAlign");
             }
         }
 
@@ -62,6 +66,9 @@ namespace AnimationEditor.ViewModel
                 MarkFileModified();
 
                 OnUpdateOriginMarker?.Invoke(this, new OriginUpdatedEventArgs { X = _originX, Y = _originY });
+
+                _vAlign = SpriteVerticalAlignment.Custom;
+                OnPropertyChanged("VAlign");
             }
         }
 
@@ -75,6 +82,9 @@ namespace AnimationEditor.ViewModel
                 OnPropertyChanged("OriginX");
                 OnPropertyChanged("OriginY");
                 MarkFileModified();
+
+                if (value != SpriteHorizontalAlignment.Custom)
+                    OnUpdateOriginMarker?.Invoke(this, new OriginUpdatedEventArgs { X = _originX, Y = _originY });
             }
         }
 
@@ -88,6 +98,9 @@ namespace AnimationEditor.ViewModel
                 OnPropertyChanged("OriginX");
                 OnPropertyChanged("OriginY");
                 MarkFileModified();
+
+                if (value != SpriteVerticalAlignment.Custom)
+                    OnUpdateOriginMarker?.Invoke(this, new OriginUpdatedEventArgs { X = _originX, Y = _originY });
             }
         }
 
