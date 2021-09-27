@@ -40,55 +40,14 @@ namespace AnimationEditor
         private NumericUpDown _originX;
         private NumericUpDown _originY;
         private Image _originMarker;
-        private SpritePreviewWindow _spritePreviewWindow;
+        //private SpritePreviewWindow _spritePreviewWindow;
         private ComboBox _zoomScale;
 
         private bool _processingCommandLine;
 
-        //public TextureAtlasViewModel TextureAtlasViewModel { get; private set; }
-
         public MainWindow()
         {
             InitializeComponent();
-        }
-
-        private bool PerformSave()
-        {
-            /*if (MainWindowVM.SavePath.Length <= 0)
-            {
-                return PerformSaveFile("Save File");
-            }
-            else
-            {
-                FileWriter.Write(MainWindowVM.SavePath, TextureAtlasViewModel);
-                MainWindowVM.UnsavedChanges = false;
-                return true;
-            }*/
-            return true;
-        }
-
-        private bool PerformSaveFile(string title)
-        {
-            /*var saveFileDialog = new SaveFileDialog()
-            {
-                Title = title,
-                Filter = "animation files (*.anim)|*.anim",
-                AddExtension = true
-            };
-
-            if (saveFileDialog.ShowDialog() == true)
-            {
-                MainWindowVM.UnsavedChanges = false;
-                MainWindowVM.SavePath = saveFileDialog.FileName;
-                MainWindowVM.FileName = System.IO.Path.GetFileNameWithoutExtension(saveFileDialog.FileName);
-
-                FileWriter.Write(saveFileDialog.FileName, TextureAtlasViewModel);
-
-                return true;
-            }
-
-            return false;*/
-            return true;
         }
 
         private void Window_Loaded(object sender, EventArgs e)
@@ -158,30 +117,6 @@ namespace AnimationEditor
             }*/
         }
 
-        private void UpdateOriginMarker()
-        {
-            // Update the origin marker position
-            /*int? originx = _originX.Value;
-            int? originy = _originY.Value;
-
-            if (originx == null || originy == null)
-                return;
-
-            int x = (int)(_mainRender.ActualWidth - _spriteDisplay.Width * _mainRenderScale.ScaleX) / 2;
-            int y = (int)(_mainRender.ActualHeight - _spriteDisplay.Height * _mainRenderScale.ScaleY) / 2;
-
-            x -= (int)_originMarker.Source.Width / 2;
-            y -= (int)_originMarker.Source.Height / 2;
-
-            x += (int)(originx * _mainRenderScale.ScaleX);
-            y += (int)(originy * _mainRenderScale.ScaleY);
-
-            Canvas.SetLeft(_originMarker, x);
-            Canvas.SetTop(_originMarker, y);
-
-            _spritePreviewWindow.UpdatePreviewRender();*/
-        }
-        
         private void SpritePreviewWindow_Click(object sender, RoutedEventArgs e)
         {
             /*if (_spritePreviewWindow.IsVisible)

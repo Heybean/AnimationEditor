@@ -1,9 +1,11 @@
 ﻿using AnimationEditor.Graphics;
 using AnimationEditor.IO;
 using AnimationEditor.Model;
+using AnimationEditor.View;
 using Heybean.Graphics;
 using Microsoft.Win32;
 using PropertyTools;
+using PropertyTools.Wpf;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -40,6 +42,7 @@ namespace AnimationEditor.ViewModel
         public ICommand OpenCommand { get; }
         public ICommand SaveCommand { get; }
         public ICommand SaveAsCommand { get; }
+        public ICommand SpritePreviewCommand { get; }
 
         public MainViewModel()
         {
@@ -57,10 +60,11 @@ namespace AnimationEditor.ViewModel
 
             ClosingCommand = new RelayCommand(x => ClosingExecute(x));
             ExitCommand = new RelayCommand(x => ExitExecute(x));
-            NewCommand = new RelayCommand(_ => NewExecute(null));
-            OpenCommand = new RelayCommand(_ => OpenExecute(null));
-            SaveCommand = new RelayCommand(_ => SaveExecute(null));
-            SaveAsCommand = new RelayCommand(_ => SaveAsExecute(null));
+            NewCommand = new DelegateCommand(NewExecute);
+            OpenCommand = new DelegateCommand(OpenExecute);
+            SaveCommand = new DelegateCommand(SaveExecute);
+            SaveAsCommand = new DelegateCommand(SaveAsExecute);
+            SpritePreviewCommand = new RelayCommand(x => SpritePreviewExecute(x));
 
             Reset();
         }
@@ -93,7 +97,7 @@ namespace AnimationEditor.ViewModel
             UnsavedChanges = false;
         }
 
-        private void NewExecute(object parameters)
+        private void NewExecute()
         {
             if (PromptUnsavedChanges())
             {
@@ -101,7 +105,7 @@ namespace AnimationEditor.ViewModel
             }
         }
 
-        private void OpenExecute(object parameters)
+        private void OpenExecute()
         {
             if (!PromptUnsavedChanges())
                 return;
@@ -171,15 +175,44 @@ namespace AnimationEditor.ViewModel
             }
         }
 
-        private void SaveExecute(object parameters)
+        private void SaveExecute()
         {
             PerformSave();
         }
 
-        private void SaveAsExecute(object parameters)
+        private void SaveAsExecute()
         {
             PerformSaveFile(FileName);
             TextureAtlasesVM.Root.Name = FileName + ".anim";
+        }
+
+        private void SpritePreviewExecute(object parameters)
+        {
+            var window = (Window)parameters;
+
+            var popup = CheckIfPopupOpen();
+
+            if (popup == null)
+            {
+                popup = new SpritePreviewView();
+                popup.Owner = window;
+                popup.Show();
+            }
+            else
+            {
+                popup.Close();
+            }
+        }
+
+        private Window CheckIfPopupOpen()
+        {
+            foreach(var window in Application.Current.Windows)
+            {
+                if (window is SpritePreviewView)
+                    return (Window)window;
+            }
+
+            return null;
         }
 
         /// <summary>

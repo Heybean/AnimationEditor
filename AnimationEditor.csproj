@@ -30,4 +30,8 @@
     <Resource Include="View\origin_point.png" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Converter\" />
+  </ItemGroup>
+
 </Project>

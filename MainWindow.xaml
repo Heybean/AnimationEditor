@@ -3,11 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:AnimationEditor"
-        xmlns:controls="clr-namespace:AnimationEditor.Controls"
-        xmlns:graphics="clr-namespace:AnimationEditor.Graphics"
         xmlns:e="http://schemas.microsoft.com/xaml/behaviors"
-        xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         xmlns:view="clr-namespace:AnimationEditor.View"
         xmlns:vm="clr-namespace:AnimationEditor.ViewModel"
         mc:Ignorable="d"
@@ -53,7 +49,7 @@
                 <MenuItem Header="_Redo" InputGestureText="Ctrl+Y" />
             </MenuItem>
             <MenuItem Header="_Window">
-                <MenuItem Header="_Sprite Preview" IsCheckable="True"/>
+                <MenuItem Header="_Sprite Preview" Command="{Binding SpritePreviewCommand}" CommandParameter="{Binding ElementName=mainWindow}"/>
             </MenuItem>
         </Menu>
 
@@ -77,153 +73,4 @@
             <view:SpritePropertiesView Grid.Column="4" DataContext="{Binding ElementName=mainVM, Path=SpritePropertiesVM}"/>
         </Grid>
     </DockPanel>
-<!--
-    <DockPanel>
-        <Menu DockPanel.Dock="Top">
-            <MenuItem Header="_File">
-                <MenuItem Header="_New" Command="New" InputGestureText="Ctrl+N"/>
-                <MenuItem Header="_Open" Command="Open" InputGestureText="Ctrl+O"/>
-                <Separator />
-                <MenuItem Header="_Save" Command="Save" InputGestureText="Ctrl+S"/>
-                <MenuItem Header="_Save As" Command="SaveAs" InputGestureText="Ctrl+Shift+S"/>
-                <Separator />
-                <MenuItem Header="_Exit" Click="Exit_Click"/>
-            </MenuItem>
-            <MenuItem Header="_Edit">
-                <MenuItem Header="_Undo" Command="Undo" InputGestureText="Ctrl+Z" />
-                <MenuItem Header="_Redo" Command="Redo" InputGestureText="Ctrl+Y" />
-            </MenuItem>
-            <MenuItem Header="_Window">
-                <MenuItem Header="_Sprite Preview" IsCheckable="True" Click="SpritePreviewWindow_Click"
-                              DataContext="{Binding }"/>
-            </MenuItem>
-        </Menu>
-
-        <StatusBar DockPanel.Dock="Bottom">
-            <StatusBarItem>
-                <ComboBox x:Name="combo_mainRenderScale" SelectionChanged="combo_mainRenderScale_SelectionChanged">
-                    <ComboBoxItem>100%</ComboBoxItem>
-                    <ComboBoxItem>200%</ComboBoxItem>
-                    <ComboBoxItem>300%</ComboBoxItem>
-                    <ComboBoxItem>400%</ComboBoxItem>
-                    <ComboBoxItem>500%</ComboBoxItem>
-                    <ComboBoxItem>600%</ComboBoxItem>
-                    <ComboBoxItem>700%</ComboBoxItem>
-                    <ComboBoxItem>800%</ComboBoxItem>
-                    <ComboBoxItem>900%</ComboBoxItem>
-                    <ComboBoxItem>1000%</ComboBoxItem>
-                </ComboBox>
-            </StatusBarItem>
-        </StatusBar>
-        
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200" MinWidth="100" MaxWidth="300"/>
-                <ColumnDefinition Width="5" />
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="5" />
-                <ColumnDefinition Width="200" MinWidth="200" MaxWidth="300"/>
-            </Grid.ColumnDefinitions>
-            <DockPanel Grid.Column="0">
-                <Label DockPanel.Dock="Top" Content="Texture Atlases" Background="SlateGray"  Foreground="White"/>
-                <ToolBarTray DockPanel.Dock="Bottom">
-                    <ToolBar ToolBarTray.IsLocked="True">
-                        <Button ToolTip="Add Texture Atlas" Click="AddAtlas_Click">+ Texture Atlas</Button>
-                        <Button ToolTip="Remove Texture Atlas" Click="RemoveAtlas_Click" x:Name="btn_RemoveAtlas" IsEnabled="False">- Remove Atlas</Button>
-                    </ToolBar>
-                </ToolBarTray>
-
-                <controls:MultiSelectTreeView x:Name="trv_Atlas" ItemsSource="{Binding TextureAtlasesView}"
-                              ItemContainerStyle="{StaticResource TreeViewItem_SelectStyle}"
-                              ItemsSelected="TreeView_ItemsSelected">
-
-                    <e:Interaction.Behaviors>
-                        <controls:MultiSelectTreeViewBehavior SelectedItems="{Binding Path=SelectedItems}"/>
-                    </e:Interaction.Behaviors>
-
-                    <TreeView.Resources>
-                        <HierarchicalDataTemplate DataType="{x:Type graphics:WpfTextureAtlas}" ItemsSource="{Binding ChildrenView}">
-                            <TextBlock Text="{Binding Name}" />
-                        </HierarchicalDataTemplate>
-                        <HierarchicalDataTemplate DataType="{x:Type graphics:TextureAtlasItem}" ItemsSource="{Binding ChildrenView}">
-                            <TextBlock Text="{Binding Name}" />
-                        </HierarchicalDataTemplate>
-                        <HierarchicalDataTemplate DataType="{x:Type graphics:WpfSprite}" ItemsSource="{Binding ChildrenView}">
-                            <TextBlock Text="{Binding Name}" />
-                        </HierarchicalDataTemplate>
-                    </TreeView.Resources>
-                </controls:MultiSelectTreeView>
-            </DockPanel>
-
-            <GridSplitter Grid.Column="1" Width ="5" HorizontalAlignment="Stretch"/>
-
-            <Canvas x:Name="cv_MainRender" Grid.Column="2" Background="Gray" ClipToBounds="True" SizeChanged="MainRender_SizeChanged"
-                    MouseWheel="mainRender_OnWheelClick">
-                <Rectangle x:Name="rect_SpriteDisplay" Panel.ZIndex="1"/>
-                <Rectangle x:Name="rect_SpriteOutline" StrokeThickness="0" Stroke="Lime" Panel.ZIndex="2"/>
-                <Image x:Name="img_Origin" Source="origin_point.png" Panel.ZIndex="3" />
-            </Canvas>
-
-            <GridSplitter Grid.Column="3" Width ="5" HorizontalAlignment="Stretch"/>
-            <DockPanel MinWidth="100" Grid.Column="4" x:Name="dock_Properties">
-                <Label Content="Properties" Background="SlateGray"  Foreground="White" DockPanel.Dock="Top"/>
-                <Grid Margin="0 0 8 0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="49*"/>
-                        <ColumnDefinition Width="143*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-                    <StackPanel Grid.Row="0" Grid.ColumnSpan="2">
-                        <Grid Margin="3">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="60"/>
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <Label Content="Name" Grid.Column="0"/>
-                            <Label Grid.Column="1" Background="AliceBlue" Content="{Binding Path=Name}"/>
-                        </Grid>
-                        <Grid Margin="3">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="60"/>
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <Label Content="FPS" Grid.Column="0"/>
-                            <controls:NumericUpDown Grid.Column="1" MinValue="0" Value="{Binding Path=FPS, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                        </Grid>
-                        <Grid Margin="3">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="60"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="80"/>
-                            </Grid.ColumnDefinitions>
-                            <Label Content="Origin X" Grid.Column="0"/>
-                            <controls:NumericUpDown x:Name="num_OriginX" Grid.Column="1" ValueChanged="OriginX_ValueChanged"
-                                                        Value="{Binding Path=OriginX, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                            <ComboBox Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10, 0, 0, 0"
-                                          ItemsSource="{Binding Source={local:EnumBindingSource {x:Type graphics:SpriteHorizontalAlignment}}}"
-                                          SelectedValue="{Binding Path=HorizontalAlignment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                            </ComboBox>
-                        </Grid>
-                        <Grid Margin="3">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="60"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="80"/>
-                            </Grid.ColumnDefinitions>
-                            <Label Content="Origin Y" Grid.Column="0"/>
-                            <controls:NumericUpDown x:Name="num_OriginY" Grid.Column="1" ValueChanged="OriginY_ValueChanged"
-                                                        Value="{Binding Path=OriginY, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                            <ComboBox Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center"  Margin="10, 0, 0, 0"
-                                          ItemsSource="{Binding Source={local:EnumBindingSource {x:Type graphics:SpriteVerticalAlignment}}}"
-                                          SelectedValue="{Binding Path=VerticalAlignment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                            </ComboBox>
-                        </Grid>
-                    </StackPanel>
-                </Grid>
-            </DockPanel>
-        </Grid>
-    </DockPanel>
-    -->
 </Window>

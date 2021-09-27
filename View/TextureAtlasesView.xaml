@@ -5,13 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:e="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:pt="http://propertytools.org/wpf"
-             xmlns:cv="clr-namespace:AnimationEditor.Converter"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-
-    <UserControl.Resources>
-        <cv:HasAtlasConverter x:Key="hasAtlasConverter" />
-    </UserControl.Resources>
 
     <DockPanel>
         <Label DockPanel.Dock="Top" Content="Texture Atlases" Background="SlateGray"  Foreground="White"/>
