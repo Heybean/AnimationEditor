@@ -19,6 +19,7 @@ namespace AnimationEditor.ViewModel
     {
         private Node _selectedItem;
         private TextureAtlasesModel _model;
+        private bool _atlasSelected;
 
         public IEnumerable AtlasRoot
         {
@@ -31,6 +32,16 @@ namespace AnimationEditor.ViewModel
         public Node Root
         {
             get; private set;
+        }
+
+        public bool AtlasSelected
+        {
+        get => _atlasSelected;
+            set
+            {
+                _atlasSelected = value;
+                OnPropertyChanged();
+            }
         }
 
         public ICommand AddAtlasCommand { get; }
@@ -135,6 +146,19 @@ namespace AnimationEditor.ViewModel
 
         private void SelectedItemsChangedExecute(object parameters)
         {
+            bool hasAtlas = false;
+            var list = (IList<object>)parameters;
+            foreach(var obj in list)
+            {
+                if (obj is TextureAtlasModel)
+                {
+                    hasAtlas = true;
+                    break;
+                }
+            }
+
+            AtlasSelected = hasAtlas;
+
             SelectionChanged?.Invoke(this, new EventArgs() { Parameters = parameters });
         }
     }

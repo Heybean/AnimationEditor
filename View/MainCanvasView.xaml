@@ -8,10 +8,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
-    <UserControl.Resources>
-        <cv:CanvasCenterConverter x:Key="centerConverter" />
-    </UserControl.Resources>
-
     <DockPanel>
         <StatusBar DockPanel.Dock="Bottom" BorderThickness="1" BorderBrush="DimGray">
             <StatusBarItem DockPanel.Dock="Right">
