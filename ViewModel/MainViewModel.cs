@@ -60,8 +60,9 @@ namespace AnimationEditor.ViewModel
             NewCommand = new RelayCommand(_ => NewExecute(null));
             OpenCommand = new RelayCommand(_ => OpenExecute(null));
             SaveCommand = new RelayCommand(_ => SaveExecute(null));
+            SaveAsCommand = new RelayCommand(_ => SaveAsExecute(null));
 
-            FileName = "";
+            FileName = "Untitled.anim";
             SavePath = "";
         }
 
@@ -171,43 +172,15 @@ namespace AnimationEditor.ViewModel
             }
         }
 
-        /*private void RecreateStructure(AnimationsFileData.Folder folderRoot, TextureAtlasTreeItem atlasItem, WpfTextureAtlas atlas, Dictionary<string, SpriteModel> atlasDict)
-        {
-            // Create the folder in the atlas
-            foreach(var folderData in folderRoot.Folders)
-            {
-                var folder = new TextureAtlasTreeItem() { Name = folderData.Name };
-                atlasItem.Children.Add(folder);
-                RecreateStructure(folderData, folder, atlas, atlasDict);
-            }
-
-            // Find the sprite in the atlasDict
-            foreach(var spriteData in folderRoot.Sprites)
-            {
-                WpfSprite sprite;
-                atlasDict.TryGetValue(spriteData.Name, out sprite);
-                if (sprite == null)
-                    continue;
-
-                // Update the sprite
-                sprite.FPS = spriteData.FPS;
-                sprite.OriginX = spriteData.OriginX;
-                sprite.OriginY = spriteData.OriginY;
-                sprite.HorizontalAlignment = (SpriteHorizontalAlignment)Enum.Parse(typeof(SpriteHorizontalAlignment), spriteData.HorizontalAlignment, true);
-                sprite.VerticalAlignment = (SpriteVerticalAlignment)Enum.Parse(typeof(SpriteVerticalAlignment), spriteData.VerticalAlignment, true);
-
-                // Remove sprite and place in its proper position
-                if (!atlasItem.Children.Contains(sprite))
-                {
-                    atlas.Children.Remove(sprite);
-                    atlasItem.Children.Add(sprite);
-                }
-            }
-        }*/
-
         private void SaveExecute(object parameters)
         {
             PerformSave();
+        }
+
+        private void SaveAsExecute(object parameters)
+        {
+            PerformSaveFile(FileName);
+            TextureAtlasesVM.Root.Name = FileName + ".anim";
         }
 
         /// <summary>
@@ -238,13 +211,13 @@ namespace AnimationEditor.ViewModel
 
         private bool PerformSave()
         {
-            /*if (SavePath.Length <= 0)
+            if (SavePath.Length <= 0)
             {
                 return PerformSaveFile("Save File");
             }
-            else*/
+            else
             {
-                FileWriter.Write(FileName, TextureAtlasesVM.Root.SubNodes);
+                FileWriter.Write(SavePath, TextureAtlasesVM.Root);
                 UnsavedChanges = false;
                 return true;
             }
@@ -252,7 +225,7 @@ namespace AnimationEditor.ViewModel
 
         private bool PerformSaveFile(string title)
         {
-            /*var saveFileDialog = new SaveFileDialog()
+            var saveFileDialog = new SaveFileDialog()
             {
                 Title = title,
                 Filter = "animation files (*.anim)|*.anim",
@@ -261,25 +234,16 @@ namespace AnimationEditor.ViewModel
 
             if (saveFileDialog.ShowDialog() == true)
             {
-                MainWindowVM.UnsavedChanges = false;
-                MainWindowVM.SavePath = saveFileDialog.FileName;
-                MainWindowVM.FileName = System.IO.Path.GetFileNameWithoutExtension(saveFileDialog.FileName);
+                SavePath = saveFileDialog.FileName;
+                FileName = Path.GetFileNameWithoutExtension(saveFileDialog.FileName);
 
-                FileWriter.Write(saveFileDialog.FileName, TextureAtlasViewModel);
+                FileWriter.Write(SavePath, TextureAtlasesVM.Root);
+                UnsavedChanges = false;
 
                 return true;
             }
 
-            return false;*/
-            return true;
+            return false;
         }
-
-        /*public void Clear()
-        {
-            FileName = "Untitled";
-            SavePath = "";
-            UnsavedChanges = false;
-            SpritePreviewWindow.DataContext = null;
-        }*/
     }
 }

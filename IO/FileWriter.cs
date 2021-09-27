@@ -14,69 +14,58 @@ namespace AnimationEditor.IO
 {
     public class FileWriter
     {
-        public static void Write(string filename, IEnumerable root)
+        public static void Write(string filename, Node root)
         {
-            WriteNode(filename, root);
             // Find the relative paths for each texture atlas
-            /*foreach(Node item in atlases)
+            string directory = Path.GetDirectoryName(filename);
+            foreach(TextureAtlasModel atlas in root.SubNodes)
             {
-                if (item is TextureAtlasModel atlas)
-                {
-                    atlas.RelativePath = Path.GetRelativePath(directory, atlas.Filename);
-                }
-            }*/
+                atlas.RelativePath = Path.GetRelativePath(directory, atlas.Filename);
+            }
 
-
-
-            /*using (var writer = new XmlTextWriter(filename, null))
+            using (var writer = new XmlTextWriter(filename, null))
             {
+                writer.Formatting = Formatting.Indented;
+
                 writer.WriteStartElement("Animations");
-                foreach(var atlas in viewModel.TextureAtlases)
-                {
-                    writer.Formatting = Formatting.Indented;
-                    writer.WriteStartElement("Atlas");
-                    writer.WriteAttributeString("name", atlas.Name);
-                    writer.WriteAttributeString("file", atlas.RelativePath);
-                    WriteChildren(writer, atlas.Children);
-                    writer.WriteEndElement();
-                }
+
+                WriteChildren(writer, root);
+
                 writer.WriteEndElement();
-            }*/
-        }
-
-        private static void WriteNode(string filename, IEnumerable nodes)
-        {
-            var directory = Path.GetDirectoryName(filename);
-
-            foreach (Node item in nodes)
-            {
-                WriteNode(filename, item.SubNodes);
             }
         }
 
-        private static void WriteChildren(XmlTextWriter writer, IList<object> list)
+        private static void WriteChildren(XmlTextWriter writer, Node parentNode)
         {
-            /*foreach (var child in list)
+            foreach(var node in parentNode.SubNodes)
             {
-                if (child is TextureAtlasTreeItem folder)
+                if (node is FolderModel folder)
                 {
                     writer.WriteStartElement("Folder");
                     writer.WriteAttributeString("name", folder.Name);
-                    WriteChildren(writer, folder.Children);
+                    WriteChildren(writer, folder);
                     writer.WriteEndElement();
                 }
-                else if (child is SpriteModel sprite)
+                else if (node is TextureAtlasModel atlas)
+                {
+                    writer.WriteStartElement("Atlas");
+                    writer.WriteAttributeString("name", atlas.Name);
+                    writer.WriteAttributeString("file", atlas.RelativePath);
+                    WriteChildren(writer, atlas);
+                    writer.WriteEndElement();
+                }
+                else if (node is SpriteModel sprite)
                 {
                     writer.WriteStartElement("Sprite");
                     writer.WriteAttributeString("name", sprite.Name);
                     writer.WriteAttributeString("fps", sprite.FPS.ToString());
                     writer.WriteAttributeString("originx", sprite.OriginX.ToString());
                     writer.WriteAttributeString("originy", sprite.OriginY.ToString());
-                    writer.WriteAttributeString("halign", sprite.HorizontalAlignment.ToString());
-                    writer.WriteAttributeString("valign", sprite.VerticalAlignment.ToString());
+                    writer.WriteAttributeString("halign", sprite.HAlign.ToString());
+                    writer.WriteAttributeString("valign", sprite.VAlign.ToString());
                     writer.WriteEndElement();
                 }
-            }*/
+            }
         }
     }
 }

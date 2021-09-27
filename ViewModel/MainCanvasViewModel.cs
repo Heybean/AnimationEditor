@@ -182,12 +182,14 @@ namespace AnimationEditor.ViewModel
                 else
                 {
                     HideOutlineRect();
+                    SpriteX = SpriteY = 0;
                     DisplaySprite = null;
                 }
             }
             else
             {
                 HideOutlineRect();
+                SpriteX = SpriteY = 0;
                 DisplaySprite = null;
             }
         }
