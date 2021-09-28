@@ -106,27 +106,6 @@ namespace AnimationEditor
             return null;
         }
 
-        private void GameTickTimer_Tick(object sender, EventArgs e)
-        {
-            /*if (TextureAtlasViewModel.SelectedItems.Count == 1)
-            {
-                if (TextureAtlasViewModel.SelectedItems[0] is SpriteModel sprite)
-                {
-                    sprite.Update(_gameTickTimer.Interval.TotalMilliseconds);
-                }
-            }*/
-        }
-
-        private void SpritePreviewWindow_Click(object sender, RoutedEventArgs e)
-        {
-            /*if (_spritePreviewWindow.IsVisible)
-            {
-                _spritePreviewWindow.Visibility = Visibility.Hidden;
-            }
-            else
-                _spritePreviewWindow.Visibility = Visibility.Visible;*/
-        }
-
         private void ProcessCommandLineArguments()
         {
             /*if (App.Args.Length == 0)

@@ -137,52 +137,11 @@ namespace AnimationEditor.ViewModel
             }
         }
 
-        private void LoadData(string filename, AnimationsFileData data)
+        public void LoadData(string filename, AnimationsFileData data)
         {
-            var rootFolder = Path.GetDirectoryName(filename);
-            TextureAtlasesVM.Root.Name = FileName + ".anim";
-
-            var atlasDict = new Dictionary<string, SpriteModel>();
-            foreach (var atlasData in data.Root.Atlases)
-            {
-                var atlas = TextureAtlasesVM.AddTextureAtlas(rootFolder + "\\" + atlasData.File);
-                foreach (SpriteModel sprite in atlas.SubNodes)
-                {
-                    atlasDict.Add(sprite.Name, sprite);
-                }
-
-                RecreateStructure(atlasData, TextureAtlasesVM.Root, atlasDict);
-            }
+            TextureAtlasesViewModel.LoadData(TextureAtlasesVM, filename, data);
 
             UnsavedChanges = false;
-        }
-
-        private void RecreateStructure(AnimationsFileData.Folder parentFolder, Node parentNode, Dictionary<string, SpriteModel> atlasDict)
-        {
-            Node node = new Node(parentNode);
-            foreach(var folder in parentFolder.Folders)
-            {
-                Node folderNode = new Node(node);
-                RecreateStructure(folder, folderNode, atlasDict);
-                node.SubNodes.Add(folderNode);
-            }
-
-            foreach(var spriteData in parentFolder.Sprites)
-            {
-                SpriteModel sprite;
-                atlasDict.TryGetValue(spriteData.Name, out sprite);
-                if (sprite == null)
-                    continue;
-
-                // Update the sprite with data from file
-                sprite.FPS = spriteData.FPS;
-                sprite.OriginX = spriteData.OriginX;
-                sprite.OriginY = spriteData.OriginY;
-                sprite.HAlign = (SpriteHorizontalAlignment)Enum.Parse(typeof(SpriteHorizontalAlignment), spriteData.HorizontalAlignment, true);
-                sprite.VAlign = (SpriteVerticalAlignment)Enum.Parse(typeof(SpriteVerticalAlignment), spriteData.VerticalAlignment, true);
-
-                node.SubNodes.Add(sprite);
-            }
         }
 
         private void SaveExecute()

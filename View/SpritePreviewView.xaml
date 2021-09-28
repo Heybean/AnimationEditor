@@ -13,7 +13,7 @@
             <e:InvokeCommandAction Command="{Binding ClosingCommand}" PassEventArgsToCommand="True"/>
         </e:EventTrigger>
     </e:Interaction.Triggers>
-    
+
     <Grid>
         <Canvas x:Name="previewRender" Background="Gray" Margin="5" ClipToBounds="True" >
             <e:Interaction.Triggers>

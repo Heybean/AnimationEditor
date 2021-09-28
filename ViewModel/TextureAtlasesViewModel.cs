@@ -1,8 +1,10 @@
 ﻿using AnimationEditor.Graphics;
 using AnimationEditor.Model;
+using Heybean.Graphics;
 using Microsoft.Win32;
 using PropertyTools;
 using PropertyTools.Wpf;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -160,6 +162,52 @@ namespace AnimationEditor.ViewModel
             AtlasSelected = hasAtlas;
 
             SelectionChanged?.Invoke(this, new EventArgs() { Parameters = parameters });
+        }
+
+        public static void LoadData(TextureAtlasesViewModel viewModel, string filename, AnimationsFileData data)
+        {
+            var rootFolder = Path.GetDirectoryName(filename);
+            viewModel.Root.Name = Path.GetFileNameWithoutExtension(filename) + ".anim";
+
+            var atlasDict = new Dictionary<string, SpriteModel>();
+            foreach (var atlasData in data.Root.Atlases)
+            {
+                var atlas = viewModel.AddTextureAtlas(rootFolder + "\\" + atlasData.File);
+                foreach (SpriteModel sprite in atlas.SubNodes)
+                {
+                    atlasDict.Add(sprite.Name, sprite);
+                }
+
+                RecreateStructure(atlasData, viewModel.Root, atlasDict);
+            }
+        }
+
+        private static void RecreateStructure(AnimationsFileData.Folder parentFolder, Node parentNode, Dictionary<string, SpriteModel> atlasDict)
+        {
+            Node node = new Node(parentNode);
+            foreach (var folder in parentFolder.Folders)
+            {
+                Node folderNode = new Node(node);
+                RecreateStructure(folder, folderNode, atlasDict);
+                node.SubNodes.Add(folderNode);
+            }
+
+            foreach (var spriteData in parentFolder.Sprites)
+            {
+                SpriteModel sprite;
+                atlasDict.TryGetValue(spriteData.Name, out sprite);
+                if (sprite == null)
+                    continue;
+
+                // Update the sprite with data from file
+                sprite.FPS = spriteData.FPS;
+                sprite.OriginX = spriteData.OriginX;
+                sprite.OriginY = spriteData.OriginY;
+                sprite.HAlign = (SpriteHorizontalAlignment)Enum.Parse(typeof(SpriteHorizontalAlignment), spriteData.HorizontalAlignment, true);
+                sprite.VAlign = (SpriteVerticalAlignment)Enum.Parse(typeof(SpriteVerticalAlignment), spriteData.VerticalAlignment, true);
+
+                node.SubNodes.Add(sprite);
+            }
         }
     }
 }
