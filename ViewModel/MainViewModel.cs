@@ -85,6 +85,10 @@ namespace AnimationEditor.ViewModel
 
             if (!PromptUnsavedChanges())
                 e.Cancel = true;
+
+            var mainWin = (MainWindow)Application.Current.MainWindow;
+            if (mainWin != null)
+                mainWin.SaveAppProperties();
         }
 
         private void ExitExecute(object parameters)
@@ -157,19 +161,31 @@ namespace AnimationEditor.ViewModel
 
         private void SpritePreviewExecute()
         {
-            //var window = (Window)parameters;
             var window = Application.Current.MainWindow;
 
             var popup = CheckIfPopupOpen();
+            var appProp = AppPropertiesReaderWriter.Read();
 
             if (popup == null)
             {
                 popup = new SpritePreviewView();
                 popup.Owner = window;
                 popup.DataContext = SpritePreviewVM;
-                popup.Left = window.Left + (window.Width - popup.Width) / 2;
-                popup.Top = window.Top + 100;
                 popup.Show();
+                if (appProp == null)
+                {
+                    popup.Left = window.Left + (window.Width - popup.Width) / 2;
+                    popup.Top = window.Top + 100;
+                }
+                else
+                {
+                    popup.Left = appProp.PreviewLeft;
+                    popup.Top = appProp.PreviewTop;
+                    popup.Width = appProp.PreviewWidth;
+                    popup.Height = appProp.PreviewHeight;
+                    popup.Visibility = appProp.PreviewVisible ? Visibility.Visible : Visibility.Hidden;
+                }
+                
             }
             else
             {
@@ -252,6 +268,16 @@ namespace AnimationEditor.ViewModel
             }
 
             return false;
+        }
+
+        public void SetAppProperties(AppProperties prop)
+        {
+            MainCanvasVM.ZoomIndex = prop.ZoomIndex;
+        }
+
+        public void GetAppProperties(ref AppProperties prop)
+        {
+            prop.ZoomIndex = MainCanvasVM.ZoomIndex;
         }
     }
 }

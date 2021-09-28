@@ -36,19 +36,24 @@ namespace AnimationEditor
 
     public class AppPropertiesReaderWriter
     {
-        public static void Write(string filename, AppProperties properties)
+        private const string Filename = "app_prop.xml";
+
+        public static void Write(AppProperties properties)
         {
             var xml = new XmlSerializer(typeof(AppProperties));
-            using (var writer = new StreamWriter(filename))
+            using (var writer = new StreamWriter(Filename))
             {
                 xml.Serialize(writer, properties);
             }
         }
 
-        public static AppProperties Read(string filename)
+        public static AppProperties Read()
         {
+            if (!File.Exists(Filename))
+                return null;
+
             var xml = new XmlSerializer(typeof(AppProperties));
-            using (var reader = new StreamReader(filename))
+            using (var reader = new StreamReader(Filename))
             {
                 var properties = (AppProperties)xml.Deserialize(reader);
                 return properties;
