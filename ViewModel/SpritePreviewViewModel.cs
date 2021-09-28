@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace AnimationEditor.ViewModel
 {
@@ -23,6 +24,7 @@ namespace AnimationEditor.ViewModel
         private double _spriteX;
         private double _spriteY;
         private Vector2 _canvasSize;
+        private DispatcherTimer _timer;
 
         public Visibility Visible
         {
@@ -102,6 +104,24 @@ namespace AnimationEditor.ViewModel
             ClosingCommand = new RelayCommand(x => ClosingExecute(x));
             SizeChangedCommand = new RelayCommand(x => SizeChangedExecute(x));
             RenderScale = new ScaleTransform(2, 2);
+
+            _timer = new DispatcherTimer();
+            _timer.Interval = TimeSpan.FromSeconds(1.0 / 60.0);
+            _timer.Tick += Timer_Tick;
+            _timer.Start();
+        }
+
+        private void Timer_Tick(object sender, System.EventArgs e)
+        {
+            if (_selectedSprite != null)
+            {
+                int prevIndex = _selectedSprite.RegionIndex;
+                _selectedSprite.Update(_timer.Interval.TotalMilliseconds);
+                if (_selectedSprite.RegionIndex != prevIndex)
+                {
+                    CurrentFrame = _selectedSprite.CurrentFrame;
+                }
+            }
         }
 
         public void TextureAtlasSelectionChanged(object sender, EventArgs e)
@@ -111,7 +131,7 @@ namespace AnimationEditor.ViewModel
             if (selectedItems.Count == 1 && selectedItems[0] is SpriteModel sprite)
             {
                 _selectedSprite = sprite;
-                CurrentFrame = sprite.Regions[0].ImageBrush;
+                CurrentFrame = sprite.CurrentFrame;
                 SpriteWidth = sprite.Regions[0].width;
                 SpriteHeight = sprite.Regions[0].height;
 
