@@ -15,12 +15,12 @@
         <vm:MainViewModel x:Name="mainVM"/>
     </Window.DataContext>
 
-    <Window.Resources>
-    </Window.Resources>
-
     <e:Interaction.Triggers>
         <e:EventTrigger EventName="Closing">
             <e:InvokeCommandAction Command="{Binding ClosingCommand}" PassEventArgsToCommand="True"/>
+        </e:EventTrigger>
+        <e:EventTrigger EventName="Loaded">
+            <e:InvokeCommandAction Command="{Binding LoadedCommand}" />
         </e:EventTrigger>
     </e:Interaction.Triggers>
 

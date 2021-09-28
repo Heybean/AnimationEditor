@@ -49,7 +49,6 @@ namespace AnimationEditor.ViewModel
             }
         }
 
-
         public float OutlineWidth
         {
             get => _outlineSize.X;

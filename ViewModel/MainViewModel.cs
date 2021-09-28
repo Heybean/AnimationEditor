@@ -44,6 +44,7 @@ namespace AnimationEditor.ViewModel
         public ICommand SaveCommand { get; }
         public ICommand SaveAsCommand { get; }
         public ICommand SpritePreviewCommand { get; }
+        public ICommand LoadedCommand { get; }
 
         public MainViewModel()
         {
@@ -54,6 +55,7 @@ namespace AnimationEditor.ViewModel
 
             TextureAtlasesVM.SelectionChanged += MainCanvasVM.TextureAtlasSelectionChanged;
             TextureAtlasesVM.SelectionChanged += SpritePropertiesVM.TextureAtlasSelectionChanged;
+            TextureAtlasesVM.SelectionChanged += SpritePreviewVM.TextureAtlasSelectionChanged;
 
             TextureAtlasesVM.OnFileModified += FileModifiedEvent;
             SpritePropertiesVM.OnFileModified += FileModifiedEvent;
@@ -66,7 +68,8 @@ namespace AnimationEditor.ViewModel
             OpenCommand = new DelegateCommand(OpenExecute);
             SaveCommand = new DelegateCommand(SaveExecute);
             SaveAsCommand = new DelegateCommand(SaveAsExecute);
-            SpritePreviewCommand = new RelayCommand(x => SpritePreviewExecute(x));
+            SpritePreviewCommand = new DelegateCommand(SpritePreviewExecute);
+            LoadedCommand = new DelegateCommand(LoadedExecute);
 
             Reset();
         }
@@ -97,6 +100,11 @@ namespace AnimationEditor.ViewModel
             TextureAtlasesVM.Reset();
             SpritePropertiesVM.Reset();
             UnsavedChanges = false;
+        }
+
+        private void LoadedExecute()
+        {
+            SpritePreviewExecute();
         }
 
         private void NewExecute()
@@ -188,9 +196,10 @@ namespace AnimationEditor.ViewModel
             TextureAtlasesVM.Root.Name = FileName + ".anim";
         }
 
-        private void SpritePreviewExecute(object parameters)
+        private void SpritePreviewExecute()
         {
-            var window = (Window)parameters;
+            //var window = (Window)parameters;
+            var window = Application.Current.MainWindow;
 
             var popup = CheckIfPopupOpen();
 
@@ -199,6 +208,8 @@ namespace AnimationEditor.ViewModel
                 popup = new SpritePreviewView();
                 popup.Owner = window;
                 popup.DataContext = SpritePreviewVM;
+                popup.Left = window.Left + (window.Width - popup.Width) / 2;
+                popup.Top = window.Top + 100;
                 popup.Show();
             }
             else
