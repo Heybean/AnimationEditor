@@ -1,0 +1,32 @@
+﻿<Window x:Class="AnimationEditor.View.SpritePreviewView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:e="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:vm="clr-namespace:AnimationEditor.ViewModel"
+        mc:Ignorable="d"
+        Title="Sprite Preview" Height="200" Width="200" ResizeMode="CanResize"  WindowStyle="ToolWindow" Visibility="{Binding Visible, Mode=TwoWay}">
+
+    <e:Interaction.Triggers>
+        <e:EventTrigger EventName="Closing">
+            <e:InvokeCommandAction Command="{Binding ClosingCommand}" PassEventArgsToCommand="True"/>
+        </e:EventTrigger>
+    </e:Interaction.Triggers>
+    
+    <Grid>
+        <Canvas x:Name="previewRender" Background="Gray" Margin="5" ClipToBounds="True" >
+            <e:Interaction.Triggers>
+                <e:EventTrigger EventName="SizeChanged">
+                    <e:InvokeCommandAction Command="{Binding SizeChangedCommand}" CommandParameter="{Binding ElementName=previewRender}"/>
+                </e:EventTrigger>
+                <e:EventTrigger EventName="Loaded">
+                    <e:InvokeCommandAction Command="{Binding SizeChangedCommand}" CommandParameter="{Binding ElementName=previewRender}"/>
+                </e:EventTrigger>
+            </e:Interaction.Triggers>
+            <Rectangle x:Name="rect_Sprite" Fill="{Binding Path=CurrentFrame, UpdateSourceTrigger=PropertyChanged}"
+                       Width="{Binding SpriteWidth}" Height="{Binding SpriteHeight}" RenderTransform="{Binding RenderScale}"
+                       RenderOptions.BitmapScalingMode="NearestNeighbor" Canvas.Left="{Binding SpriteX}" Canvas.Top="{Binding SpriteY}"/>
+        </Canvas>
+    </Grid>
+</Window>
