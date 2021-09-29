@@ -1,4 +1,5 @@
 ﻿using AnimationEditor.Model;
+using PropertyTools.Wpf;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -25,6 +26,7 @@ namespace AnimationEditor.ViewModel
         private double _spriteY;
         private Vector2 _canvasSize;
         private DispatcherTimer _timer;
+        private bool _play;
         private List<DrawSpriteModel> _sprites;
 
         public Visibility Visible
@@ -102,13 +104,35 @@ namespace AnimationEditor.ViewModel
             }
         }
 
+        public bool IsPlaying
+        {
+            get => _play;
+            set
+            {
+                _play = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsPaused
+        {
+            get => !IsPlaying;
+            set
+            {
+                IsPlaying = !value;
+            }
+        }
+
         public ICommand ClosingCommand { get; }
         public ICommand SizeChangedCommand { get; }
+        public ICommand PlayCommand { get; }
+        public ICommand PauseCommand { get; }
 
         public SpritePreviewViewModel()
         {
             ClosingCommand = new RelayCommand(x => ClosingExecute(x));
             SizeChangedCommand = new RelayCommand(x => SizeChangedExecute(x));
+            PlayCommand = new DelegateCommand(PlayExecute);
             RenderScale = new ScaleTransform(2, 2);
 
             _timer = new DispatcherTimer();
@@ -168,6 +192,11 @@ namespace AnimationEditor.ViewModel
             _canvasSize.Y = (float)canvas.ActualHeight;
 
             CenterPositionSprite();
+        }
+
+        private void PlayExecute()
+        {
+            IsPlaying = !IsPlaying;
         }
 
         private void CenterPositionSprite()

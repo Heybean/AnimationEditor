@@ -5,9 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:e="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:vm="clr-namespace:AnimationEditor.ViewModel"
+        xmlns:cv="clr-namespace:AnimationEditor.Converter"
         mc:Ignorable="d"
         Title="Sprite Preview" Height="200" Width="200" ResizeMode="CanResize"  WindowStyle="ToolWindow" Visibility="{Binding Visible, Mode=TwoWay}">
 
+    <Window.Resources>
+        <cv:PlayButtonImgConverter x:Key="iconConverter" />
+    </Window.Resources>
+    
     <e:Interaction.Triggers>
         <e:EventTrigger EventName="Closing">
             <e:InvokeCommandAction Command="{Binding ClosingCommand}" PassEventArgsToCommand="True"/>
@@ -17,11 +22,8 @@
     <DockPanel>
         <ToolBarPanel DockPanel.Dock="Bottom" Margin="2, 0, 5, 5">
             <ToolBar ToolBarTray.IsLocked="true">
-                <Button>
-                    <Image Source="play.png" />
-                </Button>
-                <Button>
-                    <Image Source="pause.png" />
+                <Button Command="{Binding PlayCommand}">
+                    <Image Source="{Binding Path=IsPlaying, Converter={StaticResource iconConverter}}" />
                 </Button>
                 <Separator />
                 <ComboBox>

@@ -7,13 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Converter\**" />
-    <EmbeddedResource Remove="Converter\**" />
-    <None Remove="Converter\**" />
-    <Page Remove="Converter\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="origin_point.png" />
     <None Remove="View\pause.png" />
     <None Remove="View\play.png" />
