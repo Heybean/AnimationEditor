@@ -133,7 +133,7 @@ namespace AnimationEditor.ViewModel
             VAlign = null;
         }
 
-        public void TextureAtlasSelectionChanged(object sender, EventArgs e)
+        public void TextureAtlasesVM_SelectionChanged(object sender, EventArgs e)
         {
             _selectedItems = (IList<object>)e.Parameters;
 

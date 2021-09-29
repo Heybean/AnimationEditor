@@ -36,7 +36,7 @@ namespace AnimationEditor.ViewModel
         public MainCanvasViewModel MainCanvasVM { get; }
         public SpritePropertiesViewModel SpritePropertiesVM { get; }
         public SpritePreviewViewModel SpritePreviewVM { get; }
-        public ControlsViewModel ControlsVM { get; }
+        public SpriteControlsViewModel SpriteControlsVM { get; }
 
         public ICommand ClosingCommand { get; }
         public ICommand ExitCommand { get; }
@@ -52,11 +52,13 @@ namespace AnimationEditor.ViewModel
             TextureAtlasesVM = new TextureAtlasesViewModel();
             MainCanvasVM = new MainCanvasViewModel();
             SpritePropertiesVM = new SpritePropertiesViewModel();
+            SpriteControlsVM = new SpriteControlsViewModel();
             SpritePreviewVM = new SpritePreviewViewModel();
 
-            TextureAtlasesVM.SelectionChanged += MainCanvasVM.TextureAtlasSelectionChanged;
-            TextureAtlasesVM.SelectionChanged += SpritePropertiesVM.TextureAtlasSelectionChanged;
-            TextureAtlasesVM.SelectionChanged += SpritePreviewVM.TextureAtlasSelectionChanged;
+            TextureAtlasesVM.SelectionChanged += MainCanvasVM.TextureAtlasesVM_SelectionChanged;
+            TextureAtlasesVM.SelectionChanged += SpritePropertiesVM.TextureAtlasesVM_SelectionChanged;
+            TextureAtlasesVM.SelectionChanged += SpritePreviewVM.TextureAtlasesVM_SelectionChanged;
+            TextureAtlasesVM.SelectionChanged += SpriteControlsVM.TextureAtlasVM_SelectionChanged;
 
             TextureAtlasesVM.OnFileModified += FileModifiedEvent;
             SpritePropertiesVM.OnFileModified += FileModifiedEvent;

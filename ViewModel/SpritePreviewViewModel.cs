@@ -166,7 +166,7 @@ namespace AnimationEditor.ViewModel
             }
         }
 
-        public void TextureAtlasSelectionChanged(object sender, EventArgs e)
+        public void TextureAtlasesVM_SelectionChanged(object sender, EventArgs e)
         {
             var selectedItems = (IList<object>)e.Parameters;
 

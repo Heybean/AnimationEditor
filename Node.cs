@@ -41,5 +41,10 @@ namespace AnimationEditor
         {
             SubNodes.Sort(node => node.Name);
         }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

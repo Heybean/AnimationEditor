@@ -167,7 +167,7 @@ namespace AnimationEditor.ViewModel
             ZoomIndex = 2;
         }
 
-        public void TextureAtlasSelectionChanged(object sender, EventArgs e)
+        public void TextureAtlasesVM_SelectionChanged(object sender, EventArgs e)
         {
             var list = e.Parameters as IList<object>;
 
