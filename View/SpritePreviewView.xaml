@@ -7,7 +7,8 @@
         xmlns:vm="clr-namespace:AnimationEditor.ViewModel"
         xmlns:cv="clr-namespace:AnimationEditor.Converter"
         mc:Ignorable="d"
-        Title="Sprite Preview" Height="200" Width="200" ResizeMode="CanResize"  WindowStyle="ToolWindow" Visibility="{Binding Visible, Mode=TwoWay}">
+        Title="Sprite Preview" Height="200" Width="200" ResizeMode="CanResize"  WindowStyle="ToolWindow" Visibility="{Binding Visible, Mode=TwoWay}"
+        MinHeight="80">
 
     <Window.Resources>
         <cv:PlayButtonImgConverter x:Key="iconConverter" />
@@ -26,7 +27,7 @@
                     <Image Source="{Binding Path=IsPlaying, Converter={StaticResource iconConverter}}" />
                 </Button>
                 <Separator />
-                <ComboBox>
+                <ComboBox SelectedIndex="{Binding ZoomIndex}">
                     <ComboBoxItem>100%</ComboBoxItem>
                     <ComboBoxItem>200%</ComboBoxItem>
                     <ComboBoxItem>300%</ComboBoxItem>
@@ -43,6 +44,9 @@
                 </e:EventTrigger>
                 <e:EventTrigger EventName="Loaded">
                     <e:InvokeCommandAction Command="{Binding SizeChangedCommand}" CommandParameter="{Binding ElementName=previewRender}"/>
+                </e:EventTrigger>
+                <e:EventTrigger EventName="PreviewMouseWheel">
+                    <e:InvokeCommandAction Command="{Binding MouseWheelCommand}" PassEventArgsToCommand="True"/>
                 </e:EventTrigger>
             </e:Interaction.Triggers>
             <Rectangle x:Name="rect_Sprite" Fill="{Binding Path=CurrentFrame, UpdateSourceTrigger=PropertyChanged}"

@@ -114,26 +114,34 @@ namespace AnimationEditor.ViewModel
             }
         }
 
-        public bool IsPaused
+        public int ZoomIndex
         {
-            get => !IsPlaying;
+            get => _zoomIndex;
             set
             {
-                IsPlaying = !value;
+                _zoomIndex = value;
+                OnPropertyChanged();
+
+                _renderScale.ScaleX = value + 1;
+                _renderScale.ScaleY = value + 1;
+                RenderScale = _renderScale;
+                CenterPositionSprite();
             }
         }
 
         public ICommand ClosingCommand { get; }
         public ICommand SizeChangedCommand { get; }
         public ICommand PlayCommand { get; }
-        public ICommand PauseCommand { get; }
+        public ICommand MouseWheelCommand { get; }
 
         public SpritePreviewViewModel()
         {
             ClosingCommand = new RelayCommand(x => ClosingExecute(x));
             SizeChangedCommand = new RelayCommand(x => SizeChangedExecute(x));
+            MouseWheelCommand = new RelayCommand(x => MouseWheelExecute(x));
             PlayCommand = new DelegateCommand(PlayExecute);
-            RenderScale = new ScaleTransform(2, 2);
+            RenderScale = new ScaleTransform();
+            ZoomIndex = 1;
 
             _timer = new DispatcherTimer();
             _timer.Interval = TimeSpan.FromSeconds(1.0 / 60.0);
@@ -141,6 +149,7 @@ namespace AnimationEditor.ViewModel
             _timer.Start();
 
             _sprites = new List<DrawSpriteModel>();
+            IsPlaying = true;
         }
 
         private void Timer_Tick(object sender, System.EventArgs e)
@@ -148,7 +157,8 @@ namespace AnimationEditor.ViewModel
             if (_selectedSprite != null)
             {
                 int prevIndex = _selectedSprite.RegionIndex;
-                _selectedSprite.Update(_timer.Interval.TotalMilliseconds);
+                if (IsPlaying)
+                    _selectedSprite.Update(_timer.Interval.TotalMilliseconds);
                 if (_selectedSprite.RegionIndex != prevIndex)
                 {
                     CurrentFrame = _selectedSprite.CurrentFrame;
@@ -192,6 +202,26 @@ namespace AnimationEditor.ViewModel
             _canvasSize.Y = (float)canvas.ActualHeight;
 
             CenterPositionSprite();
+        }
+
+        private void MouseWheelExecute(object parameters)
+        {
+            var e = (MouseWheelEventArgs)parameters;
+
+            if (Keyboard.IsKeyDown(Key.LeftCtrl))
+            {
+                int index = ZoomIndex;
+                const int MaxCount = 5;
+
+                if (e.Delta > 0)
+                {
+                    ZoomIndex = Math.Min(index + 1, MaxCount - 1);
+                }
+                else if (e.Delta < 0)
+                {
+                    ZoomIndex = Math.Max(index - 1, 0);
+                }
+            }
         }
 
         private void PlayExecute()
