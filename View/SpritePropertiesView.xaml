@@ -11,6 +11,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
 
     <DockPanel IsEnabled="{Binding HasSpriteSelected}">
+        <Label DockPanel.Dock="Top" Content="Sprite Properties" Background="SlateGray"  Foreground="White"/>
         <Grid Margin="0 0 8 0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="49*"/>

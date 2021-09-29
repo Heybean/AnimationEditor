@@ -27,6 +27,14 @@
             <Rectangle x:Name="rect_Sprite" Fill="{Binding Path=CurrentFrame, UpdateSourceTrigger=PropertyChanged}"
                        Width="{Binding SpriteWidth}" Height="{Binding SpriteHeight}" RenderTransform="{Binding RenderScale}"
                        RenderOptions.BitmapScalingMode="NearestNeighbor" Canvas.Left="{Binding SpriteX}" Canvas.Top="{Binding SpriteY}"/>
+
+            <ItemsControl ItemsSource="{Binding Sprites}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Rectangle Canvas.Left="{Binding Left}" Canvas.Top="{Binding Top}" Fill="{Binding Sprite.CurrentFrame}"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </Canvas>
     </Grid>
 </Window>

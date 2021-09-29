@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Converter\**" />
+    <EmbeddedResource Remove="Converter\**" />
+    <None Remove="Converter\**" />
+    <Page Remove="Converter\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="origin_point.png" />
   </ItemGroup>
 
@@ -28,10 +35,6 @@
 
   <ItemGroup>
     <Resource Include="View\origin_point.png" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Converter\" />
   </ItemGroup>
 
 </Project>

@@ -36,6 +36,7 @@ namespace AnimationEditor.ViewModel
         public MainCanvasViewModel MainCanvasVM { get; }
         public SpritePropertiesViewModel SpritePropertiesVM { get; }
         public SpritePreviewViewModel SpritePreviewVM { get; }
+        public ControlsViewModel ControlsVM { get; }
 
         public ICommand ClosingCommand { get; }
         public ICommand ExitCommand { get; }

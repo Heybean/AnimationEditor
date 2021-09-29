@@ -25,6 +25,7 @@ namespace AnimationEditor.ViewModel
         private double _spriteY;
         private Vector2 _canvasSize;
         private DispatcherTimer _timer;
+        private List<DrawSpriteModel> _sprites;
 
         public Visibility Visible
         {
@@ -34,6 +35,11 @@ namespace AnimationEditor.ViewModel
                 _isVisible = value;
                 OnPropertyChanged();
             }
+        }
+
+        public List<DrawSpriteModel> Sprites
+        {
+            get => _sprites;
         }
 
         public ImageBrush CurrentFrame
@@ -109,6 +115,8 @@ namespace AnimationEditor.ViewModel
             _timer.Interval = TimeSpan.FromSeconds(1.0 / 60.0);
             _timer.Tick += Timer_Tick;
             _timer.Start();
+
+            _sprites = new List<DrawSpriteModel>();
         }
 
         private void Timer_Tick(object sender, System.EventArgs e)
