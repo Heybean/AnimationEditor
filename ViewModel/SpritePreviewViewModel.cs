@@ -66,6 +66,7 @@ namespace AnimationEditor.ViewModel
             set
             {
                 _zoomIndex = value;
+                AppSettings.Instance.PreviewZoomIndex = value;
                 OnPropertyChanged();
 
                 _renderScale.ScaleX = value + 1;
@@ -92,7 +93,7 @@ namespace AnimationEditor.ViewModel
             FrameLeftCommand = new DelegateCommand(FrameLeftExecute);
             FrameRightCommand = new DelegateCommand(FrameRightExecute);
             RenderScale = new ScaleTransform();
-            ZoomIndex = 1;
+            ZoomIndex = AppSettings.Instance.PreviewZoomIndex;
 
             _layerSprites = new List<DrawSpriteModel>();
 

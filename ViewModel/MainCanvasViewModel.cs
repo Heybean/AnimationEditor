@@ -113,6 +113,7 @@ namespace AnimationEditor.ViewModel
             set
             {
                 _zoomIndex = value;
+                AppSettings.Instance.MainZoomIndex = value;
                 OnPropertyChanged();
 
                 _renderScale.ScaleX = value + 1;
@@ -164,7 +165,7 @@ namespace AnimationEditor.ViewModel
             CanvasLoadedCommand = new RelayCommand(x => CanvasLoadedExecute(x));
             OriginMarkerLoadedCommand = new RelayCommand(x => OriginMarkerLoadedExecute(x));
             _renderScale = new ScaleTransform();
-            ZoomIndex = 2;
+            ZoomIndex = AppSettings.Instance.MainZoomIndex;
         }
 
         public void TextureAtlasesVM_SelectionChanged(object sender, EventArgs e)
