@@ -163,55 +163,6 @@ namespace AnimationEditor.ViewModel
             TextureAtlasesVM.Root.Name = FileName + ".anim";
         }
 
-        private void SpritePreviewExecute()
-        {
-            /*var window = Application.Current.MainWindow;
-
-            var popup = CheckIfPopupOpen();
-            //var appProp = AppPropertiesReaderWriter.Read();
-
-            if (popup == null)
-            {
-                popup = new SpritePreviewView();
-                popup.Owner = window;
-                popup.DataContext = SpritePreviewVM;
-                popup.Show();
-
-                //if (appProp == null)
-                {
-                    popup.Left = window.Left + (window.Width - popup.Width) / 2;
-                    popup.Top = window.Top + 100;
-                }
-                else
-                {
-                    popup.Left = appProp.PreviewLeft;
-                    popup.Top = appProp.PreviewTop;
-                    popup.Width = appProp.PreviewWidth;
-                    popup.Height = appProp.PreviewHeight;
-                    popup.Visibility = appProp.PreviewVisible ? Visibility.Visible : Visibility.Hidden;
-                }
-                
-            }
-            else
-            {
-                if (popup.Visibility == Visibility.Hidden)
-                    popup.Show();
-                else
-                    popup.Hide();
-            }*/
-        }
-
-        private Window CheckIfPopupOpen()
-        {
-            foreach(var window in Application.Current.Windows)
-            {
-                if (window is SpritePreviewView)
-                    return (Window)window;
-            }
-
-            return null;
-        }
-
         /// <summary>
         /// Prompts user to save file if unsaved changes exists.
         /// </summary>

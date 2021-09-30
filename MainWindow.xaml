@@ -6,6 +6,7 @@
         xmlns:e="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:view="clr-namespace:AnimationEditor.View"
         xmlns:vm="clr-namespace:AnimationEditor.ViewModel"
+        xmlns:cv="clr-namespace:AnimationEditor.Converter"
         xmlns:s="clr-namespace:AnimationEditor"
         mc:Ignorable="d"
         Title="Animation Editor"
@@ -20,6 +21,10 @@
     <Window.DataContext>
         <vm:MainViewModel x:Name="mainVM"/>
     </Window.DataContext>
+
+    <Window.Resources>
+        <cv:GridSizeConverter x:Key="gridConverter" />
+    </Window.Resources>
 
     <e:Interaction.Triggers>
         <e:EventTrigger EventName="Closing">
@@ -61,23 +66,24 @@
 
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="76.705" MaxWidth="500"/>
-                <ColumnDefinition Width="123.295"/>
+                <ColumnDefinition Width="{Binding Source={x:Static s:AppSettings.Instance}, Path=MainSplitter1, Mode=TwoWay, Converter={StaticResource gridConverter}}" 
+                                  MaxWidth="500"/>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="200" MinWidth="200" MaxWidth="500"/>
+                <ColumnDefinition Width="{Binding Source={x:Static s:AppSettings.Instance}, Path=MainSplitter2, Mode=TwoWay, Converter={StaticResource gridConverter}}" MaxWidth="500"/>
             </Grid.ColumnDefinitions>
 
-            <view:TextureAtlasesView Grid.Row="0" DataContext="{Binding ElementName=mainVM, Path=TextureAtlasesVM}" Grid.ColumnSpan="2"/>
+            <view:TextureAtlasesView Grid.Column="0" DataContext="{Binding ElementName=mainVM, Path=TextureAtlasesVM}"/>
 
-            <GridSplitter Grid.Column="2" Width ="5" HorizontalAlignment="Stretch" Background="LightSteelBlue" ShowsPreview="True"/>
-            <DockPanel Grid.Column="3">
+            <GridSplitter Grid.Column="1" Width ="5" HorizontalAlignment="Stretch" Background="LightSteelBlue" ShowsPreview="True"/>
+            
+            <DockPanel Grid.Column="2">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition MinHeight="30"/>
                         <RowDefinition Height="Auto" />
-                        <RowDefinition MinHeight="30" Height="200"/>
+                        <RowDefinition Height="{Binding Source={x:Static s:AppSettings.Instance}, Path=ControlsSplitter, Mode=TwoWay, Converter={StaticResource gridConverter}}"/>
                     </Grid.RowDefinitions>
                     <view:MainCanvasView Grid.Row="0" DataContext="{Binding ElementName=mainVM, Path=MainCanvasVM}"/>
                     <GridSplitter Grid.Row="1" Height="5" HorizontalAlignment="Stretch" Background="LightSteelBlue" ShowsPreview="True"/>
@@ -85,9 +91,9 @@
                 </Grid>
             </DockPanel>
 
-            <GridSplitter Grid.Column="4" Width ="5" HorizontalAlignment="Stretch" Background="LightSteelBlue" ShowsPreview="True"/>
+            <GridSplitter Grid.Column="3" Width ="5" HorizontalAlignment="Stretch" Background="LightSteelBlue" ShowsPreview="True"/>
 
-            <view:SpritePropertiesView Grid.Column="5" DataContext="{Binding ElementName=mainVM, Path=SpritePropertiesVM}"/>
+            <view:SpritePropertiesView Grid.Column="4" DataContext="{Binding ElementName=mainVM, Path=SpritePropertiesVM}"/>
 
         </Grid>
     </DockPanel>
