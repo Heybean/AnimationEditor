@@ -4,10 +4,18 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:e="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:s="clr-namespace:AnimationEditor"
         xmlns:vm="clr-namespace:AnimationEditor.ViewModel"
         xmlns:cv="clr-namespace:AnimationEditor.Converter"
         mc:Ignorable="d"
-        Title="Sprite Preview" Height="200" Width="200" ResizeMode="CanResize"  WindowStyle="ToolWindow" Visibility="{Binding Visible, Mode=TwoWay}"
+        Title="Preview"
+        Left="{Binding Source={x:Static s:AppSettings.Instance}, Path=PreviewLeft, Mode=TwoWay}"
+        Top="{Binding Source={x:Static s:AppSettings.Instance}, Path=PreviewTop, Mode=TwoWay}"
+        Height="{Binding Source={x:Static s:AppSettings.Instance}, Path=PreviewHeight, Mode=TwoWay}"
+        Width="{Binding Source={x:Static s:AppSettings.Instance}, Path=PreviewWidth, Mode=TwoWay}"
+        ResizeMode="CanResize"
+        WindowStyle="ToolWindow"
+        Visibility="{Binding Visible, Mode=TwoWay}"
         MinHeight="80">
 
     <Window.Resources>
