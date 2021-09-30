@@ -18,6 +18,11 @@ namespace AnimationEditor.ViewModel
 
         public ObservableCollection<SpriteModel> SpriteLayers { get; set; }
 
+        public bool IsDraggable => throw new NotImplementedException();
+
+        public delegate void LayersUpdatedEventHandler(object sender, EventArgs args);
+        public event LayersUpdatedEventHandler OnUpdateLayers;
+
         public SpriteControlsViewModel()
         {
             AddLayerCommand = new RelayCommand(x => AddLayerExecute(null));
@@ -36,6 +41,7 @@ namespace AnimationEditor.ViewModel
         {
             SpriteLayers.Clear();
             _setLayers.Clear();
+            OnUpdateLayers?.Invoke(this, new EventArgs { Parameters = SpriteLayers });
         }
 
         private void AddLayerExecute(object parameters)
@@ -43,14 +49,19 @@ namespace AnimationEditor.ViewModel
             if (_selectedItems == null)
                 return;
 
+            bool updated = false;
             foreach(SpriteModel sprite in _selectedItems)
             {
                 if (!_setLayers.Contains(sprite.Name))
                 {
                     SpriteLayers.Add(sprite);
                     _setLayers.Add(sprite.Name);
+                    updated = true;
                 }
             }
+
+            if (updated)
+                OnUpdateLayers?.Invoke(this, new EventArgs { Parameters = SpriteLayers });
         }
     }
 }

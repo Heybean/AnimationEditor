@@ -8,7 +8,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
 
     <DockPanel>
-        <StatusBar DockPanel.Dock="Bottom" BorderThickness="1" BorderBrush="DimGray">
+        <StatusBar DockPanel.Dock="Top" BorderThickness="1" BorderBrush="DimGray">
             <StatusBarItem DockPanel.Dock="Right">
                 <ComboBox SelectedIndex="{Binding ZoomIndex}">
                     <ComboBoxItem>100%</ComboBoxItem>

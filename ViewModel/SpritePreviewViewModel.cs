@@ -2,6 +2,7 @@
 using PropertyTools.Wpf;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Numerics;
 using System.Text;
@@ -22,12 +23,9 @@ namespace AnimationEditor.ViewModel
         private int _zoomIndex;
         private double _spriteWidth;
         private double _spriteHeight;
-        private double _spriteX;
-        private double _spriteY;
         private Vector2 _canvasSize;
         private DispatcherTimer _timer;
         private bool _play;
-        private List<DrawSpriteModel> _sprites;
 
         public Visibility Visible
         {
@@ -39,10 +37,10 @@ namespace AnimationEditor.ViewModel
             }
         }
 
-        public List<DrawSpriteModel> Sprites
+        public ObservableCollection<DrawSpriteModel> Sprites
         {
-            get => _sprites;
-        }
+            get;
+        } = new ObservableCollection<DrawSpriteModel>();
 
         public ImageBrush CurrentFrame
         {
@@ -80,26 +78,6 @@ namespace AnimationEditor.ViewModel
             set
             {
                 _spriteHeight = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public double SpriteX
-        {
-            get => _spriteX;
-            set
-            {
-                _spriteX = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public double SpriteY
-        {
-            get => _spriteY;
-            set
-            {
-                _spriteY = value;
                 OnPropertyChanged();
             }
         }
@@ -148,7 +126,6 @@ namespace AnimationEditor.ViewModel
             _timer.Tick += Timer_Tick;
             _timer.Start();
 
-            _sprites = new List<DrawSpriteModel>();
             IsPlaying = true;
         }
 
@@ -183,6 +160,20 @@ namespace AnimationEditor.ViewModel
             {
                 _selectedSprite = null;
                 CurrentFrame = null;
+            }
+        }
+
+        public void SpriteControls_LayersUpdated(object sender, EventArgs e)
+        {
+            Sprites.Clear();
+            var list = (ObservableCollection<SpriteModel>)e.Parameters;
+
+            foreach(var item in list)
+            {
+                Sprites.Add(new DrawSpriteModel
+                {
+                    Sprite = item,
+                });
             }
         }
 
@@ -231,8 +222,11 @@ namespace AnimationEditor.ViewModel
 
         private void CenterPositionSprite()
         {
-            SpriteX = (_canvasSize.X - _spriteWidth * _renderScale.ScaleX) / 2;
-            SpriteY = (_canvasSize.Y - _spriteHeight * _renderScale.ScaleY) / 2;
+            foreach(var item in Sprites)
+            {
+                item.Left = (int)(_canvasSize.X / 2) - item.Sprite.OriginX * _renderScale.ScaleX;
+                item.Top = (int)(_canvasSize.Y / 2) - item.Sprite.OriginY * _renderScale.ScaleY;
+            }
         }
     }
 }

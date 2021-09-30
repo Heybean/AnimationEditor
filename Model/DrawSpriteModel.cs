@@ -11,7 +11,10 @@ namespace AnimationEditor.Model
     {
         private double _left;
         private double _top;
+        private double _width;
+        private double _height;
         private SpriteModel _sprite;
+
         public double Left
         {
             get => _left;
@@ -38,8 +41,31 @@ namespace AnimationEditor.Model
             set
             {
                 _sprite = value;
+                Width = Sprite.Regions[0].width;
+                Height = Sprite.Regions[0].height;
                 OnPropertyChanged();
             }
         }
+
+        public double Width
+        {
+            get => _width;
+            set
+            {
+                _width = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double Height
+        {
+            get => _height;
+            set
+            {
+                _height = value;
+                OnPropertyChanged();
+            }
+        }
+
     }
 }
