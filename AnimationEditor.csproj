@@ -8,8 +8,11 @@
 
   <ItemGroup>
     <None Remove="origin_point.png" />
+    <None Remove="View\leftarrow.png" />
     <None Remove="View\pause.png" />
     <None Remove="View\play.png" />
+    <None Remove="View\reset.png" />
+    <None Remove="View\rightarrow.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,9 +32,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="View\leftarrow.png" />
     <Resource Include="View\origin_point.png" />
     <Resource Include="View\pause.png" />
     <Resource Include="View\play.png" />
+    <Resource Include="View\reset.png" />
+    <Resource Include="View\rightarrow.png" />
   </ItemGroup>
 
 </Project>

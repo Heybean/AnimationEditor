@@ -78,6 +78,9 @@ namespace AnimationEditor.ViewModel
         public ICommand SizeChangedCommand { get; }
         public ICommand PlayCommand { get; }
         public ICommand MouseWheelCommand { get; }
+        public ICommand ResetFramesCommand { get; }
+        public ICommand FrameLeftCommand { get; }
+        public ICommand FrameRightCommand { get; }
 
         public SpritePreviewViewModel()
         {
@@ -85,6 +88,9 @@ namespace AnimationEditor.ViewModel
             SizeChangedCommand = new RelayCommand(x => SizeChangedExecute(x));
             MouseWheelCommand = new RelayCommand(x => MouseWheelExecute(x));
             PlayCommand = new DelegateCommand(PlayExecute);
+            ResetFramesCommand = new DelegateCommand(ResetFramesExecute);
+            FrameLeftCommand = new DelegateCommand(FrameLeftExecute);
+            FrameRightCommand = new DelegateCommand(FrameRightExecute);
             RenderScale = new ScaleTransform();
             ZoomIndex = 1;
 
@@ -202,6 +208,30 @@ namespace AnimationEditor.ViewModel
         private void PlayExecute()
         {
             IsPlaying = !IsPlaying;
+        }
+
+        private void ResetFramesExecute()
+        {
+            foreach(var spr in Sprites)
+            {
+                spr.Sprite.ResetFrames();
+            }
+        }
+
+        private void FrameLeftExecute()
+        {
+            foreach(var spr in Sprites)
+            {
+                spr.Sprite.RegionIndex = spr.Sprite.RegionIndex - 1;
+            }
+        }
+
+        private void FrameRightExecute()
+        {
+            foreach(var spr in Sprites)
+            {
+                spr.Sprite.RegionIndex = spr.Sprite.RegionIndex + 1;
+            }
         }
     }
 }

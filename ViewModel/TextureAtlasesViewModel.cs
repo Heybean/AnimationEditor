@@ -19,7 +19,6 @@ namespace AnimationEditor.ViewModel
 {
     public class TextureAtlasesViewModel : ViewModelBase
     {
-        private Node _selectedItem;
         private TextureAtlasesModel _model;
         private bool _atlasSelected;
 

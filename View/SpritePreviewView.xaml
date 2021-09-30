@@ -27,6 +27,16 @@
                 <Button Command="{Binding PlayCommand}">
                     <Image Source="{Binding Path=IsPlaying, Converter={StaticResource iconConverter}}" />
                 </Button>
+                <Button Command="{Binding ResetFramesCommand}">
+                    <Image Source="reset.png" />
+                </Button>
+                <Separator />
+                <Button Command="{Binding FrameLeftCommand}">
+                    <Image Source="leftarrow.png" />
+                </Button>
+                <Button Command="{Binding FrameRightCommand}">
+                    <Image Source="rightarrow.png" />
+                </Button>
                 <Separator />
                 <ComboBox SelectedIndex="{Binding ZoomIndex}">
                     <ComboBoxItem>100%</ComboBoxItem>
@@ -50,11 +60,7 @@
                     <e:InvokeCommandAction Command="{Binding MouseWheelCommand}" PassEventArgsToCommand="True"/>
                 </e:EventTrigger>
             </e:Interaction.Triggers>
-            <!--
-            <Rectangle x:Name="rect_Sprite" Fill="{Binding Path=CurrentFrame, UpdateSourceTrigger=PropertyChanged}"
-                       Width="{Binding SpriteWidth}" Height="{Binding SpriteHeight}" RenderTransform="{Binding RenderScale}"
-                       RenderOptions.BitmapScalingMode="NearestNeighbor" Canvas.Left="{Binding SpriteX}" Canvas.Top="{Binding SpriteY}"/>
--->
+
             <ItemsControl ItemsSource="{Binding Sprites}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -65,7 +71,7 @@
                     <Style TargetType="ContentPresenter">
                         <Setter Property="Canvas.Left">
                             <Setter.Value>
-                                <MultiBinding Converter="{StaticResource spritePosConverter}">
+                                <MultiBinding Converter="{StaticResource spritePosConverter}" Mode="OneWay">
                                     <Binding ElementName="previewRender" Path="ActualWidth" />
                                     <Binding Path="Sprite.OriginX" />
                                     <Binding Path="DataContext.RenderScale.ScaleX" RelativeSource="{RelativeSource AncestorType={x:Type Window}}"/>
@@ -74,7 +80,7 @@
                         </Setter>
                         <Setter Property="Canvas.Top">
                             <Setter.Value>
-                                <MultiBinding Converter="{StaticResource spritePosConverter}">
+                                <MultiBinding Converter="{StaticResource spritePosConverter}" Mode="OneWay">
                                     <Binding ElementName="previewRender" Path="ActualHeight" />
                                     <Binding Path="Sprite.OriginY" />
                                     <Binding Path="DataContext.RenderScale.ScaleY" RelativeSource="{RelativeSource AncestorType={x:Type Window}}"/>

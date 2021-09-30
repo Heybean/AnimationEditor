@@ -20,7 +20,15 @@ namespace AnimationEditor.Model
         public int FPS { get; set; }
 
         [XmlIgnore]
-        public int RegionIndex { get; set; }
+        public int RegionIndex
+        {
+            get => _regionIndex;
+            set
+            {
+                _regionIndex = Math.Max(0, Math.Min(value, Regions.Count - 1));
+                CurrentFrame = Regions[_regionIndex].ImageBrush;
+            }
+        }
 
         [XmlIgnore]
         public int OriginX
@@ -60,10 +68,7 @@ namespace AnimationEditor.Model
             set
             {
                 _hAlign = value;
-                _doNotInvoke = true;
                 UpdateAlignmentOriginX();
-                _doNotInvoke = false;
-                //NotifyPropertyChanged();
             }
         }
 
@@ -74,10 +79,7 @@ namespace AnimationEditor.Model
             set
             {
                 _vAlign = value;
-                _doNotInvoke = true;
                 UpdateAlignmentOriginY();
-                _doNotInvoke = false;
-                //NotifyPropertyChanged();
             }
         }
 
@@ -90,20 +92,21 @@ namespace AnimationEditor.Model
             get => _currentFrame;
             set
             {
-                if (_currentFrame != value)
-                    OnPropertyChanged();
+                var prev = _currentFrame;
                 _currentFrame = value;
+
+                if (prev != value)
+                    OnPropertyChanged();
             }
         }
-
 
         private SpriteHorizontalAlignment _hAlign;
         private SpriteVerticalAlignment _vAlign;
         private ImageBrush _currentFrame;
+        private int _regionIndex;
         private int _originX;
         private int _originY;
         private double _timeElapsed;
-        private bool _doNotInvoke;
 
         public SpriteModel() { }
 
@@ -136,11 +139,17 @@ namespace AnimationEditor.Model
             {
                 RegionIndex = (RegionIndex + 1) % Regions.Count;
 
-                CurrentFrame = Regions[RegionIndex].ImageBrush;
+                //CurrentFrame = Regions[RegionIndex].ImageBrush;
 
                 _timeElapsed -= timePerFrame;
             }
 
+        }
+
+        public void ResetFrames()
+        {
+            RegionIndex = 0;
+            _timeElapsed = 0;
         }
 
         private void UpdateAlignmentOriginX()
@@ -184,10 +193,5 @@ namespace AnimationEditor.Model
 
             _vAlign = holdValign;
         }
-
-        /*private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }*/
     }
 }
