@@ -32,10 +32,10 @@ namespace AnimationEditor
         {
             InitializeComponent();
 
-            LoadAppProperties();
+            //LoadAppProperties();
         }
 
-        public void LoadAppProperties()
+       /* public void LoadAppProperties()
         {
             var properties = AppPropertiesReaderWriter.Read();
             if (properties != null)
@@ -47,7 +47,7 @@ namespace AnimationEditor
             AppPropertiesReaderWriter.Write(GetAppProperties());
         }
 
-        private void SetAppProperties(AppProperties properties)
+        private void SetAppProperties(AppSettings properties)
         {
             Top = properties.MainTop;
             Left = properties.MainLeft;
@@ -58,7 +58,7 @@ namespace AnimationEditor
             else
                 WindowState = WindowState.Normal;
 
-            /*foreach(var win in Application.Current.Windows)
+            foreach(var win in Application.Current.Windows)
             {
                 if (win is SpritePreviewView spr)
                 {
@@ -68,15 +68,15 @@ namespace AnimationEditor
                     spr.Height = properties.PreviewHeight;
                     spr.Visibility = properties.PreviewVisible ? Visibility.Visible : Visibility.Hidden;
                 }
-            }*/
+            }
 
             if (DataContext is MainViewModel vm)    // This break mvvm, will need to find better way to do this later
                 vm.SetAppProperties(properties);
         }
 
-        public AppProperties GetAppProperties()
+        public AppSettings GetAppProperties()
         {
-            var properties = new AppProperties();
+            var properties = new AppSettings();
             properties.MainTop = Top;
             properties.MainLeft = Left;
             properties.MainWidth = Width;
@@ -99,6 +99,6 @@ namespace AnimationEditor
                 vm.GetAppProperties(ref properties);
 
             return properties;
-        }
+        }*/
     }
 }

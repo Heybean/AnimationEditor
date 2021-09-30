@@ -21,6 +21,8 @@ namespace AnimationEditor
             Args = e.Args;
 
             CLProcessor.ProcessCommandLineArguments(Args);
+
+            AppSettings.Read();
         }
     }
 }

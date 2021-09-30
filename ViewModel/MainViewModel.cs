@@ -30,8 +30,6 @@ namespace AnimationEditor.ViewModel
 
         public bool UnsavedChanges { get; private set; }
 
-        //public SpritePreviewWindow SpritePreviewWindow { get; } = new SpritePreviewWindow();
-
         public TextureAtlasesViewModel TextureAtlasesVM { get; }
         public MainCanvasViewModel MainCanvasVM { get; }
         public SpritePropertiesViewModel SpritePropertiesVM { get; }
@@ -91,9 +89,7 @@ namespace AnimationEditor.ViewModel
             if (!PromptUnsavedChanges())
                 e.Cancel = true;
 
-            var mainWin = (MainWindow)Application.Current.MainWindow;
-            if (mainWin != null)
-                mainWin.SaveAppProperties();
+            AppSettings.Write();
         }
 
         private void ExitExecute(object parameters)
@@ -169,7 +165,7 @@ namespace AnimationEditor.ViewModel
             var window = Application.Current.MainWindow;
 
             var popup = CheckIfPopupOpen();
-            var appProp = AppPropertiesReaderWriter.Read();
+            //var appProp = AppPropertiesReaderWriter.Read();
 
             if (popup == null)
             {
@@ -177,19 +173,19 @@ namespace AnimationEditor.ViewModel
                 popup.Owner = window;
                 popup.DataContext = SpritePreviewVM;
                 popup.Show();
-                if (appProp == null)
+                //if (appProp == null)
                 {
                     popup.Left = window.Left + (window.Width - popup.Width) / 2;
                     popup.Top = window.Top + 100;
                 }
-                else
+                /*else
                 {
                     popup.Left = appProp.PreviewLeft;
                     popup.Top = appProp.PreviewTop;
                     popup.Width = appProp.PreviewWidth;
                     popup.Height = appProp.PreviewHeight;
                     popup.Visibility = appProp.PreviewVisible ? Visibility.Visible : Visibility.Hidden;
-                }
+                }*/
                 
             }
             else
@@ -275,14 +271,14 @@ namespace AnimationEditor.ViewModel
             return false;
         }
 
-        public void SetAppProperties(AppProperties prop)
+        /*public void SetAppProperties(AppSettings prop)
         {
             MainCanvasVM.ZoomIndex = prop.ZoomIndex;
         }
 
-        public void GetAppProperties(ref AppProperties prop)
+        public void GetAppProperties(ref AppSettings prop)
         {
             prop.ZoomIndex = MainCanvasVM.ZoomIndex;
-        }
+        }*/
     }
 }

@@ -6,10 +6,16 @@
         xmlns:e="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:view="clr-namespace:AnimationEditor.View"
         xmlns:vm="clr-namespace:AnimationEditor.ViewModel"
+        xmlns:s="clr-namespace:AnimationEditor"
         mc:Ignorable="d"
-        Title="Animation Editor" Height="450" Width="800"
+        Title="Animation Editor"
         x:Name="mainWindow"
-        WindowState="Maximized">
+        WindowState="{Binding Source={x:Static s:AppSettings.Instance}, Path=WinState, Mode=TwoWay}"
+        Left="{Binding Source={x:Static s:AppSettings.Instance}, Path=MainLeft, Mode=TwoWay}"
+        Top="{Binding Source={x:Static s:AppSettings.Instance}, Path=MainTop, Mode=TwoWay}"
+        Width="{Binding Source={x:Static s:AppSettings.Instance}, Path=MainWidth, Mode=TwoWay}"
+        Height="{Binding Source={x:Static s:AppSettings.Instance}, Path=MainHeight, Mode=TwoWay}"
+        >
 
     <Window.DataContext>
         <vm:MainViewModel x:Name="mainVM"/>
