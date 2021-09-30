@@ -90,8 +90,9 @@ namespace AnimationEditor.Model
             get => _currentFrame;
             set
             {
+                if (_currentFrame != value)
+                    OnPropertyChanged();
                 _currentFrame = value;
-                //NotifyPropertyChanged();
             }
         }
 

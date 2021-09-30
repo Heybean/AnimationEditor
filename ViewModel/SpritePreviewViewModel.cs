@@ -100,16 +100,15 @@ namespace AnimationEditor.ViewModel
 
         private void Timer_Tick(object sender, System.EventArgs e)
         {
-            /*if (_selectedSprite != null)
+            if (!IsPlaying)
+                return;
+
+            foreach(var item in Sprites)
             {
-                int prevIndex = _selectedSprite.RegionIndex;
+                int prevIndex = item.Sprite.RegionIndex;
                 if (IsPlaying)
-                    _selectedSprite.Update(_timer.Interval.TotalMilliseconds);
-                if (_selectedSprite.RegionIndex != prevIndex)
-                {
-                    CurrentFrame = _selectedSprite.CurrentFrame;
-                }
-            }*/
+                    item.Sprite.Update(_timer.Interval.TotalMilliseconds);
+            }
         }
 
         public void TextureAtlasesVM_SelectionChanged(object sender, EventArgs e)
