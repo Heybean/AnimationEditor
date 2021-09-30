@@ -15,7 +15,7 @@
         Width="{Binding Source={x:Static s:AppSettings.Instance}, Path=PreviewWidth, Mode=TwoWay}"
         ResizeMode="CanResize"
         WindowStyle="ToolWindow"
-        Visibility="{Binding Visible, Mode=TwoWay}"
+        Visibility="{Binding Visibility, Mode=TwoWay}"
         MinHeight="80">
 
     <Window.Resources>

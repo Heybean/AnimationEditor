@@ -55,23 +55,24 @@
                 <MenuItem Header="_Redo" InputGestureText="Ctrl+Y" />
             </MenuItem>
             <MenuItem Header="_Window">
-                <MenuItem Header="_Sprite Preview" Command="{Binding SpritePreviewCommand}" CommandParameter="{Binding ElementName=mainWindow}"/>
+                <MenuItem Header="_Sprite Preview" Command="{Binding SpritePreviewVM.ToggleVisiblityCommand}"/>
             </MenuItem>
         </Menu>
 
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200" MinWidth="100" MaxWidth="500"/>
+                <ColumnDefinition Width="76.705" MaxWidth="500"/>
+                <ColumnDefinition Width="123.295"/>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="200" MinWidth="200" MaxWidth="500"/>
             </Grid.ColumnDefinitions>
 
-            <view:TextureAtlasesView Grid.Row="0" DataContext="{Binding ElementName=mainVM, Path=TextureAtlasesVM}"/>
+            <view:TextureAtlasesView Grid.Row="0" DataContext="{Binding ElementName=mainVM, Path=TextureAtlasesVM}" Grid.ColumnSpan="2"/>
 
-            <GridSplitter Grid.Column="1" Width ="5" HorizontalAlignment="Stretch" Background="LightSteelBlue" ShowsPreview="True"/>
-            <DockPanel Grid.Column="2">
+            <GridSplitter Grid.Column="2" Width ="5" HorizontalAlignment="Stretch" Background="LightSteelBlue" ShowsPreview="True"/>
+            <DockPanel Grid.Column="3">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition MinHeight="30"/>
@@ -83,10 +84,10 @@
                     <view:SpriteControlsView Grid.Row="2" DataContext="{Binding ElementName=mainVM, Path=SpriteControlsVM}"/>
                 </Grid>
             </DockPanel>
-            
-            <GridSplitter Grid.Column="3" Width ="5" HorizontalAlignment="Stretch" Background="LightSteelBlue" ShowsPreview="True"/>
 
-            <view:SpritePropertiesView Grid.Column="4" DataContext="{Binding ElementName=mainVM, Path=SpritePropertiesVM}"/>
+            <GridSplitter Grid.Column="4" Width ="5" HorizontalAlignment="Stretch" Background="LightSteelBlue" ShowsPreview="True"/>
+
+            <view:SpritePropertiesView Grid.Column="5" DataContext="{Binding ElementName=mainVM, Path=SpritePropertiesVM}"/>
 
         </Grid>
     </DockPanel>

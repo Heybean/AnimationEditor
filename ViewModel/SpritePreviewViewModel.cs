@@ -1,4 +1,5 @@
 ﻿using AnimationEditor.Model;
+using AnimationEditor.View;
 using PropertyTools.Wpf;
 using System;
 using System.Collections.Generic;
@@ -18,19 +19,20 @@ namespace AnimationEditor.ViewModel
     {
         private IList<object> _selectedItems;
         private List<DrawSpriteModel> _layerSprites;
-        private Visibility _isVisible;
+        private Visibility _visiblity;
         private ScaleTransform _renderScale;
         private int _zoomIndex;
         private Vector2 _canvasSize;
         private DispatcherTimer _timer;
         private bool _play;
 
-        public Visibility Visible
+        public Visibility Visibility
         {
-            get => _isVisible;
+            get => _visiblity;
             set
             {
-                _isVisible = value;
+                _visiblity = value;
+                AppSettings.Instance.PreviewVisibility = value;
                 OnPropertyChanged();
             }
         }
@@ -82,6 +84,7 @@ namespace AnimationEditor.ViewModel
         public ICommand ResetFramesCommand { get; }
         public ICommand FrameLeftCommand { get; }
         public ICommand FrameRightCommand { get; }
+        public ICommand ToggleVisiblityCommand { get; }
 
         public SpritePreviewViewModel()
         {
@@ -92,6 +95,7 @@ namespace AnimationEditor.ViewModel
             ResetFramesCommand = new DelegateCommand(ResetFramesExecute);
             FrameLeftCommand = new DelegateCommand(FrameLeftExecute);
             FrameRightCommand = new DelegateCommand(FrameRightExecute);
+            ToggleVisiblityCommand = new RelayCommand(x => ToggleVisiblityExecute(x));
             RenderScale = new ScaleTransform();
             ZoomIndex = AppSettings.Instance.PreviewZoomIndex;
 
@@ -170,12 +174,20 @@ namespace AnimationEditor.ViewModel
             }
         }
 
+        private void ToggleVisiblityExecute(object parameters)
+        {
+            if (Visibility == Visibility.Visible)
+                Visibility = Visibility.Hidden;
+            else
+                Visibility = Visibility.Visible;
+        }
+
         private void ClosingExecute(object parameters)
         {
             var args = (CancelEventArgs)parameters;
 
             args.Cancel = true;
-            Visible = Visibility.Hidden;
+            Visibility = Visibility.Hidden;
         }
 
         private void SizeChangedExecute(object parameters)

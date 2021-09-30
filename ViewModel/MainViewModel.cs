@@ -42,7 +42,6 @@ namespace AnimationEditor.ViewModel
         public ICommand OpenCommand { get; }
         public ICommand SaveCommand { get; }
         public ICommand SaveAsCommand { get; }
-        public ICommand SpritePreviewCommand { get; }
         public ICommand LoadedCommand { get; }
 
         public MainViewModel()
@@ -71,7 +70,6 @@ namespace AnimationEditor.ViewModel
             OpenCommand = new DelegateCommand(OpenExecute);
             SaveCommand = new DelegateCommand(SaveExecute);
             SaveAsCommand = new DelegateCommand(SaveAsExecute);
-            SpritePreviewCommand = new DelegateCommand(SpritePreviewExecute);
             LoadedCommand = new DelegateCommand(LoadedExecute);
 
             Reset();
@@ -109,7 +107,12 @@ namespace AnimationEditor.ViewModel
 
         private void LoadedExecute()
         {
-            SpritePreviewExecute();
+            var popup = new SpritePreviewView();
+            popup.Owner = Application.Current.MainWindow;
+            popup.DataContext = SpritePreviewVM;
+            popup.Show();
+
+            SpritePreviewVM.Visibility = AppSettings.Instance.PreviewVisibility;
         }
 
         private void NewExecute()
@@ -162,7 +165,7 @@ namespace AnimationEditor.ViewModel
 
         private void SpritePreviewExecute()
         {
-            var window = Application.Current.MainWindow;
+            /*var window = Application.Current.MainWindow;
 
             var popup = CheckIfPopupOpen();
             //var appProp = AppPropertiesReaderWriter.Read();
@@ -173,19 +176,20 @@ namespace AnimationEditor.ViewModel
                 popup.Owner = window;
                 popup.DataContext = SpritePreviewVM;
                 popup.Show();
+
                 //if (appProp == null)
                 {
                     popup.Left = window.Left + (window.Width - popup.Width) / 2;
                     popup.Top = window.Top + 100;
                 }
-                /*else
+                else
                 {
                     popup.Left = appProp.PreviewLeft;
                     popup.Top = appProp.PreviewTop;
                     popup.Width = appProp.PreviewWidth;
                     popup.Height = appProp.PreviewHeight;
                     popup.Visibility = appProp.PreviewVisible ? Visibility.Visible : Visibility.Hidden;
-                }*/
+                }
                 
             }
             else
@@ -194,7 +198,7 @@ namespace AnimationEditor.ViewModel
                     popup.Show();
                 else
                     popup.Hide();
-            }
+            }*/
         }
 
         private Window CheckIfPopupOpen()
