@@ -16,13 +16,11 @@ namespace AnimationEditor.ViewModel
 {
     public class SpritePreviewViewModel : ViewModelBase
     {
+        private IList<object> _selectedItems;
+        private List<DrawSpriteModel> _layerSprites;
         private Visibility _isVisible;
-        private SpriteModel _selectedSprite;
-        private ImageBrush _displaySprite;
         private ScaleTransform _renderScale;
         private int _zoomIndex;
-        private double _spriteWidth;
-        private double _spriteHeight;
         private Vector2 _canvasSize;
         private DispatcherTimer _timer;
         private bool _play;
@@ -42,42 +40,12 @@ namespace AnimationEditor.ViewModel
             get;
         } = new ObservableCollection<DrawSpriteModel>();
 
-        public ImageBrush CurrentFrame
-        {
-            get => _displaySprite;
-            set
-            {
-                _displaySprite = value;
-                OnPropertyChanged();
-            }
-        }
-
         public ScaleTransform RenderScale
         {
             get => _renderScale;
             set
             {
                 _renderScale = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public double SpriteWidth
-        {
-            get => _spriteWidth;
-            set
-            {
-                _spriteWidth = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public double SpriteHeight
-        {
-            get => _spriteHeight;
-            set
-            {
-                _spriteHeight = value;
                 OnPropertyChanged();
             }
         }
@@ -103,7 +71,7 @@ namespace AnimationEditor.ViewModel
                 _renderScale.ScaleX = value + 1;
                 _renderScale.ScaleY = value + 1;
                 RenderScale = _renderScale;
-                CenterPositionSprite();
+                CenterPositionSprites();
             }
         }
 
@@ -121,6 +89,8 @@ namespace AnimationEditor.ViewModel
             RenderScale = new ScaleTransform();
             ZoomIndex = 1;
 
+            _layerSprites = new List<DrawSpriteModel>();
+
             _timer = new DispatcherTimer();
             _timer.Interval = TimeSpan.FromSeconds(1.0 / 60.0);
             _timer.Tick += Timer_Tick;
@@ -131,7 +101,7 @@ namespace AnimationEditor.ViewModel
 
         private void Timer_Tick(object sender, System.EventArgs e)
         {
-            if (_selectedSprite != null)
+            /*if (_selectedSprite != null)
             {
                 int prevIndex = _selectedSprite.RegionIndex;
                 if (IsPlaying)
@@ -140,41 +110,76 @@ namespace AnimationEditor.ViewModel
                 {
                     CurrentFrame = _selectedSprite.CurrentFrame;
                 }
-            }
+            }*/
         }
 
         public void TextureAtlasesVM_SelectionChanged(object sender, EventArgs e)
         {
-            var selectedItems = (IList<object>)e.Parameters;
+            _selectedItems = (IList<object>)e.Parameters;
 
-            if (selectedItems.Count == 1 && selectedItems[0] is SpriteModel sprite)
+            RefreshCollection();
+
+            /*if (selectedItems.Count == 1 && selectedItems[0] is SpriteModel sprite)
             {
                 _selectedSprite = sprite;
                 CurrentFrame = sprite.CurrentFrame;
                 SpriteWidth = sprite.Regions[0].width;
                 SpriteHeight = sprite.Regions[0].height;
 
-                CenterPositionSprite();
+                CenterPositionSprites();
             }
             else
             {
                 _selectedSprite = null;
                 CurrentFrame = null;
-            }
+            }*/
         }
 
         public void SpriteControls_LayersUpdated(object sender, EventArgs e)
         {
-            Sprites.Clear();
-            var list = (ObservableCollection<SpriteModel>)e.Parameters;
+            _layerSprites.Clear();
+  
+            var list = (IEnumerable<object>)e.Parameters;
 
-            foreach(var item in list)
+            int zind = 0;
+            foreach(SpriteModel item in list)
             {
-                Sprites.Add(new DrawSpriteModel
+                var spr = new DrawSpriteModel
                 {
                     Sprite = item,
-                });
+                    ZIndex = zind++
+                };
+
+                _layerSprites.Add(spr);
             }
+
+            RefreshCollection();
+        }
+
+        private void RefreshCollection()
+        {
+            Sprites.Clear();
+
+            int zind = 0;
+            foreach (var item in _selectedItems)
+            {
+                if (item is SpriteModel sprite)
+                {
+                    Sprites.Add(new DrawSpriteModel
+                    {
+                        Sprite = sprite,
+                        ZIndex = zind++
+                    });
+                }
+            }
+
+            foreach (var item in _layerSprites)
+            {
+                item.ZIndex = zind++;
+                Sprites.Add(item);
+            }
+
+            CenterPositionSprites();
         }
 
         private void ClosingExecute(object parameters)
@@ -192,7 +197,7 @@ namespace AnimationEditor.ViewModel
             _canvasSize.X = (float)canvas.ActualWidth;
             _canvasSize.Y = (float)canvas.ActualHeight;
 
-            CenterPositionSprite();
+            CenterPositionSprites();
         }
 
         private void MouseWheelExecute(object parameters)
@@ -220,7 +225,7 @@ namespace AnimationEditor.ViewModel
             IsPlaying = !IsPlaying;
         }
 
-        private void CenterPositionSprite()
+        private void CenterPositionSprites()
         {
             foreach(var item in Sprites)
             {

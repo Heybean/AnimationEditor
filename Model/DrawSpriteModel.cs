@@ -9,11 +9,22 @@ namespace AnimationEditor.Model
     /// </summary>
     public class DrawSpriteModel : NotifyBase
     {
+        private int _zind;
         private double _left;
         private double _top;
         private double _width;
         private double _height;
         private SpriteModel _sprite;
+
+        public int ZIndex
+        {
+            get => _zind;
+            set
+            {
+                _zind = value;
+                OnPropertyChanged();
+            }
+        }
 
         public double Left
         {

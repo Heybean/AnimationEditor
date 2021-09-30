@@ -50,13 +50,16 @@ namespace AnimationEditor.ViewModel
                 return;
 
             bool updated = false;
-            foreach(SpriteModel sprite in _selectedItems)
+            foreach(var item in _selectedItems)
             {
-                if (!_setLayers.Contains(sprite.Name))
+                if (item is SpriteModel sprite)
                 {
-                    SpriteLayers.Add(sprite);
-                    _setLayers.Add(sprite.Name);
-                    updated = true;
+                    if (!_setLayers.Contains(sprite.Name))
+                    {
+                        SpriteLayers.Add(sprite);
+                        _setLayers.Add(sprite.Name);
+                        updated = true;
+                    }
                 }
             }
 

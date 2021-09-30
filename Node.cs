@@ -9,7 +9,7 @@ using System.Windows.Data;
 
 namespace AnimationEditor
 {
-    public class Node : Observable
+    public class Node : NotifyBase
     {
         private bool _showChildren;
         private string _name;
@@ -17,7 +17,11 @@ namespace AnimationEditor
         public string Name
         {
             get => _name;
-            set => SetValue(ref _name, value);
+            set
+            {
+                _name = value;
+                OnPropertyChanged();
+            }
         }
         public Node Parent { get; }
         public SortableObservableCollection<Node> SubNodes { get; }
@@ -27,7 +31,8 @@ namespace AnimationEditor
             get => _showChildren;
             set
             {
-                SetValue(ref _showChildren, value);
+                _showChildren = value;
+                OnPropertyChanged();
             }
         }
 

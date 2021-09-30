@@ -6,7 +6,7 @@ using System.Text;
 
 namespace AnimationEditor
 {
-    public class NotifyBase : INotifyPropertyChanged
+    public abstract class NotifyBase : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
