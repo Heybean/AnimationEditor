@@ -30,6 +30,7 @@ namespace AnimationEditor.Model
             {
                 _originX = value;
                 _hAlign = SpriteHorizontalAlignment.Custom;
+                OnPropertyChanged();
                 /*if (!_doNotInvoke)
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("HorizontalAlignment"));
                 NotifyPropertyChanged();*/
@@ -45,6 +46,7 @@ namespace AnimationEditor.Model
             {
                 _originY = value;
                 _vAlign = SpriteVerticalAlignment.Custom;
+                OnPropertyChanged();
                 /*if (!_doNotInvoke)
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("VerticalAlignment"));
                 NotifyPropertyChanged();*/

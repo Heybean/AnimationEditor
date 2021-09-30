@@ -12,6 +12,7 @@
 
     <Window.Resources>
         <cv:PlayButtonImgConverter x:Key="iconConverter" />
+        <cv:SpritePosConverter x:Key="spritePosConverter" />
     </Window.Resources>
     
     <e:Interaction.Triggers>
@@ -62,8 +63,24 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemContainerStyle>
                     <Style TargetType="ContentPresenter">
-                        <Setter Property="Canvas.Left" Value="{Binding Left}" />
-                        <Setter Property="Canvas.Top" Value="{Binding Top}" />
+                        <Setter Property="Canvas.Left">
+                            <Setter.Value>
+                                <MultiBinding Converter="{StaticResource spritePosConverter}">
+                                    <Binding ElementName="previewRender" Path="ActualWidth" />
+                                    <Binding Path="Sprite.OriginX" />
+                                    <Binding Path="DataContext.RenderScale.ScaleX" RelativeSource="{RelativeSource AncestorType={x:Type Window}}"/>
+                                </MultiBinding>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Canvas.Top">
+                            <Setter.Value>
+                                <MultiBinding Converter="{StaticResource spritePosConverter}">
+                                    <Binding ElementName="previewRender" Path="ActualHeight" />
+                                    <Binding Path="Sprite.OriginY" />
+                                    <Binding Path="DataContext.RenderScale.ScaleY" RelativeSource="{RelativeSource AncestorType={x:Type Window}}"/>
+                                </MultiBinding>
+                            </Setter.Value>
+                        </Setter>
                     </Style>
                 </ItemsControl.ItemContainerStyle>
                 <ItemsControl.ItemTemplate>

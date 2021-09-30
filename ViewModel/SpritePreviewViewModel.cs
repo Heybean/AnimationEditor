@@ -71,7 +71,6 @@ namespace AnimationEditor.ViewModel
                 _renderScale.ScaleX = value + 1;
                 _renderScale.ScaleY = value + 1;
                 RenderScale = _renderScale;
-                CenterPositionSprites();
             }
         }
 
@@ -118,21 +117,6 @@ namespace AnimationEditor.ViewModel
             _selectedItems = (IList<object>)e.Parameters;
 
             RefreshCollection();
-
-            /*if (selectedItems.Count == 1 && selectedItems[0] is SpriteModel sprite)
-            {
-                _selectedSprite = sprite;
-                CurrentFrame = sprite.CurrentFrame;
-                SpriteWidth = sprite.Regions[0].width;
-                SpriteHeight = sprite.Regions[0].height;
-
-                CenterPositionSprites();
-            }
-            else
-            {
-                _selectedSprite = null;
-                CurrentFrame = null;
-            }*/
         }
 
         public void SpriteControls_LayersUpdated(object sender, EventArgs e)
@@ -178,8 +162,6 @@ namespace AnimationEditor.ViewModel
                 item.ZIndex = zind++;
                 Sprites.Add(item);
             }
-
-            CenterPositionSprites();
         }
 
         private void ClosingExecute(object parameters)
@@ -196,8 +178,6 @@ namespace AnimationEditor.ViewModel
 
             _canvasSize.X = (float)canvas.ActualWidth;
             _canvasSize.Y = (float)canvas.ActualHeight;
-
-            CenterPositionSprites();
         }
 
         private void MouseWheelExecute(object parameters)
@@ -223,15 +203,6 @@ namespace AnimationEditor.ViewModel
         private void PlayExecute()
         {
             IsPlaying = !IsPlaying;
-        }
-
-        private void CenterPositionSprites()
-        {
-            foreach(var item in Sprites)
-            {
-                item.Left = (int)(_canvasSize.X / 2) - item.Sprite.OriginX * _renderScale.ScaleX;
-                item.Top = (int)(_canvasSize.Y / 2) - item.Sprite.OriginY * _renderScale.ScaleY;
-            }
         }
     }
 }
