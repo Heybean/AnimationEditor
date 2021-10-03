@@ -32,17 +32,17 @@
     <DockPanel>
         <ToolBarPanel DockPanel.Dock="Bottom" Margin="2, 0, 5, 5">
             <ToolBar ToolBarTray.IsLocked="true">
-                <Button Command="{Binding PlayCommand}">
+                <Button Command="{Binding PlayCommand}" ToolTip="Play/Pause">
                     <Image Source="{Binding Path=IsPlaying, Converter={StaticResource iconConverter}}" />
                 </Button>
-                <Button Command="{Binding ResetFramesCommand}">
+                <Button Command="{Binding ResetFramesCommand}" ToolTip="Reset All Frames">
                     <Image Source="reset.png" />
                 </Button>
                 <Separator />
-                <Button Command="{Binding FrameLeftCommand}">
+                <Button Command="{Binding FrameLeftCommand}" ToolTip="Previous Frames">
                     <Image Source="leftarrow.png" />
                 </Button>
-                <Button Command="{Binding FrameRightCommand}">
+                <Button Command="{Binding FrameRightCommand}" ToolTip="Next Frame">
                     <Image Source="rightarrow.png" />
                 </Button>
                 <Separator />
