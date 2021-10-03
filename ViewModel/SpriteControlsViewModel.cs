@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 using System.Windows.Input;
 using AnimationEditor.Model;
@@ -10,10 +11,13 @@ namespace AnimationEditor.ViewModel
 {
     public class SpriteControlsViewModel : ViewModelBase
     {
-        private IList<object> _selectedItems;
+        private IList<object> _selectedAtlasItems;
         private HashSet<string> _setLayers;
 
         public ICommand AddLayerCommand { get; }
+        public ICommand RemoveLayerCommand { get; }
+        public ICommand MoveLayerUpCommand { get; }
+        public ICommand MoveLayerDownCommand { get; }
         public ICommand ClearLayersCommand { get; }
 
         public ObservableCollection<SpriteModel> SpriteLayers { get; set; }
@@ -26,6 +30,8 @@ namespace AnimationEditor.ViewModel
         public SpriteControlsViewModel()
         {
             AddLayerCommand = new RelayCommand(x => AddLayerExecute(null));
+            RemoveLayerCommand = new RelayCommand(x => RemoveLayerExecute(x));
+
             ClearLayersCommand = new DelegateCommand(ClearLayersExecute);
 
             SpriteLayers = new ObservableCollection<SpriteModel>();
@@ -34,7 +40,7 @@ namespace AnimationEditor.ViewModel
 
         public void TextureAtlasVM_SelectionChanged(object sender, EventArgs e)
         {
-            _selectedItems = e.Parameters as IList<object>;
+            _selectedAtlasItems = e.Parameters as IList<object>;
         }
 
         private void ClearLayersExecute()
@@ -46,11 +52,11 @@ namespace AnimationEditor.ViewModel
 
         private void AddLayerExecute(object parameters)
         {
-            if (_selectedItems == null)
+            if (_selectedAtlasItems == null)
                 return;
 
             bool updated = false;
-            foreach(var item in _selectedItems)
+            foreach(var item in _selectedAtlasItems)
             {
                 if (item is SpriteModel sprite)
                 {
@@ -64,6 +70,25 @@ namespace AnimationEditor.ViewModel
             }
 
             if (updated)
+                OnUpdateLayers?.Invoke(this, new EventArgs { Parameters = SpriteLayers });
+        }
+
+        private void RemoveLayerExecute(object parameters)
+        {
+            var list = (IList<object>)parameters;
+
+            bool removed = false;
+
+            foreach(var item in list.ToList())
+            {
+                if (item is SpriteModel sprite)
+                {
+                    removed = true;
+                    SpriteLayers.Remove(sprite);
+                }
+            }
+
+            if (removed)
                 OnUpdateLayers?.Invoke(this, new EventArgs { Parameters = SpriteLayers });
         }
     }

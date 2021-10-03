@@ -8,11 +8,16 @@
 
   <ItemGroup>
     <None Remove="origin_point.png" />
+    <None Remove="View\add.png" />
+    <None Remove="View\delete.png" />
+    <None Remove="View\downarrow.png" />
     <None Remove="View\leftarrow.png" />
     <None Remove="View\pause.png" />
     <None Remove="View\play.png" />
+    <None Remove="View\redx.png" />
     <None Remove="View\reset.png" />
     <None Remove="View\rightarrow.png" />
+    <None Remove="View\uparrow.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,12 +37,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="View\add.png" />
+    <Resource Include="View\delete.png" />
+    <Resource Include="View\downarrow.png" />
     <Resource Include="View\leftarrow.png" />
     <Resource Include="View\origin_point.png" />
     <Resource Include="View\pause.png" />
     <Resource Include="View\play.png" />
+    <Resource Include="View\redx.png" />
     <Resource Include="View\reset.png" />
     <Resource Include="View\rightarrow.png" />
+    <Resource Include="View\uparrow.png" />
   </ItemGroup>
 
 </Project>
