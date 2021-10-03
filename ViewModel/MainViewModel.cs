@@ -58,6 +58,7 @@ namespace AnimationEditor.ViewModel
             TextureAtlasesVM.SelectionChanged += SpriteControlsVM.TextureAtlasVM_SelectionChanged;
 
             SpriteControlsVM.OnUpdateLayers += SpritePreviewVM.SpriteControls_LayersUpdated;
+            SpriteControlsVM.OnUpdateLayersZIndex += SpritePreviewVM.SpriteControls_LayersUpdatedZIndex;
 
             TextureAtlasesVM.OnFileModified += FileModifiedEvent;
             SpritePropertiesVM.OnFileModified += FileModifiedEvent;

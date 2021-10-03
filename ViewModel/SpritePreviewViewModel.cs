@@ -152,6 +152,14 @@ namespace AnimationEditor.ViewModel
             RefreshCollection();
         }
 
+        public void SpriteControls_LayersUpdatedZIndex(object sender, EventArgs e)
+        {
+            for(int i = 0; i < Sprites.Count; i++)
+            {
+                Sprites[i].ZIndex = i;
+            }
+        }
+
         private void RefreshCollection()
         {
             Sprites.Clear();
