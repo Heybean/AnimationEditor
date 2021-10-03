@@ -74,6 +74,15 @@ namespace AnimationEditor.ViewModel
             LoadedCommand = new DelegateCommand(LoadedExecute);
 
             Reset();
+
+            if (AppSettings.Instance.LastOpenFile != "" && File.Exists(AppSettings.Instance.LastOpenFile))
+            {
+                SavePath = AppSettings.Instance.LastOpenFile;
+                FileName = Path.GetFileNameWithoutExtension(SavePath);
+
+                var data = FileReader.Read(SavePath);
+                LoadData(SavePath, data);
+            }
         }
 
         private void FileModifiedEvent(object sender)
@@ -121,6 +130,7 @@ namespace AnimationEditor.ViewModel
             if (PromptUnsavedChanges())
             {
                 Reset();
+                AppSettings.Instance.LastOpenFile = "";
             }
         }
 
@@ -143,6 +153,8 @@ namespace AnimationEditor.ViewModel
 
                 var data = FileReader.Read(openFileDialog.FileName);
                 LoadData(openFileDialog.FileName, data);
+
+                AppSettings.Instance.LastOpenFile = SavePath;
             }
         }
 
@@ -220,6 +232,8 @@ namespace AnimationEditor.ViewModel
 
                 FileWriter.Write(SavePath, TextureAtlasesVM.Root);
                 UnsavedChanges = false;
+
+                AppSettings.Instance.LastOpenFile = SavePath;
 
                 return true;
             }

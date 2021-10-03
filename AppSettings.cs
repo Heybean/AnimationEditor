@@ -56,6 +56,8 @@ namespace AnimationEditor
         public double MainSplitter2 { get; set; } = 200;
         [XmlElement]
         public double ControlsSplitter { get; set; } = 200;
+        [XmlElement]
+        public string LastOpenFile { get; set; }
 
         [XmlIgnore]
         public bool SettingsLoaded { get; set; } = false;
