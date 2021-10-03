@@ -85,6 +85,7 @@ namespace AnimationEditor.ViewModel
                 {
                     removed = true;
                     SpriteLayers.Remove(sprite);
+                    _setLayers.Remove(sprite.Name);
                 }
             }
 

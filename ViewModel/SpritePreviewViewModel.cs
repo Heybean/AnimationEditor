@@ -157,6 +157,11 @@ namespace AnimationEditor.ViewModel
             Sprites.Clear();
             _recordedSprites.Clear();
 
+            foreach (var item in _layerSprites)
+            {
+                _recordedSprites.Add(item.Sprite.Name);
+            }
+
             int zind = 0;
             foreach (var item in _selectedItems)
             {
