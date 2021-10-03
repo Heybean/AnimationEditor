@@ -16,20 +16,31 @@
                 <ColumnDefinition Width="200"/>
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <Grid Grid.Column="0" Margin="10">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="25" />
-                    <RowDefinition />
-                    <RowDefinition Height="30"/>
-                    <RowDefinition Height="30"/>
-                </Grid.RowDefinitions>
-                <Label Grid.Row="0" Content="Layers" Background="SlateGray" Foreground="White"/>
-                <pt:TreeListBox Grid.Row="1" HierarchySource="{Binding SpriteLayers}" VerticalAlignment="Stretch">
-
-                </pt:TreeListBox>
-                <Button Grid.Row="2" Command="{Binding AddLayerCommand}" Margin="0,5,0,5">Add Sprite</Button>
-                <Button Grid.Row="3" DockPanel.Dock="Top" Command="{Binding ClearLayersCommand}" Margin="0,5,0,5">Clear Layers</Button>
-            </Grid>
+            <DockPanel Grid.Column="0" Margin="10">
+                <Label DockPanel.Dock="Top" Content="Layers" Background="SlateGray" Foreground="White"/>
+                <ToolBarPanel DockPanel.Dock="Bottom">
+                    <ToolBar ToolBarTray.IsLocked="True">
+                        <Button Command="{Binding AddLayerCommand}" ToolTip="Add Selection to Layers">
+                            <Image Source="add.png" />
+                        </Button>
+                        <Button Command="{Binding RemoveLayerCommand}" ToolTip="Remove Selected Layers">
+                            <Image Source="delete.png" />
+                        </Button>
+                        <Separator />
+                        <Button ToolTip="Move Layer Up">
+                            <Image Source="uparrow.png" />
+                        </Button>
+                        <Button ToolTip="Move Layer Down">
+                            <Image Source="downarrow.png" />
+                        </Button>
+                        <Separator />
+                        <Button DockPanel.Dock="Top" Command="{Binding ClearLayersCommand}">
+                            <Image Source="redx.png" ToolTip="Clear Layers"/>
+                        </Button>
+                    </ToolBar>
+                </ToolBarPanel>
+                <pt:TreeListBox  HierarchySource="{Binding SpriteLayers}" VerticalAlignment="Stretch" />
+            </DockPanel>
         </Grid>
     </DockPanel>
 </UserControl>

@@ -18,6 +18,7 @@ namespace AnimationEditor.ViewModel
     public class SpritePreviewViewModel : ViewModelBase
     {
         private IList<object> _selectedItems;
+        private HashSet<string> _recordedSprites;
         private List<DrawSpriteModel> _layerSprites;
         private Visibility _visiblity;
         private ScaleTransform _renderScale;
@@ -100,6 +101,7 @@ namespace AnimationEditor.ViewModel
             ZoomIndex = AppSettings.Instance.PreviewZoomIndex;
 
             _layerSprites = new List<DrawSpriteModel>();
+            _recordedSprites = new HashSet<string>();
 
             _timer = new DispatcherTimer();
             _timer.Interval = TimeSpan.FromSeconds(1.0 / 60.0);
@@ -153,17 +155,19 @@ namespace AnimationEditor.ViewModel
         private void RefreshCollection()
         {
             Sprites.Clear();
+            _recordedSprites.Clear();
 
             int zind = 0;
             foreach (var item in _selectedItems)
             {
-                if (item is SpriteModel sprite)
+                if (item is SpriteModel sprite && !_recordedSprites.Contains(sprite.Name))
                 {
                     Sprites.Add(new DrawSpriteModel
                     {
                         Sprite = sprite,
                         ZIndex = zind++
                     });
+                    _recordedSprites.Add(sprite.Name);
                 }
             }
 
